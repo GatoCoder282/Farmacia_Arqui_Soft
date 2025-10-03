@@ -1,0 +1,26 @@
+﻿@page
+@model Farmacia_Arqui_Soft.Pages.Users.IndexModel
+
+<h2>Lista de Usuarios</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Usuario</th>
+            <th>Telefono</th>
+            <th>CI</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.Users)
+        {
+            <tr>
+                <td>@user.id</td>
+                <td>@user.username</td>
+                <td>@user.phone</td>
+                <td>@user.ci</td>
+            </tr>
+        }
+    </tbody>
+</table>
