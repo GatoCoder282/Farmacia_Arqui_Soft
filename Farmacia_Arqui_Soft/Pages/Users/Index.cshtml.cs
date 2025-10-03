@@ -9,20 +9,18 @@ namespace Farmacia_Arqui_Soft.Pages.Users
 {
     public class IndexModel : PageModel
     {
-        private readonly ICRUD<User> _userCrud;
+        private readonly IRepository<User> _userRepository;
 
-        public IndexModel()
+        public IndexModel(RepositoryFactory factory)
         {
-            var factory = new CRUDFactory();
-            _userCrud = factory.CreateCrud<User>();
+            _userRepository = factory.CreateRepository<User>();
         }
 
         public IEnumerable<User> Users { get; set; }
 
         public async Task OnGetAsync()
         {
-            Users = await _userCrud.GetAll();
+            Users = await _userRepository.GetAll();
         }
     }
 }
-

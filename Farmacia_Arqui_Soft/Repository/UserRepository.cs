@@ -8,7 +8,7 @@ using Farmacia_Arqui_Soft.Interfaces;
 
 namespace Farmacia_Arqui_Soft.Repositories
 {
-    public class UserRepository : ICRUD<User>
+    public class UserRepository : IRepository<User>
     {
         private readonly MySqlConnection _connection;
 
