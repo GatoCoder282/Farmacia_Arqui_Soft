@@ -1,0 +1,30 @@
+@page
+@model Farmacia_Arqui_Soft.Pages.Lots.CreateModel
+
+<h2>Create Lot</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label>Medicine ID</label>
+        <input asp-for="Lot.medicine_id" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Batch Number</label>
+        <input asp-for="Lot.batch_number" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Expiration Date</label>
+        <input asp-for="Lot.expiration_date" type="date" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Quantity</label>
+        <input asp-for="Lot.quantity" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Unit Cost</label>
+        <input asp-for="Lot.unit_cost" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-success mt-3">Save</button>
+    <a asp-page="Index" class="btn btn-secondary mt-3">Cancel</a>
+</form>
