@@ -1,0 +1,43 @@
+﻿@page
+@model Farmacia_Arqui_Soft.Pages.Client.IndexClientModel
+@{
+    ViewData["Title"] = "Clientes";
+}
+
+<h2 class="mb-3">Lista de Clientes</h2>
+
+<table class="table table-striped table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>NIT</th>
+            <th>Email</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Clients != null && Model.Clients.Any())
+        {
+            foreach (var client in Model.Clients)
+            {
+                <tr>
+                    <td>@client.id</td>
+                    <td>@client.first_name</td>
+                    <td>@client.last_name</td>
+                    <td>@client.nit</td>
+                    <td>@client.email</td>
+                  
+                    
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="8" class="text-center text-muted">No hay clientes registrados.</td>
+            </tr>
+        }
+    </tbody>
+</table>

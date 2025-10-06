@@ -11,7 +11,7 @@ namespace Farmacia_Arqui_Soft.Data
 
             private DatabaseConnection()
             {
-                string connectionString = "server=localhost;database=pharmacydb;user=root;password=root;";
+                string connectionString = "server=localhost;database=pharmacydb;user=root;password=1234;";
                 _connection = new MySqlConnection(connectionString);
                 _connection.Open();
             }
