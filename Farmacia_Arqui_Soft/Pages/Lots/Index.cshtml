@@ -17,20 +17,20 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var lot in Model.Lots)
-{
-    <tr>
-        <td>@lot.id</td>
-        <td>@lot.medicine_id</td>
-        <td>@lot.batch_number</td>
-        <td>@lot.expiration_date.ToShortDateString()</td>
-        <td>@lot.quantity</td>
-        <td>@lot.unit_cost</td>
-        <td>
-            <a asp-page="Edit" asp-route-id="@lot.id" class="btn btn-warning btn-sm">Edit</a>
-            <a asp-page="Delete" asp-route-id="@lot.id" class="btn btn-danger btn-sm">Delete</a>
-        </td>
-    </tr>
-}
+        @foreach (var lot in Model.Lots)
+        {
+            <tr>
+                <td>@lot.Id</td>
+                <td>@lot.MedicineId</td>
+                <td>@lot.BatchNumber</td>
+                <td>@lot.ExpirationDate.ToShortDateString()</td>
+                <td>@lot.Quantity</td>
+                <td>@lot.UnitCost</td>
+                <td>
+                    <a asp-page="Edit" asp-route-id="@lot.Id" class="btn btn-warning btn-sm">Edit</a>
+                    <a asp-page="Delete" asp-route-id="@lot.Id" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

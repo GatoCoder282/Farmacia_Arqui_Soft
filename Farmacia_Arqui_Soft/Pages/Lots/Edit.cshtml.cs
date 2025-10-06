@@ -19,13 +19,19 @@ namespace Farmacia_Arqui_Soft.Pages.Lots
             _repository = factory.CreateRepository<Lot>();
         }
 
-        public async Task OnGetAsync(int id)
+        public async Task<IActionResult> OnGetAsync(int id)
         {
             Lot = await _repository.GetById(id);
+            if (Lot == null)
+                return RedirectToPage("Index");
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
+            if (!ModelState.IsValid)
+                return Page();
+
             await _repository.Update(Lot);
             return RedirectToPage("Index");
         }

@@ -1,15 +1,23 @@
 ﻿@page
 @model Farmacia_Arqui_Soft.Pages.Users.IndexModel
+@{
+    ViewData["Title"] = "Usuarios";
+}
 
-<h2>Lista de Usuarios</h2>
+<h2>Usuarios</h2>
 
-<table class="table">
+<div>
+    <a asp-page="Create" class="btn btn-primary">Nuevo Usuario</a>
+</div>
+
+<table class="table mt-3">
     <thead>
         <tr>
-            <th>ID</th>
+            <th>Id</th>
             <th>Usuario</th>
-            <th>Telefono</th>
+            <th>Teléfono</th>
             <th>CI</th>
+            <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
@@ -20,7 +28,16 @@
                 <td>@user.username</td>
                 <td>@user.phone</td>
                 <td>@user.ci</td>
+                <td>
+                    <a asp-page="Edit" asp-route-id="@user.id" class="btn btn-warning btn-sm">Editar</a>
+                    <a asp-page="Delete" asp-route-id="@user.id" class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
             </tr>
         }
     </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="5">@Model.Users.Count() registros encontrados</td>
+        </tr>
+    </tfoot>
 </table>

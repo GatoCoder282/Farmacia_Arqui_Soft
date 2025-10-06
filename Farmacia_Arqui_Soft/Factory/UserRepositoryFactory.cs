@@ -11,7 +11,9 @@ namespace Farmacia_Arqui_Soft.Factory
             if (typeof(T) == typeof(User))
                 return (IRepository<T>)new UserRepository();
 
-            throw new NotImplementedException($"No existe implementación CRUD para {typeof(T).Name}");
+            throw new NotImplementedException(
+                $"No existe implementación CRUD para {typeof(T).Name}"
+            );
         }
     }
 }
