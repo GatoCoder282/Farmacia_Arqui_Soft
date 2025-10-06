@@ -20,7 +20,7 @@ namespace Farmacia_Arqui_Soft.Data
             {
                 if (_instance == null)
                 {
-                    var connStr = configuration.GetConnectionString("MySqlConnection")!;
+                    var connStr = configuration.GetConnectionString("DefaultConnection")!;
                     _instance = new DatabaseConnection(connStr);
                 }
             }
