@@ -1,37 +1,45 @@
 ﻿using MySql.Data.MySqlClient;
+using Microsoft.Extensions.Configuration;
 
 namespace Farmacia_Arqui_Soft.Data
 {
+    public sealed class DatabaseConnection
+    {
+        private static DatabaseConnection? _instance;
+        private static readonly object _lock = new object();
+        private readonly string _connectionString;
 
-        public sealed class DatabaseConnection
+        private DatabaseConnection(string connectionString)
         {
-            private static DatabaseConnection _instance;
-            private static readonly object _lock = new object();
-            private MySqlConnection _connection;
+            _connectionString = connectionString;
+        }
 
-            private DatabaseConnection()
+        public static void Initialize(IConfiguration configuration)
+        {
+            lock (_lock)
             {
-                string connectionString = "server=localhost;database=pharmacydb;user=root;password=1234;";
-                _connection = new MySqlConnection(connectionString);
-                _connection.Open();
-            }
-
-            public static DatabaseConnection Instance
-            {
-                get
+                if (_instance == null)
                 {
-                    lock (_lock)
-                    {
-                        if (_instance == null)
-                        {
-                            _instance = new DatabaseConnection();
-                        }
-                        return _instance;
-                    }
+                    var connStr = configuration.GetConnectionString("DefaultConnection")!;
+                    _instance = new DatabaseConnection(connStr);
                 }
             }
-
-            public MySqlConnection Connection => _connection;
         }
-}
 
+        public static DatabaseConnection Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    throw new InvalidOperationException("DatabaseConnection no fue inicializado. Llama a Initialize() en Program.cs");
+
+                return _instance;
+            }
+        }
+
+        public MySqlConnection GetConnection()
+        {
+            return new MySqlConnection(_connectionString);
+        }
+    }
+}

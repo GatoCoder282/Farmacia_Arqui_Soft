@@ -1,26 +1,29 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Farmacia_Arqui_Soft.Interfaces;
 using Farmacia_Arqui_Soft.Factory;
+using System.Threading.Tasks;
 using ClientEntity = Farmacia_Arqui_Soft.Models.Client;
 
 namespace Farmacia_Arqui_Soft.Pages.Client
 {
-    public class IndexClientModel : PageModel
+    public class DetailsModel : PageModel
     {
         private readonly IRepository<ClientEntity> _repo;
-        public IEnumerable<ClientEntity> Clients { get; private set; } = new List<ClientEntity>();
+        public ClientEntity Record { get; private set; }
 
-        public IndexClientModel()
+        public DetailsModel()
         {
             var factory = new ClientRepositoryFactory();
             _repo = factory.CreateRepository<ClientEntity>();
         }
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(int id)
         {
-            Clients = await _repo.GetAll();
+            var found = await _repo.GetById(id);
+            if (found is null) return NotFound();
+            Record = found;
+            return Page();
         }
     }
 }
