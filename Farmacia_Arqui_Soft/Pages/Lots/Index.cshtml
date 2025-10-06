@@ -1,0 +1,36 @@
+@page
+@model Farmacia_Arqui_Soft.Pages.Lots.IndexModel
+
+<h2>Lotes</h2>
+<a asp-page="Create" class="btn btn-primary mb-3">+ Nuevo Lote</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>ID del Medicamento</th>
+            <th>Lote</th>
+            <th>Fecha de Vencimiento</th>
+            <th>Cantidad</th>
+            <th>Costo Unitario</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var lot in Model.Lots)
+        {
+            <tr>
+                <td>@lot.Id</td>
+                <td>@lot.MedicineId</td>
+                <td>@lot.BatchNumber</td>
+                <td>@lot.ExpirationDate.ToShortDateString()</td>
+                <td>@lot.Quantity</td>
+                <td>@lot.UnitCost.ToString("F2")</td>
+                <td>
+                    <a asp-page="Edit" asp-route-id="@lot.Id" class="btn btn-warning btn-sm">Editar</a>
+                    <a asp-page="Delete" asp-route-id="@lot.Id" class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

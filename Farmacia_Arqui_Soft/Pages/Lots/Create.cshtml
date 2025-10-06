@@ -1,0 +1,34 @@
+@page
+@model Farmacia_Arqui_Soft.Pages.Lots.CreateModel
+
+<h2>Registrar Nuevo Lote</h2>
+
+<form method="post" class="mt-4">
+    <div class="form-group mb-3">
+        <label for="MedicineId">ID del Medicamento</label>
+        <input type="number" id="MedicineId" class="form-control" asp-for="Lot.MedicineId" required />
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="BatchNumber">Número de Lote</label>
+        <input type="text" id="BatchNumber" class="form-control" asp-for="Lot.BatchNumber" required />
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="ExpirationDate">Fecha de Vencimiento</label>
+        <input type="date" id="ExpirationDate" class="form-control" asp-for="Lot.ExpirationDate" required />
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="Quantity">Cantidad</label>
+        <input type="number" id="Quantity" class="form-control" asp-for="Lot.Quantity" required />
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="UnitCost">Costo Unitario</label>
+        <input type="number" id="UnitCost" class="form-control" asp-for="Lot.UnitCost" step="0.01" required />
+    </div>
+
+    <button type="submit" class="btn btn-success">Guardar</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
+</form>
