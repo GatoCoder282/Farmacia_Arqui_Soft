@@ -1,92 +1,115 @@
 using System.Data;
 using MySql.Data.MySqlClient;
-using Farmacia_Arqui_Soft.Models;
 using Farmacia_Arqui_Soft.Interfaces;
+using Farmacia_Arqui_Soft.Models;
 
 namespace Farmacia_Arqui_Soft.Data
 {
     public class LotData : IRepository<Lot>
     {
-        public DataTable GetAll()
+        private readonly MySqlConnection _connection;
+
+        public LotData()
         {
-            var table = new DataTable();
-            using var conn = DatabaseConnection.Instance.GetConnection();
-            conn.Open();
-            string query = "SELECT * FROM lot";
-            using var cmd = new MySqlCommand(query, conn);
-            using var adapter = new MySqlDataAdapter(cmd);
-            adapter.Fill(table);
-            return table;
+            _connection = DatabaseConnection.Instance.Connection;
         }
 
-        public Lot? GetById(int id)
+        public async Task<Lot> Create(Lot entity)
         {
-            using var conn = DatabaseConnection.Instance.GetConnection();
-            conn.Open();
-            string query = "SELECT * FROM lot WHERE id=@id";
-            using var cmd = new MySqlCommand(query, conn);
-            cmd.Parameters.AddWithValue("@id", id);
-            using var reader = cmd.ExecuteReader();
+            string query = "INSERT INTO Lot (medicine_id, batch_number, expiration_date, quantity, unit_cost) VALUES (@medicine_id, @batch_number, @expiration_date, @quantity, @unit_cost)";
+            using var cmd = new MySqlCommand(query, _connection);
+            cmd.Parameters.AddWithValue("@medicine_id", entity.medicine_id);
+            cmd.Parameters.AddWithValue("@batch_number", entity.batch_number);
+            cmd.Parameters.AddWithValue("@expiration_date", entity.expiration_date);
+            cmd.Parameters.AddWithValue("@quantity", entity.quantity);
+            cmd.Parameters.AddWithValue("@unit_cost", entity.unit_cost);
 
-            if (reader.Read())
+            await _connection.OpenAsync();
+            await cmd.ExecuteNonQueryAsync();
+            _connection.Close();
+
+            entity.id = (int)cmd.LastInsertedId;
+            return entity;
+        }
+
+        public async Task<Lot> GetById(int id)
+        {
+            string query = "SELECT * FROM Lot WHERE id = @id";
+            using var cmd = new MySqlCommand(query, _connection);
+            cmd.Parameters.AddWithValue("@id", id);
+
+            await _connection.OpenAsync();
+            using var reader = await cmd.ExecuteReaderAsync();
+
+            Lot lot = null;
+            if (await reader.ReadAsync())
             {
-                return new Lot
+                lot = new Lot
                 {
-                    Id = reader.GetInt32("id"),
-                    MedicineId = reader.GetInt32("medicine_id"),
-                    BatchNumber = reader.GetString("batch_number"),
-                    ExpirationDate = reader.GetDateTime("expiration_date"),
-                    EntryDate = reader.GetDateTime("entry_date"),
-                    Quantity = reader.GetInt32("quantity"),
-                    UnitCost = reader.GetDecimal("unit_cost"),
-                    Status = reader.GetBoolean("status")
+                    id = reader.GetInt32("id"),
+                    medicine_id = reader.GetInt32("medicine_id"),
+                    batch_number = reader.GetString("batch_number"),
+                    expiration_date = reader.GetDateTime("expiration_date"),
+                    quantity = reader.GetInt32("quantity"),
+                    unit_cost = reader.GetDecimal("unit_cost")
                 };
             }
-            return null;
+
+            _connection.Close();
+            return lot;
         }
 
-        public void Create(Lot entity)
+        public async Task<IEnumerable<Lot>> GetAll()
         {
-            using var conn = DatabaseConnection.Instance.GetConnection();
-            conn.Open();
-            string query = @"INSERT INTO lot (medicine_id, batch_number, expiration_date, quantity, unit_cost)
-                             VALUES (@med, @batch, @exp, @qty, @cost)";
-            using var cmd = new MySqlCommand(query, conn);
-            cmd.Parameters.AddWithValue("@med", entity.MedicineId);
-            cmd.Parameters.AddWithValue("@batch", entity.BatchNumber);
-            cmd.Parameters.AddWithValue("@exp", entity.ExpirationDate);
-            cmd.Parameters.AddWithValue("@qty", entity.Quantity);
-            cmd.Parameters.AddWithValue("@cost", entity.UnitCost);
-            cmd.ExecuteNonQuery();
+            var list = new List<Lot>();
+            string query = "SELECT * FROM Lot";
+            using var cmd = new MySqlCommand(query, _connection);
+
+            await _connection.OpenAsync();
+            using var reader = await cmd.ExecuteReaderAsync();
+
+            while (await reader.ReadAsync())
+            {
+                list.Add(new Lot
+                {
+                    id = reader.GetInt32("id"),
+                    medicine_id = reader.GetInt32("medicine_id"),
+                    batch_number = reader.GetString("batch_number"),
+                    expiration_date = reader.GetDateTime("expiration_date"),
+                    quantity = reader.GetInt32("quantity"),
+                    unit_cost = reader.GetDecimal("unit_cost")
+                });
+            }
+
+            _connection.Close();
+            return list;
         }
 
-        public void Update(Lot entity)
+        public async Task Update(Lot entity)
         {
-            using var conn = DatabaseConnection.Instance.GetConnection();
-            conn.Open();
-            string query = @"UPDATE lot 
-                             SET medicine_id=@med, batch_number=@batch, expiration_date=@exp,
-                                 quantity=@qty, unit_cost=@cost, status=@status 
-                             WHERE id=@id";
-            using var cmd = new MySqlCommand(query, conn);
-            cmd.Parameters.AddWithValue("@id", entity.Id);
-            cmd.Parameters.AddWithValue("@med", entity.MedicineId);
-            cmd.Parameters.AddWithValue("@batch", entity.BatchNumber);
-            cmd.Parameters.AddWithValue("@exp", entity.ExpirationDate);
-            cmd.Parameters.AddWithValue("@qty", entity.Quantity);
-            cmd.Parameters.AddWithValue("@cost", entity.UnitCost);
-            cmd.Parameters.AddWithValue("@status", entity.Status);
-            cmd.ExecuteNonQuery();
+            string query = "UPDATE Lot SET medicine_id=@medicine_id, batch_number=@batch_number, expiration_date=@expiration_date, quantity=@quantity, unit_cost=@unit_cost WHERE id=@id";
+            using var cmd = new MySqlCommand(query, _connection);
+            cmd.Parameters.AddWithValue("@medicine_id", entity.medicine_id);
+            cmd.Parameters.AddWithValue("@batch_number", entity.batch_number);
+            cmd.Parameters.AddWithValue("@expiration_date", entity.expiration_date);
+            cmd.Parameters.AddWithValue("@quantity", entity.quantity);
+            cmd.Parameters.AddWithValue("@unit_cost", entity.unit_cost);
+            cmd.Parameters.AddWithValue("@id", entity.id);
+
+            await _connection.OpenAsync();
+            await cmd.ExecuteNonQueryAsync();
+            _connection.Close();
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            using var conn = DatabaseConnection.Instance.GetConnection();
-            conn.Open();
-            string query = "DELETE FROM lot WHERE id=@id";
-            using var cmd = new MySqlCommand(query, conn);
+            string query = "DELETE FROM Lot WHERE id=@id";
+            using var cmd = new MySqlCommand(query, _connection);
             cmd.Parameters.AddWithValue("@id", id);
-            cmd.ExecuteNonQuery();
+
+            await _connection.OpenAsync();
+            await cmd.ExecuteNonQueryAsync();
+            _connection.Close();
         }
     }
 }
