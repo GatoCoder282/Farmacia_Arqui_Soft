@@ -1,3 +1,4 @@
+using Farmacia_Arqui_Soft.Data;
 using Farmacia_Arqui_Soft.Factory;
 using Farmacia_Arqui_Soft.Interfaces;
 using Farmacia_Arqui_Soft.Models;
@@ -11,11 +12,16 @@ namespace Farmacia_Arqui_Soft
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            DatabaseConnection.Initialize(builder.Configuration);
+
+
             builder.Services.AddSingleton<RepositoryFactory, UserRepositoryFactory>();
 
             builder.Services.AddScoped<IRepository<User>, UserRepository>();
 
             builder.Services.AddSingleton<UserRepositoryFactory>();
+
+            builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
             // Add services to the container.
             builder.Services.AddRazorPages();
