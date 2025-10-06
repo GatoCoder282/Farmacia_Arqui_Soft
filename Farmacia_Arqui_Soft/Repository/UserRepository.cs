@@ -5,39 +5,47 @@ using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 using Farmacia_Arqui_Soft.Interfaces;
+using Microsoft.Extensions.Configuration;
 
 namespace Farmacia_Arqui_Soft.Repositories
 {
     public class UserRepository : IRepository<User>
     {
-        private readonly MySqlConnection _connection;
+        private readonly DatabaseConnection _db;
 
         public UserRepository()
         {
-            _connection = DatabaseConnection.Instance.Connection;
+            _db = DatabaseConnection.Instance;
         }
+
 
         public async Task<User> Create(User entity)
         {
             string query = "INSERT INTO User (username, password, phone, ci) VALUES (@username, @password, @phone, @ci)";
-            using var cmd = new MySqlCommand(query, _connection);
-            cmd.Parameters.AddWithValue("@username", entity.username);
-            cmd.Parameters.AddWithValue("@password", entity.password);
-            cmd.Parameters.AddWithValue("@phone", entity.phone);
-            cmd.Parameters.AddWithValue("@ci", entity.ci);
+            using var connection = _db.GetConnection();
+            await connection.OpenAsync();
 
-            await cmd.ExecuteNonQueryAsync();
-            entity.id = (int)cmd.LastInsertedId;
+            using var comand = new MySqlCommand(query, connection);
+            comand.Parameters.AddWithValue("@username", entity.username);
+            comand.Parameters.AddWithValue("@password", entity.password);
+            comand.Parameters.AddWithValue("@phone", entity.phone);
+            comand.Parameters.AddWithValue("@ci", entity.ci);
+
+            await comand.ExecuteNonQueryAsync();
+            entity.id = (int)comand.LastInsertedId;
             return entity;
         }
 
-        public async Task<User> GetById(int id)
+        public async Task<User?> GetById(int id)
         {
             string query = "SELECT * FROM User WHERE id = @id";
-            using var cmd = new MySqlCommand(query, _connection);
-            cmd.Parameters.AddWithValue("@id", id);
+            using var connection = _db.GetConnection();
+            await connection.OpenAsync();
 
-            using var reader = await cmd.ExecuteReaderAsync();
+            using var comand = new MySqlCommand(query, connection);
+            comand.Parameters.AddWithValue("@id", id);
+
+            using var reader = await comand.ExecuteReaderAsync();
             if (await reader.ReadAsync())
             {
                 return new User(
@@ -55,9 +63,13 @@ namespace Farmacia_Arqui_Soft.Repositories
         {
             var lista = new List<User>();
             string query = "SELECT * FROM User";
-            using var cmd = new MySqlCommand(query, _connection);
 
-            using var reader = await cmd.ExecuteReaderAsync();
+            using var connection = _db.GetConnection();
+            await connection.OpenAsync();
+
+            using var comand = new MySqlCommand(query, connection);
+            using var reader = await comand.ExecuteReaderAsync();
+
             while (await reader.ReadAsync())
             {
                 lista.Add(new User(
@@ -74,23 +86,31 @@ namespace Farmacia_Arqui_Soft.Repositories
         public async Task Update(User entity)
         {
             string query = "UPDATE User SET username=@username, password=@password, phone=@phone, ci=@ci WHERE id=@id";
-            using var cmd = new MySqlCommand(query, _connection);
-            cmd.Parameters.AddWithValue("@username", entity.username);
-            cmd.Parameters.AddWithValue("@password", entity.password);
-            cmd.Parameters.AddWithValue("@phone", entity.phone);
-            cmd.Parameters.AddWithValue("@ci", entity.ci);
-            cmd.Parameters.AddWithValue("@id", entity.id);
 
-            await cmd.ExecuteNonQueryAsync();
+            using var connection = _db.GetConnection();
+            await connection.OpenAsync();
+
+            using var comand = new MySqlCommand(query, connection);
+            comand.Parameters.AddWithValue("@username", entity.username);
+            comand.Parameters.AddWithValue("@password", entity.password);
+            comand.Parameters.AddWithValue("@phone", entity.phone);
+            comand.Parameters.AddWithValue("@ci", entity.ci);
+            comand.Parameters.AddWithValue("@id", entity.id);
+
+            await comand.ExecuteNonQueryAsync();
         }
 
         public async Task Delete(int id)
         {
             string query = "DELETE FROM User WHERE id=@id";
-            using var cmd = new MySqlCommand(query, _connection);
-            cmd.Parameters.AddWithValue("@id", id);
 
-            await cmd.ExecuteNonQueryAsync();
+            using var connection = _db.GetConnection();
+            await connection.OpenAsync();
+
+            using var comand = new MySqlCommand(query, connection);
+            comand.Parameters.AddWithValue("@id", id);
+
+            await comand.ExecuteNonQueryAsync();
         }
     }
 }
