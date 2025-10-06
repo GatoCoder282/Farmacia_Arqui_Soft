@@ -1,0 +1,37 @@
+﻿@page "{id:int}"
+@model Farmacia_Arqui_Soft.Pages.Client.EditModel
+@{
+    ViewData["Title"] = "Editar cliente";
+}
+<h2>Editar cliente</h2>
+<hr />
+
+<form method="post" class="row g-3">
+    <input type="hidden" asp-for="Input.id" />
+
+    <div class="col-md-6">
+        <label asp-for="Input.first_name" class="form-label">Nombre</label>
+        <input asp-for="Input.first_name" class="form-control" />
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="Input.last_name" class="form-label">Apellido</label>
+        <input asp-for="Input.last_name" class="form-control" />
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="Input.nit" class="form-label">NIT</label>
+        <input asp-for="Input.nit" class="form-control" />
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="Input.email" class="form-label">Email</label>
+        <input asp-for="Input.email" class="form-control" />
+    </div>
+
+
+    <div class="col-12">
+        <button class="btn btn-primary" type="submit">Actualizar</button>
+        <a asp-page="/Client/IndexClient" class="btn btn-secondary">Cancelar</a>
+    </div>
+</form>

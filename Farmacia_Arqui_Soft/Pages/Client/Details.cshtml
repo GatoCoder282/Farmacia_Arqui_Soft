@@ -1,0 +1,26 @@
+﻿@page "{id:int}"
+@model Farmacia_Arqui_Soft.Pages.Client.DetailsModel
+@{
+    ViewData["Title"] = "Detalles del cliente";
+}
+<h2>Detalles del cliente</h2>
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-3">ID</dt>
+    <dd class="col-sm-9">@Model.Record.id</dd>
+    <dt class="col-sm-3">Nombre</dt>
+    <dd class="col-sm-9">@Model.Record.first_name</dd>
+    <dt class="col-sm-3">Apellido</dt>
+    <dd class="col-sm-9">@Model.Record.last_name</dd>
+    <dt class="col-sm-3">NIT</dt>
+    <dd class="col-sm-9">@Model.Record.nit</dd>
+    <dt class="col-sm-3">Email</dt>
+    <dd class="col-sm-9">@Model.Record.email</dd>
+    <dt class="col-sm-3">Estado</dt>
+  
+</dl>
+
+<a asp-page="/Client/IndexClient" class="btn btn-secondary">Volver</a>
+<a asp-page="/Client/Edit" asp-route-id="@Model.Record.id" class="btn btn-warning ms-2">Editar</a>
+<a asp-page="/Client/Delete" asp-route-id="@Model.Record.id" class="btn btn-danger ms-2">Eliminar</a>

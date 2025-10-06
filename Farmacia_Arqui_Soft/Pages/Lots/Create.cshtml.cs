@@ -1,14 +1,14 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using Farmacia_Arqui_Soft.Interfaces;
 using Farmacia_Arqui_Soft.Models;
 using Farmacia_Arqui_Soft.Factory;
-using Farmacia_Arqui_Soft.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Farmacia_Arqui_Soft.Pages.Lots
 {
     public class CreateModel : PageModel
     {
-        private readonly IRepository<Lot> _repository;
+        private readonly IRepository<Lot> _lotRepository;
 
         [BindProperty]
         public Lot Lot { get; set; } = new();
@@ -16,14 +16,17 @@ namespace Farmacia_Arqui_Soft.Pages.Lots
         public CreateModel()
         {
             var factory = new LotRepositoryFactory();
-            _repository = factory.CreateRepository<Lot>();
+            _lotRepository = factory.CreateRepository<Lot>();
         }
 
         public void OnGet() { }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            await _repository.Create(Lot);
+            if (!ModelState.IsValid)
+                return Page();
+
+            await _lotRepository.Create(Lot);
             return RedirectToPage("Index");
         }
     }

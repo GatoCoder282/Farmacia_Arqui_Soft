@@ -6,14 +6,14 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Farmacia_Arqui_Soft.Pages.Lots
 {
-    public class EditModel : PageModel
+    public class DeleteModel : PageModel
     {
         private readonly IRepository<Lot> _lotRepository;
 
         [BindProperty]
         public Lot Lot { get; set; } = new();
 
-        public EditModel()
+        public DeleteModel()
         {
             var factory = new LotRepositoryFactory();
             _lotRepository = factory.CreateRepository<Lot>();
@@ -31,10 +31,7 @@ namespace Farmacia_Arqui_Soft.Pages.Lots
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
-                return Page();
-
-            await _lotRepository.Update(Lot);
+            await _lotRepository.Delete(Lot.Id);
             return RedirectToPage("Index");
         }
     }

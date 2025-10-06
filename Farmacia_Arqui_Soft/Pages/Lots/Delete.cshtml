@@ -1,0 +1,30 @@
+@page "{id:int}"
+@model Farmacia_Arqui_Soft.Pages.Lots.DeleteModel
+
+<h2>Eliminar Lote</h2>
+
+<div class="alert alert-danger mt-3">
+    <p>¿Estás seguro que deseas eliminar este lote?</p>
+    <dl class="row">
+        <dt class="col-sm-3">ID:</dt>
+        <dd class="col-sm-9">@Model.Lot.Id</dd>
+
+        <dt class="col-sm-3">Número de Lote:</dt>
+        <dd class="col-sm-9">@Model.Lot.BatchNumber</dd>
+
+        <dt class="col-sm-3">Fecha de Vencimiento:</dt>
+        <dd class="col-sm-9">@Model.Lot.ExpirationDate.ToShortDateString()</dd>
+
+        <dt class="col-sm-3">Cantidad:</dt>
+        <dd class="col-sm-9">@Model.Lot.Quantity</dd>
+
+        <dt class="col-sm-3">Costo Unitario:</dt>
+        <dd class="col-sm-9">@Model.Lot.UnitCost.ToString("F2")</dd>
+    </dl>
+</div>
+
+<form method="post">
+    <input type="hidden" asp-for="Lot.Id" />
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
+</form>

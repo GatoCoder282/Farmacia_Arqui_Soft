@@ -19,6 +19,8 @@ namespace Farmacia_Arqui_Soft
 
             builder.Services.AddScoped<IRepository<User>, UserRepository>();
 
+            builder.Services.AddScoped<IRepository<Lot>, LotRepository>();
+
             builder.Services.AddSingleton<UserRepositoryFactory>();
 
             builder.Services.AddSingleton<IConfiguration>(builder.Configuration);

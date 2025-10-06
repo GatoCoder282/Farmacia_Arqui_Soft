@@ -1,30 +1,34 @@
 @page
 @model Farmacia_Arqui_Soft.Pages.Lots.CreateModel
 
-<h2>Create Lot</h2>
+<h2>Registrar Nuevo Lote</h2>
 
-<form method="post">
-    <div class="form-group mb-2">
-        <label>Medicine ID</label>
-        <input asp-for="Lot.MedicineId" class="form-control" required />
-    </div>
-    <div class="form-group mb-2">
-        <label>Batch Number</label>
-        <input asp-for="Lot.BatchNumber" class="form-control" required />
-    </div>
-    <div class="form-group mb-2">
-        <label>Expiration Date</label>
-        <input asp-for="Lot.ExpirationDate" type="date" class="form-control" required />
-    </div>
-    <div class="form-group mb-2">
-        <label>Quantity</label>
-        <input asp-for="Lot.Quantity" class="form-control" type="number" min="1" required />
-    </div>
-    <div class="form-group mb-2">
-        <label>Unit Cost</label>
-        <input asp-for="Lot.UnitCost" class="form-control" type="number" step="0.01" required />
+<form method="post" class="mt-4">
+    <div class="form-group mb-3">
+        <label for="MedicineId">ID del Medicamento</label>
+        <input type="number" id="MedicineId" class="form-control" asp-for="Lot.MedicineId" required />
     </div>
 
-    <button type="submit" class="btn btn-success mt-3">Save</button>
-    <a asp-page="Index" class="btn btn-secondary mt-3">Cancel</a>
+    <div class="form-group mb-3">
+        <label for="BatchNumber">Número de Lote</label>
+        <input type="text" id="BatchNumber" class="form-control" asp-for="Lot.BatchNumber" required />
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="ExpirationDate">Fecha de Vencimiento</label>
+        <input type="date" id="ExpirationDate" class="form-control" asp-for="Lot.ExpirationDate" required />
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="Quantity">Cantidad</label>
+        <input type="number" id="Quantity" class="form-control" asp-for="Lot.Quantity" required />
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="UnitCost">Costo Unitario</label>
+        <input type="number" id="UnitCost" class="form-control" asp-for="Lot.UnitCost" step="0.01" required />
+    </div>
+
+    <button type="submit" class="btn btn-success">Guardar</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
 </form>
