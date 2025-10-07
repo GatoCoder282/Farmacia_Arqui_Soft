@@ -6,7 +6,7 @@ using Farmacia_Arqui_Soft.Factory;
 using Farmacia_Arqui_Soft.Interfaces;
 using Farmacia_Arqui_Soft.Models;
 
-// Usings para el sistema de validaciones (nueva carpeta /Validations)
+
 using Farmacia_Arqui_Soft.Validations.Interfaces;
 
 namespace Farmacia_Arqui_Soft.Pages.Users
@@ -18,9 +18,8 @@ namespace Farmacia_Arqui_Soft.Pages.Users
 
         public CreateModel(RepositoryFactory factory, IValidator<User> userValidator)
         {
-            // Mantenemos Factory Method para crear el repositorio concreto
+            
             _userRepository = factory.CreateRepository<User>();
-            // Inyectamos un validador dedicado para User
             _userValidator = userValidator;
         }
 
@@ -29,7 +28,7 @@ namespace Farmacia_Arqui_Soft.Pages.Users
 
         public void OnGet()
         {
-            // Nada que hacer en GET
+           
         }
 
         [ValidateAntiForgeryToken]
@@ -54,7 +53,7 @@ namespace Farmacia_Arqui_Soft.Pages.Users
                 return Page();
             }
 
-            // Persistir si todo es válido
+           
             await _userRepository.Create(User);
             TempData["Success"] = "Usuario creado correctamente.";
             return RedirectToPage("Index");

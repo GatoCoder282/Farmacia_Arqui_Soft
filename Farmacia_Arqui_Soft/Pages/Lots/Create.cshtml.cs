@@ -6,7 +6,7 @@ using Farmacia_Arqui_Soft.Interfaces;
 using Farmacia_Arqui_Soft.Models;
 using Farmacia_Arqui_Soft.Factory;
 
-// Validaciones
+
 using Farmacia_Arqui_Soft.Validations.Interfaces;
 
 namespace Farmacia_Arqui_Soft.Pages.Lots
@@ -19,7 +19,6 @@ namespace Farmacia_Arqui_Soft.Pages.Lots
         [BindProperty]
         public Lot Lot { get; set; } = new();
 
-        // Mantiene Factory Method + inyecta validador
         public CreateModel(IValidator<Lot> lotValidator)
         {
             _lotValidator = lotValidator;

@@ -9,29 +9,27 @@ namespace Farmacia_Arqui_Soft.Pages.Client
 {
     public class DeleteModel : PageModel
     {
-        private readonly IRepository<ClientEntity> _repo;
+        private readonly IRepository<ClientEntity> _ClientRepository;
 
         public ClientEntity Record { get; private set; }
 
         public DeleteModel()
         {
             var factory = new ClientRepositoryFactory();
-            _repo = factory.CreateRepository<ClientEntity>();
+            _ClientRepository = factory.CreateRepository<ClientEntity>();
         }
 
-        // Carga el registro para confirmar
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            var found = await _repo.GetById(id);
+            var found = await _ClientRepository.GetById(id);
             if (found is null) return NotFound();
             Record = found;
             return Page();
         }
 
-        // Confirma la eliminación
         public async Task<IActionResult> OnPostAsync(int id)
         {
-            await _repo.Delete(id);
+            await _ClientRepository.Delete(id);
             return RedirectToPage("/Client/IndexClient");
         }
     }

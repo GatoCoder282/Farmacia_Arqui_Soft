@@ -18,6 +18,7 @@ namespace Farmacia_Arqui_Soft
         {
             var builder = WebApplication.CreateBuilder(args);
             DatabaseConnection.Initialize(builder.Configuration);
+
             // Factory & Repositories
             builder.Services.AddSingleton<RepositoryFactory, UserRepositoryFactory>();
             builder.Services.AddScoped<IRepository<User>, UserRepository>();

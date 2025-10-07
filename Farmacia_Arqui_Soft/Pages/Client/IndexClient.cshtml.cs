@@ -9,18 +9,18 @@ namespace Farmacia_Arqui_Soft.Pages.Client
 {
     public class IndexClientModel : PageModel
     {
-        private readonly IRepository<ClientEntity> _repo;
+        private readonly IRepository<ClientEntity> _ClientRepository;
         public IEnumerable<ClientEntity> Clients { get; private set; } = new List<ClientEntity>();
 
         public IndexClientModel()
         {
             var factory = new ClientRepositoryFactory();
-            _repo = factory.CreateRepository<ClientEntity>();
+            _ClientRepository = factory.CreateRepository<ClientEntity>();
         }
 
         public async Task OnGetAsync()
         {
-            Clients = await _repo.GetAll();
+            Clients = await _ClientRepository.GetAll();
         }
     }
 }
