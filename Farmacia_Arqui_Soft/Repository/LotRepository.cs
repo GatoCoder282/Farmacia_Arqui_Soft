@@ -19,7 +19,7 @@ namespace Farmacia_Arqui_Soft.Repositories
 
         public async Task<Lot> Create(Lot entity)
         {
-            string query = @"INSERT INTO Lot 
+            string query = @"INSERT INTO lots 
                             (medicine_id, batch_number, expiration_date, quantity, unit_cost)
                             VALUES (@medicine_id, @batch_number, @expiration_date, @quantity, @unit_cost)";
             using var connection = _db.GetConnection();
@@ -39,7 +39,7 @@ namespace Farmacia_Arqui_Soft.Repositories
 
         public async Task<Lot?> GetById(int id)
         {
-            string query = "SELECT * FROM Lot WHERE id=@id";
+            string query = "SELECT * FROM lots WHERE id=@id";
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
 
@@ -64,7 +64,7 @@ namespace Farmacia_Arqui_Soft.Repositories
         public async Task<IEnumerable<Lot>> GetAll()
         {
             var list = new List<Lot>();
-            string query = "SELECT * FROM Lot";
+            string query = "SELECT * FROM lots";
 
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
@@ -88,7 +88,7 @@ namespace Farmacia_Arqui_Soft.Repositories
 
         public async Task Update(Lot entity)
         {
-            string query = @"UPDATE Lot 
+            string query = @"UPDATE lots 
                             SET medicine_id=@medicine_id,
                                 batch_number=@batch_number,
                                 expiration_date=@expiration_date,
@@ -111,7 +111,7 @@ namespace Farmacia_Arqui_Soft.Repositories
 
         public async Task Delete(int id)
         {
-            string query = "DELETE FROM Lot WHERE id=@id";
+            string query = "DELETE FROM lots WHERE id=@id";
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
 
