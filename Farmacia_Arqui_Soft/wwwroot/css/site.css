@@ -12,7 +12,7 @@ html {
 
 body {
     margin-bottom: 60px;
-    font-family: "Segoe UI", sans-serif;
+    font-family: "Poppins", "Segoe UI", sans-serif;
     background-color: #FAFAFA;
 }
 
@@ -32,7 +32,72 @@ body {
 }
 
 /* =========================================================
-   HOME / PAGINA PRINCIPAL
+   BARRA DE CONTACTO (top-contact)
+   ========================================================= */
+.top-contact {
+    background: linear-gradient(90deg, #66BB6A, #43A047);
+    color: #ffffff;
+    font-size: 0.9rem;
+    padding: 6px 0;
+    text-align: center;
+    letter-spacing: 0.3px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+    .top-contact i {
+        color: #C8E6C9;
+        margin-right: 6px;
+    }
+
+/* =========================================================
+   NAVBAR GENERAL (FarmaPlus)
+   ========================================================= */
+.navbar {
+    background: linear-gradient(90deg, #4CAF50, #2E7D32);
+    border-bottom: 3px solid #A5D6A7;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    padding: 10px 0;
+    transition: background-color 0.3s ease;
+}
+
+    .navbar:hover {
+        background: linear-gradient(90deg, #43A047, #1B5E20);
+    }
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #ffffff !important;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+}
+
+    .navbar-brand img {
+        height: 45px;
+        width: auto;
+        margin-right: 10px;
+        transition: transform 0.3s ease-in-out;
+    }
+
+        .navbar-brand img:hover {
+            transform: rotate(-5deg) scale(1.1);
+        }
+
+.nav-link {
+    color: #ffffff !important;
+    font-weight: 600;
+    margin-left: 15px;
+    transition: all 0.3s ease-in-out;
+}
+
+    .nav-link:hover {
+        color: #C8E6C9 !important;
+        transform: scale(1.05);
+    }
+
+/* =========================================================
+   HOME / PÁGINA PRINCIPAL
    ========================================================= */
 .home-section {
     background: linear-gradient(180deg, var(--off-white) 0%, var(--main) 100%);
@@ -87,7 +152,7 @@ body {
     }
 
 /* =========================================================
-   SECCION DE CARACTERISTICAS
+   SECCIÓN DE CARACTERÍSTICAS
    ========================================================= */
 .features {
     background-color: var(--off-white);
@@ -118,66 +183,6 @@ body {
     .feature-card:hover {
         transform: translateY(-6px);
         box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
-    }
-
-/* =========================================================
-   NAVBAR Y LAYOUT GENERAL
-   ========================================================= */
-.top-bar {
-    background: linear-gradient(90deg, #66BB6A, #43A047);
-    color: #fefefe;
-    font-size: 0.9rem;
-    padding: 6px 0;
-    text-align: center;
-    letter-spacing: 0.3px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-    .top-bar i {
-        color: #C8E6C9;
-        margin-right: 6px;
-    }
-
-.navbar {
-    background: linear-gradient(90deg, #4CAF50, #2E7D32);
-    border-bottom: 3px solid #A5D6A7;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-    padding: 10px 0;
-    transition: background-color 0.3s ease;
-}
-
-    .navbar:hover {
-        background: linear-gradient(90deg, #43A047, #1B5E20);
-    }
-
-.navbar-brand {
-    font-weight: 700;
-    font-size: 1.5rem;
-    color: #fff !important;
-    letter-spacing: 0.5px;
-}
-
-    .navbar-brand img {
-        height: 45px;
-        width: auto;
-        margin-right: 10px;
-        transition: transform 0.3s ease-in-out;
-    }
-
-        .navbar-brand img:hover {
-            transform: rotate(-5deg) scale(1.1);
-        }
-
-.nav-link {
-    color: #ffffff !important;
-    font-weight: 500;
-    margin-left: 10px;
-    transition: all 0.3s ease-in-out;
-}
-
-    .nav-link:hover {
-        color: #C8E6C9 !important;
-        transform: scale(1.05);
     }
 
 /* =========================================================
@@ -224,7 +229,9 @@ body {
                 transform: translateY(-2px);
             }
 
-/* Botones personalizados */
+/* =========================================================
+   BOTONES PERSONALIZADOS
+   ========================================================= */
 .btn-success, .btn-outline-success {
     background-color: var(--accent);
     border-color: var(--accent);
@@ -300,7 +307,7 @@ footer {
         font-size: 1.3rem;
     }
 
-    .top-bar {
+    .top-contact {
         font-size: 0.8rem;
     }
 
@@ -308,5 +315,10 @@ footer {
         margin-left: 0;
         padding: 8px 0;
         text-align: center;
+    }
+
+    .top-contact .container {
+        flex-direction: column;
+        gap: 4px;
     }
 }
