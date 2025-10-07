@@ -4,40 +4,66 @@
     ViewData["Title"] = "Usuarios";
 }
 
-<h2>Usuarios</h2>
-
-<div>
-    <a asp-page="Create" class="btn btn-primary">Nuevo Usuario</a>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-success">Usuarios</h2>
+    <a asp-page="/Users/Create" class="btn btn-success shadow-sm">
+        + Nuevo Usuario
+    </a>
 </div>
 
-<table class="table mt-3">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Usuario</th>
-            <th>Teléfono</th>
-            <th>CI</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var user in Model.Users)
-        {
-            <tr>
-                <td>@user.id</td>
-                <td>@user.username</td>
-                <td>@user.phone</td>
-                <td>@user.ci</td>
-                <td>
-                    <a asp-page="Edit" asp-route-id="@user.id" class="btn btn-warning btn-sm">Editar</a>
-                    <a asp-page="Delete" asp-route-id="@user.id" class="btn btn-danger btn-sm">Eliminar</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-    <tfoot>
-        <tr>
-            <td colspan="5">@Model.Users.Count() registros encontrados</td>
-        </tr>
-    </tfoot>
-</table>
+<div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-success text-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Usuario</th>
+                    <th scope="col">Teléfono</th>
+                    <th scope="col">CI</th>
+                    <th scope="col" class="text-center" style="width:200px;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Users is not null && Model.Users.Any())
+                {
+                    foreach (var user in Model.Users)
+                    {
+                        <tr>
+                            <td>@user.id</td>
+                            <td>@user.username</td>
+                            <td>@user.phone</td>
+                            <td>@user.ci</td>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-2">
+                                    <a asp-page="/Users/Edit" asp-route-id="@user.id"
+                                       class="btn btn-sm btn-outline-warning px-3">
+                                        Editar
+                                    </a>
+                                    <a asp-page="/Users/Delete" asp-route-id="@user.id"
+                                       class="btn btn-sm btn-outline-danger px-3">
+                                        Eliminar
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-4">
+                            No hay usuarios registrados.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5" class="text-center text-secondary py-2 small">
+                        @Model.Users?.Count() registros encontrados
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

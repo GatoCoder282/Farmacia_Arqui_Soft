@@ -29,3 +29,365 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+/* ======= HOME CUSTOM STYLES (versión centrada y suave) ======= */
+:root {
+    --main: #E8F5E9; /* Verde muy claro (armoniza con tu logo) */
+    --accent: #A5D6A7; /* Verde pastel para acentos */
+    --white: #FFFFFF;
+    --off-white: #FAFAFA;
+    --gray-light: #F2F2F2;
+    --gray-medium: #666666;
+    --gray-dark: #2E2E2E;
+}
+
+/* ======= Sección principal (Home) ======= */
+.home-section {
+    background: linear-gradient(180deg, var(--off-white) 0%, var(--main) 100%);
+    color: var(--gray-dark);
+    min-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center; /* <-- centra el texto horizontalmente */
+    padding: 60px 20px;
+}
+
+/* Logo */
+.logo-home {
+    width: 130px;
+    height: auto;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+/* Título principal */
+.home-section h1 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: var(--gray-dark);
+    text-align: center; /* <-- asegura que esté centrado */
+}
+
+/* Descripción */
+.home-section p {
+    font-size: 1.1rem;
+    color: var(--gray-medium);
+    max-width: 600px;
+    margin: 0 auto 30px auto; /* centra el párrafo y da espacio inferior */
+    text-align: center;
+}
+
+/* Botones */
+.btn-custom {
+    background-color: var(--white);
+    color: var(--gray-dark);
+    border: 2px solid var(--accent);
+    border-radius: 30px;
+    font-weight: 600;
+    transition: all 0.3s ease-in-out;
+    padding: 12px 28px;
+    text-decoration: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    display: inline-block;
+    text-align: center;
+    margin: 5px;
+}
+
+    .btn-custom:hover {
+        background-color: var(--accent);
+        color: var(--gray-dark);
+        transform: translateY(-3px);
+    }
+
+/* ======= Sección de características ======= */
+.features {
+    background-color: var(--off-white);
+    padding: 70px 0;
+    text-align: center;
+}
+
+.feature-card {
+    background-color: var(--white);
+    border-radius: 15px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 35px 25px;
+    color: var(--gray-dark);
+}
+
+    .feature-card h3 {
+        color: var(--accent);
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .feature-card p {
+        color: var(--gray-medium);
+    }
+
+    .feature-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+    }
+
+/* ======= Footer ======= */
+footer {
+    background-color: var(--white);
+    color: var(--white);
+    padding: 18px 0;
+    text-align: center;
+    font-size: 0.9rem;
+    letter-spacing: 0.3px;
+}
+
+/* ======= Estilos personalizados para la tabla de Clientes ======= */
+
+.card {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.table {
+    margin-bottom: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+    .table thead {
+        background-color: #D9FBE6; /* Verde muy suave */
+    }
+
+        .table thead th {
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #b8f0cb;
+        }
+
+    .table tbody tr:hover {
+        background-color: #f8fdf9; /* efecto hover suave */
+    }
+
+    .table td, .table th {
+        padding: 0.9rem 1rem;
+        vertical-align: middle;
+    }
+
+.btn-outline-info {
+    border-color: #0dcaf0;
+    color: #0dcaf0;
+}
+
+    .btn-outline-info:hover {
+        background-color: #0dcaf0;
+        color: white;
+    }
+
+.btn-outline-warning {
+    border-color: #ffc107;
+    color: #b8860b;
+}
+
+    .btn-outline-warning:hover {
+        background-color: #ffc107;
+        color: black;
+    }
+
+.btn-outline-danger {
+    border-color: #dc3545;
+    color: #b02a37;
+}
+
+    .btn-outline-danger:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+
+
+/* ======= Estilos para tablas tipo farmacia ======= */
+.card {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.table {
+    margin-bottom: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+    .table thead {
+        background-color: #D9FBE6; /* Verde suave pastel */
+    }
+
+        .table thead th {
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #b8f0cb;
+        }
+
+    .table tbody tr:hover {
+        background-color: #f8fdf9; /* efecto hover ligero */
+    }
+
+    .table td, .table th {
+        padding: 0.9rem 1rem;
+        vertical-align: middle;
+    }
+
+        /* Botones alineados en fila */
+        .table td .btn {
+            min-width: 85px;
+            font-weight: 500;
+        }
+
+            .table td .btn:hover {
+                transform: translateY(-2px);
+                transition: all 0.2s ease-in-out;
+            }
+
+/* Colores personalizados */
+.btn-outline-warning {
+    border-color: #ffc107;
+    color: #b8860b;
+}
+
+    .btn-outline-warning:hover {
+        background-color: #ffc107;
+        color: black;
+    }
+
+.btn-outline-danger {
+    border-color: #dc3545;
+    color: #b02a37;
+}
+
+    .btn-outline-danger:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+
+/* ======= Estilos para tablas tipo farmacia ======= */
+.card {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.table {
+    margin-bottom: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+    .table thead {
+        background-color: #D9FBE6; /* Verde pastel */
+    }
+
+        .table thead th {
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #b8f0cb;
+        }
+
+    .table tbody tr:hover {
+        background-color: #f8fdf9; /* Hover suave */
+    }
+
+    .table td, .table th {
+        padding: 0.9rem 1rem;
+        vertical-align: middle;
+    }
+
+        /* Botones alineados en fila */
+        .table td .btn {
+            min-width: 85px;
+            font-weight: 500;
+        }
+
+            .table td .btn:hover {
+                transform: translateY(-2px);
+                transition: all 0.2s ease-in-out;
+            }
+
+/* ======= BOTONES PERSONALIZADOS (verde farmacia) ======= */
+
+/* Botón principal */
+.btn-success,
+.btn-outline-success {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: var(--gray-dark);
+    font-weight: 600;
+    transition: all 0.3s ease-in-out;
+}
+
+    .btn-success:hover,
+    .btn-outline-success:hover {
+        background-color: #81C784; /* verde más intenso */
+        border-color: #81C784;
+        color: var(--gray-dark);
+        transform: translateY(-2px);
+    }
+
+/* Botón informativo (Detalles) */
+.btn-outline-info {
+    border-color: #A5D6A7; /* Verde pastel */
+    color: var(--gray-dark);
+}
+
+    .btn-outline-info:hover {
+        background-color: #A5D6A7;
+        border-color: #A5D6A7;
+        color: var(--gray-dark);
+    }
+
+/* Botón advertencia (Editar) */
+.btn-outline-warning {
+    border-color: #AED581; /* Verde lima suave */
+    color: var(--gray-dark);
+}
+
+    .btn-outline-warning:hover {
+        background-color: #AED581;
+        color: var(--gray-dark);
+    }
+
+/* Botón peligro (Eliminar) */
+.btn-outline-danger {
+    border-color: #81C784; /* Verde intenso */
+    color: var(--gray-dark);
+}
+
+    .btn-outline-danger:hover {
+        background-color: #66BB6A; /* Verde más oscuro */
+        border-color: #66BB6A;
+        color: var(--white);
+    }
+
+/* Botón agregar (por ejemplo "+ Nuevo") */
+.btn-add {
+    background-color: #A5D6A7;
+    border-color: #A5D6A7;
+    color: var(--gray-dark);
+    font-weight: 600;
+}
+
+    .btn-add:hover {
+        background-color: #81C784;
+        border-color: #81C784;
+        color: var(--white);
+    }
+
+/* Transiciones suaves */
+.table td .btn {
+    min-width: 90px;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+:root {
+    --bs-primary: #66BB6A; /* verde medio */
+    --bs-primary-rgb: 102, 187, 106;
+}

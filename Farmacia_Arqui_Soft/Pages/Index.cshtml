@@ -1,10 +1,47 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Inicio - FarmaciaPro";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="home-section text-center py-5">
+    <div class="container">
+        <img src="~/images/LogoOficial.png" alt="Logo Farmacia" class="logo-home mb-4" />
+
+        <h1 class="display-4 fw-bold text-primary">Bienvenido a la mejor Farmacia de la ciudad</h1>
+        <p class="lead mb-4">Sistema de gestión integral para clientes, usuarios y lotes de medicamentos.</p>
+
+        <div class="d-flex justify-content-center gap-3">
+            <a href="/Client/IndexClient" class="btn btn-custom">Gestionar Clientes</a>
+            <a href="/Lots/Index" class="btn btn-custom">Ver Lotes</a>
+            <a href="/Users/Index" class="btn btn-custom">Usuarios</a>
+        </div>
+    </div>
+</section>
+
+<section class="features py-5 mt-5">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-4 mb-4">
+                <div class="card feature-card shadow-sm p-4">
+                    <h3 class="text-primary mb-3"> Medicamentos</h3>
+                    <p>Administra fácilmente tus lotes, fechas de caducidad y existencias.</p>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card feature-card shadow-sm p-4">
+                    <h3 class="text-primary mb-3"> Clientes</h3>
+                    <p>Registra, actualiza y consulta la información de tus clientes en segundos.</p>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card feature-card shadow-sm p-4">
+                    <h3 class="text-primary mb-3"> Usuarios</h3>
+                    <p>Gestiona los usuarios del sistema y asigna permisos fácilmente.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
