@@ -46,3 +46,26 @@ button.accept-policy {
   white-space: nowrap;
   line-height: 60px;
 }
+.navbar {
+    height: 80px; /* altura total de la barra */
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-size: 1.1rem; /* aumenta el tamaño del texto */
+}
+
+.navbar-brand {
+    font-size: 1.5rem; /* hace más grande el texto del logo/nombre */
+}
+
+.navbar-nav .nav-link {
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 1.1rem;
+}
+
+/* Si el logo se ve pequeño, agrándalo también */
+.navbar-brand img {
+    height: 50px; /* antes era ~40px, puedes ajustar */
+    width: auto;
+    margin-right: 10px;
+}
