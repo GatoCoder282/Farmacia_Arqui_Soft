@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Farmacia_Arqui_Soft.Interfaces;
 using Farmacia_Arqui_Soft.Factory;
 using System.Threading.Tasks;
 using ClientEntity = Farmacia_Arqui_Soft.Models.Client;
+using Farmacia_Arqui_Soft.Repository;
 
 namespace Farmacia_Arqui_Soft.Pages.Client
 {

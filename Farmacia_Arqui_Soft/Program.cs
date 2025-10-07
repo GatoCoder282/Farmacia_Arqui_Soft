@@ -1,6 +1,4 @@
 using Farmacia_Arqui_Soft.Data;
-using Farmacia_Arqui_Soft.Factory;
-using Farmacia_Arqui_Soft.Interfaces;
 using Farmacia_Arqui_Soft.Models;
 using Farmacia_Arqui_Soft.Repositories;
 
@@ -9,6 +7,7 @@ using Farmacia_Arqui_Soft.Validations.Interfaces;
 using Farmacia_Arqui_Soft.Validations.Users;
 using Farmacia_Arqui_Soft.Validations.Clients;
 using Farmacia_Arqui_Soft.Validations.Lots;
+using Farmacia_Arqui_Soft.Repository;
 
 namespace Farmacia_Arqui_Soft
 {

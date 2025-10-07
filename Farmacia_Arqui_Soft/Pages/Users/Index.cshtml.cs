@@ -1,9 +1,8 @@
-using Farmacia_Arqui_Soft.Factory;
 using Farmacia_Arqui_Soft.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Farmacia_Arqui_Soft.Interfaces;
+using Farmacia_Arqui_Soft.Repository;
 
 namespace Farmacia_Arqui_Soft.Pages.Users
 {

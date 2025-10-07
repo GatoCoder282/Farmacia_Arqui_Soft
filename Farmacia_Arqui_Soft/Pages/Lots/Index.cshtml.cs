@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Farmacia_Arqui_Soft.Models;
 using Farmacia_Arqui_Soft.Factory;
-using Farmacia_Arqui_Soft.Interfaces;
+using Farmacia_Arqui_Soft.Repository;
 
 namespace Farmacia_Arqui_Soft.Pages.Lots
 {

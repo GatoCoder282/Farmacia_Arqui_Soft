@@ -4,8 +4,8 @@ using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
-using Farmacia_Arqui_Soft.Interfaces;
 using Microsoft.Extensions.Configuration;
+using Farmacia_Arqui_Soft.Repository;
 
 namespace Farmacia_Arqui_Soft.Repositories
 {

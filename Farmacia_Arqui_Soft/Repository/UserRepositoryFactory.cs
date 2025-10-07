@@ -1,8 +1,7 @@
-﻿using Farmacia_Arqui_Soft.Interfaces;
-using Farmacia_Arqui_Soft.Models;
+﻿using Farmacia_Arqui_Soft.Models;
 using Farmacia_Arqui_Soft.Repositories;
 
-namespace Farmacia_Arqui_Soft.Factory
+namespace Farmacia_Arqui_Soft.Repository
 {
     public sealed class UserRepositoryFactory : RepositoryFactory
     {

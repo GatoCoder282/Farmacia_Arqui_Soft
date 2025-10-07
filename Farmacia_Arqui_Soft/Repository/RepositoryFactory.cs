@@ -1,8 +1,7 @@
 ﻿using Farmacia_Arqui_Soft.Models;
 using Farmacia_Arqui_Soft.Repositories;
-using Farmacia_Arqui_Soft.Interfaces;
 
-namespace Farmacia_Arqui_Soft.Factory
+namespace Farmacia_Arqui_Soft.Repository
 {
     public abstract class RepositoryFactory
     {
