@@ -43,7 +43,7 @@ namespace Farmacia_Arqui_Soft.Repositories
             return entity;
         }
 
-        public async Task<Provider?> GetById(int id)
+        public async Task<Provider?> GetById(Provider entity)
         {
             const string sql = @"SELECT id, first_name, last_name, nit, address, email, phone, status
                                  FROM providers
@@ -53,7 +53,7 @@ namespace Farmacia_Arqui_Soft.Repositories
             await conn.OpenAsync();
 
             using var cmd = new MySqlCommand(sql, conn);
-            cmd.Parameters.AddWithValue("@id", id);
+            cmd.Parameters.AddWithValue("@id", entity.id);
 
             using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleRow);
             if (await reader.ReadAsync())
@@ -86,9 +86,8 @@ namespace Farmacia_Arqui_Soft.Repositories
         public async Task<IEnumerable<Provider>> GetAll()
         {
             var list = new List<Provider>();
-            const string sql = @"SELECT id, first_name, last_name, nit, address, email, phone, status
-                                 FROM providers
-                                 ORDER BY id DESC;";
+            string sql = "SELECT * FROM providers WHERE is_deleted = FALSE";
+            
 
             using var conn = _db.GetConnection();
             await conn.OpenAsync();
@@ -152,15 +151,15 @@ namespace Farmacia_Arqui_Soft.Repositories
             await cmd.ExecuteNonQueryAsync();
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(Provider entity)
         {
-            const string sql = @"DELETE FROM providers WHERE id=@id;";
+            string sql = "UPDATE providers SET is_deleted = TRUE WHERE id=@id";
 
             using var conn = _db.GetConnection();
             await conn.OpenAsync();
 
             using var cmd = new MySqlCommand(sql, conn);
-            cmd.Parameters.AddWithValue("@id", id);
+            cmd.Parameters.AddWithValue("@id", entity.id);
 
             await cmd.ExecuteNonQueryAsync();
         }

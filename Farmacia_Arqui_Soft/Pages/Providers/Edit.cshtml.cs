@@ -25,7 +25,8 @@ namespace Farmacia_Arqui_Soft.Pages.Providers
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            var existing = await _repo.GetById(id);
+            var tempProvider = new Provider { id = id };
+            var existing = await _repo.GetById(tempProvider);
             if (existing == null) return RedirectToPage("Index");
 
             Provider = existing;

@@ -21,16 +21,23 @@ namespace Farmacia_Arqui_Soft.Pages.Client
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            var found = await _ClientRepository.GetById(id);
-            if (found is null) return NotFound();
-            Record = found;
+            var tempClient = new ClientEntity { id = id };
+            var userFromDb = await _ClientRepository.GetById(tempClient);
+
+            if (userFromDb == null)
+            {
+                return RedirectToPage("Index");
+            }
+
+            Record = userFromDb;
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int id)
+        public async Task<IActionResult> OnPostAsync()
         {
-            await _ClientRepository.Delete(id);
-            return RedirectToPage("/Client/IndexClient");
+            await _ClientRepository.Delete(Record);
+            return RedirectToPage("Index");
         }
+
     }
 }

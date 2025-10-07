@@ -37,14 +37,14 @@ namespace Farmacia_Arqui_Soft.Repositories
             return entity;
         }
 
-        public async Task<Lot?> GetById(int id)
+        public async Task<Lot?> GetById(Lot entity)
         {
             string query = "SELECT * FROM lots WHERE id=@id";
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
 
             using var cmd = new MySqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@id", id);
+            cmd.Parameters.AddWithValue("@id", entity.Id);
 
             using var reader = await cmd.ExecuteReaderAsync();
             if (await reader.ReadAsync())
@@ -64,7 +64,7 @@ namespace Farmacia_Arqui_Soft.Repositories
         public async Task<IEnumerable<Lot>> GetAll()
         {
             var list = new List<Lot>();
-            string query = "SELECT * FROM lots";
+            string query = "SELECT * FROM lots WHERE is_deleted = FALSE";
 
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
@@ -109,14 +109,14 @@ namespace Farmacia_Arqui_Soft.Repositories
             await cmd.ExecuteNonQueryAsync();
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(Lot entity)
         {
-            string query = "DELETE FROM lots WHERE id=@id";
+            string query = "UPDATE lots SET is_deleted = TRUE WHERE id=@id";
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
 
             using var cmd = new MySqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@id", id);
+            cmd.Parameters.AddWithValue("@id", entity.Id);
 
             await cmd.ExecuteNonQueryAsync();
         }

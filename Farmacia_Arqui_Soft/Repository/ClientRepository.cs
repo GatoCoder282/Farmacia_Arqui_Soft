@@ -38,14 +38,14 @@ namespace Farmacia_Arqui_Soft.Repositories
             return entity;
         }
 
-        public async Task<Client> GetById(int id)
+        public async Task<Client> GetById(Client entity)
         {
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
             const string query = "SELECT id, first_name, last_name, nit, email FROM clients WHERE id = @id;";
             using var cmd = new MySqlCommand(query, connection);
 
-            cmd.Parameters.AddWithValue("@id", id);
+            cmd.Parameters.AddWithValue("@id", entity.id);
 
             using var reader = await cmd.ExecuteReaderAsync();
             if (await reader.ReadAsync())
@@ -68,7 +68,8 @@ namespace Farmacia_Arqui_Soft.Repositories
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
 
-            const string query = "SELECT id, first_name, last_name, nit, email FROM clients;";
+            string query = "SELECT * FROM clients WHERE is_deleted = FALSE";
+
 
             using var cmd = new MySqlCommand(query, connection);
             using var reader = await cmd.ExecuteReaderAsync();
@@ -111,15 +112,15 @@ namespace Farmacia_Arqui_Soft.Repositories
             await cmd.ExecuteNonQueryAsync();
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(Client entity)
         {
+            string query = "UPDATE clients SET is_deleted = TRUE WHERE id=@id";
+
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
 
-            const string query = "DELETE FROM clients WHERE id = @id;";
-
             using var cmd = new MySqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@id", id);
+            cmd.Parameters.AddWithValue("@id", entity.id);
 
             await cmd.ExecuteNonQueryAsync();
         }

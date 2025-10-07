@@ -36,14 +36,14 @@ namespace Farmacia_Arqui_Soft.Repositories
             return entity;
         }
 
-        public async Task<User?> GetById(int id)
+        public async Task<User?> GetById(User entity)
         {
             string query = "SELECT * FROM users WHERE id = @id";
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
 
             using var comand = new MySqlCommand(query, connection);
-            comand.Parameters.AddWithValue("@id", id);
+            comand.Parameters.AddWithValue("@id", entity.id);
 
             using var reader = await comand.ExecuteReaderAsync();
             if (await reader.ReadAsync())
@@ -62,7 +62,8 @@ namespace Farmacia_Arqui_Soft.Repositories
         public async Task<IEnumerable<User>> GetAll()
         {
             var lista = new List<User>();
-            string query = "SELECT * FROM users";
+            string query = "SELECT * FROM users WHERE is_deleted = FALSE";
+
 
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
@@ -100,15 +101,15 @@ namespace Farmacia_Arqui_Soft.Repositories
             await comand.ExecuteNonQueryAsync();
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(User entity)
         {
-            string query = "DELETE FROM users WHERE id=@id";
+            string query = "UPDATE users SET is_deleted = TRUE WHERE id=@id";
 
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
 
             using var comand = new MySqlCommand(query, connection);
-            comand.Parameters.AddWithValue("@id", id);
+            comand.Parameters.AddWithValue("@id", entity.id);
 
             await comand.ExecuteNonQueryAsync();
         }

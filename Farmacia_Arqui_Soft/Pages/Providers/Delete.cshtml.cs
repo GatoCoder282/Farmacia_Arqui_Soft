@@ -20,19 +20,26 @@ namespace Farmacia_Arqui_Soft.Pages.Providers
         [BindProperty]
         public Provider Provider { get; set; } = new Provider();
 
+
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            var p = await _repo.GetById(id);
-            if (p == null) return RedirectToPage("Index");
+            var tempProvider = new Provider { id = id };
+            var userFromDb = await _repo.GetById(tempProvider);
 
-            Provider = p;
+            if (userFromDb == null)
+            {
+                return RedirectToPage("Index");
+            }
+
+            Provider = userFromDb;
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            await _repo.Delete(Provider.id); 
+            await _repo.Delete(Provider);
             return RedirectToPage("Index");
         }
+        
     }
 }
