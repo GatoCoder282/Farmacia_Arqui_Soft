@@ -4,7 +4,7 @@ using Farmacia_Arqui_Soft.Interfaces;
 using Farmacia_Arqui_Soft.Factory;
 using System.Threading.Tasks;
 using Farmacia_Arqui_Soft.Validations.Interfaces;
-using MySql.Data.MySqlClient; // <- para capturar MySqlException
+using MySql.Data.MySqlClient; 
 
 using ClientEntity = Farmacia_Arqui_Soft.Models.Client;
 
@@ -12,7 +12,7 @@ namespace Farmacia_Arqui_Soft.Pages.Client
 {
     public class EditModel : PageModel
     {
-        private readonly IRepository<ClientEntity> _repo;
+        private readonly IRepository<ClientEntity> _ClientRepository;
         private readonly IValidator<ClientEntity> _validator;
 
         [BindProperty]
@@ -23,12 +23,12 @@ namespace Farmacia_Arqui_Soft.Pages.Client
             _validator = validator;
 
             var factory = new ClientRepositoryFactory();
-            _repo = factory.CreateRepository<ClientEntity>();
+            _ClientRepository = factory.CreateRepository<ClientEntity>();
         }
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            var found = await _repo.GetById(id);
+            var found = await _ClientRepository.GetById(id);
             if (found is null) return NotFound();
             Input = found;
             return Page();
@@ -39,7 +39,6 @@ namespace Farmacia_Arqui_Soft.Pages.Client
         {
             if (!ModelState.IsValid) return Page();
 
-            // Validación de negocio
             var result = _validator.Validate(Input);
             if (!result.IsValid)
             {
@@ -53,7 +52,7 @@ namespace Farmacia_Arqui_Soft.Pages.Client
 
             try
             {
-                await _repo.Update(Input);
+                await _ClientRepository.Update(Input);
             }
             catch (MySqlException ex) when (ex.Number == 1062) // Duplicate entry
             {
