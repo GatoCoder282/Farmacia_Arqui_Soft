@@ -142,3 +142,192 @@ footer {
     font-size: 0.9rem;
     letter-spacing: 0.3px;
 }
+
+/* ======= Estilos personalizados para la tabla de Clientes ======= */
+
+.card {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.table {
+    margin-bottom: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+    .table thead {
+        background-color: #D9FBE6; /* Verde muy suave */
+    }
+
+        .table thead th {
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #b8f0cb;
+        }
+
+    .table tbody tr:hover {
+        background-color: #f8fdf9; /* efecto hover suave */
+    }
+
+    .table td, .table th {
+        padding: 0.9rem 1rem;
+        vertical-align: middle;
+    }
+
+.btn-outline-info {
+    border-color: #0dcaf0;
+    color: #0dcaf0;
+}
+
+    .btn-outline-info:hover {
+        background-color: #0dcaf0;
+        color: white;
+    }
+
+.btn-outline-warning {
+    border-color: #ffc107;
+    color: #b8860b;
+}
+
+    .btn-outline-warning:hover {
+        background-color: #ffc107;
+        color: black;
+    }
+
+.btn-outline-danger {
+    border-color: #dc3545;
+    color: #b02a37;
+}
+
+    .btn-outline-danger:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+
+
+/* ======= Estilos para tablas tipo farmacia ======= */
+.card {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.table {
+    margin-bottom: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+    .table thead {
+        background-color: #D9FBE6; /* Verde suave pastel */
+    }
+
+        .table thead th {
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #b8f0cb;
+        }
+
+    .table tbody tr:hover {
+        background-color: #f8fdf9; /* efecto hover ligero */
+    }
+
+    .table td, .table th {
+        padding: 0.9rem 1rem;
+        vertical-align: middle;
+    }
+
+        /* Botones alineados en fila */
+        .table td .btn {
+            min-width: 85px;
+            font-weight: 500;
+        }
+
+            .table td .btn:hover {
+                transform: translateY(-2px);
+                transition: all 0.2s ease-in-out;
+            }
+
+/* Colores personalizados */
+.btn-outline-warning {
+    border-color: #ffc107;
+    color: #b8860b;
+}
+
+    .btn-outline-warning:hover {
+        background-color: #ffc107;
+        color: black;
+    }
+
+.btn-outline-danger {
+    border-color: #dc3545;
+    color: #b02a37;
+}
+
+    .btn-outline-danger:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+
+/* ======= Estilos para tablas tipo farmacia ======= */
+.card {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.table {
+    margin-bottom: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+    .table thead {
+        background-color: #D9FBE6; /* Verde pastel */
+    }
+
+        .table thead th {
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #b8f0cb;
+        }
+
+    .table tbody tr:hover {
+        background-color: #f8fdf9; /* Hover suave */
+    }
+
+    .table td, .table th {
+        padding: 0.9rem 1rem;
+        vertical-align: middle;
+    }
+
+        /* Botones alineados en fila */
+        .table td .btn {
+            min-width: 85px;
+            font-weight: 500;
+        }
+
+            .table td .btn:hover {
+                transform: translateY(-2px);
+                transition: all 0.2s ease-in-out;
+            }
+
+/* Botones personalizados */
+.btn-outline-warning {
+    border-color: #ffc107;
+    color: #b8860b;
+}
+
+    .btn-outline-warning:hover {
+        background-color: #ffc107;
+        color: black;
+    }
+
+.btn-outline-danger {
+    border-color: #dc3545;
+    color: #b02a37;
+}
+
+    .btn-outline-danger:hover {
+        background-color: #dc3545;
+        color: white;
+    }
