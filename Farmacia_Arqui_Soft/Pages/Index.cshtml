@@ -9,10 +9,11 @@
         <img src="~/images/LogoOficial.png" alt="Logo Farmacia" class="logo-home mb-4" />
 
         <h1 class="display-4 fw-bold text-primary">Bienvenido a la mejor Farmacia de la ciudad</h1>
-        <p class="lead mb-4">Sistema de gestión integral para clientes, usuarios y lotes de medicamentos.</p>
+        <p class="lead mb-4">Sistema de gestión integral para clientes, usuarios, proveedores y lotes de medicamentos.</p>
 
-        <div class="d-flex justify-content-center gap-3">
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
             <a href="/Client/IndexClient" class="btn btn-custom">Gestionar Clientes</a>
+            <a href="/Providers/Index" class="btn btn-custom">Proveedores</a>
             <a href="/Lots/Index" class="btn btn-custom">Ver Lotes</a>
             <a href="/Users/Index" class="btn btn-custom">Usuarios</a>
         </div>
@@ -22,29 +23,37 @@
 <section class="features py-5 mt-5">
     <div class="container">
         <div class="row text-center">
-            <div class="col-md-4 mb-4">
-                <div class="card feature-card shadow-sm p-4">
-                    <h3 class="text-primary mb-3"> Medicamentos</h3>
+            <div class="col-md-3 mb-4">
+                <div class="card feature-card shadow-sm p-4 h-100">
+                    <h3 class="text-primary mb-3">Medicamentos</h3>
                     <p>Administra fácilmente tus lotes, fechas de caducidad y existencias.</p>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4">
-                <div class="card feature-card shadow-sm p-4">
-                    <h3 class="text-primary mb-3"> Clientes</h3>
+            <div class="col-md-3 mb-4">
+                <div class="card feature-card shadow-sm p-4 h-100">
+                    <h3 class="text-primary mb-3">Clientes</h3>
                     <p>Registra, actualiza y consulta la información de tus clientes en segundos.</p>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4">
-                <div class="card feature-card shadow-sm p-4">
-                    <h3 class="text-primary mb-3"> Usuarios</h3>
+            <div class="col-md-3 mb-4">
+                <div class="card feature-card shadow-sm p-4 h-100">
+                    <h3 class="text-primary mb-3">Usuarios</h3>
                     <p>Gestiona los usuarios del sistema y asigna permisos fácilmente.</p>
+                </div>
+            </div>
+
+            <div class="col-md-3 mb-4">
+                <div class="card feature-card shadow-sm p-4 h-100">
+                    <h3 class="text-primary mb-3">Proveedores</h3>
+                    <p>Administra proveedores, contactos y NIT para un abastecimiento confiable.</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
 <section class="about-section py-5 text-center" style="background-color: #F9FFF9;">
     <div class="container">
         <h2 class="fw-bold mb-3" style="color:#2E7D32;">¿Por qué elegir FarmaPlus?</h2>
@@ -72,7 +81,7 @@
                         <i class="bi bi-people fs-1 text-success"></i>
                         <h5 class="fw-bold mt-3">Atención confiable</h5>
                         <p class="text-muted">
-                            Gestión clara de clientes y usuarios para un mejor servicio.
+                            Gestión clara de clientes, usuarios y proveedores para un mejor servicio.
                         </p>
                     </div>
                 </div>
