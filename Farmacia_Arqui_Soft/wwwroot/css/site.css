@@ -311,23 +311,83 @@ footer {
                 transition: all 0.2s ease-in-out;
             }
 
-/* Botones personalizados */
+/* ======= BOTONES PERSONALIZADOS (verde farmacia) ======= */
+
+/* Botón principal */
+.btn-success,
+.btn-outline-success {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: var(--gray-dark);
+    font-weight: 600;
+    transition: all 0.3s ease-in-out;
+}
+
+    .btn-success:hover,
+    .btn-outline-success:hover {
+        background-color: #81C784; /* verde más intenso */
+        border-color: #81C784;
+        color: var(--gray-dark);
+        transform: translateY(-2px);
+    }
+
+/* Botón informativo (Detalles) */
+.btn-outline-info {
+    border-color: #A5D6A7; /* Verde pastel */
+    color: var(--gray-dark);
+}
+
+    .btn-outline-info:hover {
+        background-color: #A5D6A7;
+        border-color: #A5D6A7;
+        color: var(--gray-dark);
+    }
+
+/* Botón advertencia (Editar) */
 .btn-outline-warning {
-    border-color: #ffc107;
-    color: #b8860b;
+    border-color: #AED581; /* Verde lima suave */
+    color: var(--gray-dark);
 }
 
     .btn-outline-warning:hover {
-        background-color: #ffc107;
-        color: black;
+        background-color: #AED581;
+        color: var(--gray-dark);
     }
 
+/* Botón peligro (Eliminar) */
 .btn-outline-danger {
-    border-color: #dc3545;
-    color: #b02a37;
+    border-color: #81C784; /* Verde intenso */
+    color: var(--gray-dark);
 }
 
     .btn-outline-danger:hover {
-        background-color: #dc3545;
-        color: white;
+        background-color: #66BB6A; /* Verde más oscuro */
+        border-color: #66BB6A;
+        color: var(--white);
     }
+
+/* Botón agregar (por ejemplo "+ Nuevo") */
+.btn-add {
+    background-color: #A5D6A7;
+    border-color: #A5D6A7;
+    color: var(--gray-dark);
+    font-weight: 600;
+}
+
+    .btn-add:hover {
+        background-color: #81C784;
+        border-color: #81C784;
+        color: var(--white);
+    }
+
+/* Transiciones suaves */
+.table td .btn {
+    min-width: 90px;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+:root {
+    --bs-primary: #66BB6A; /* verde medio */
+    --bs-primary-rgb: 102, 187, 106;
+}

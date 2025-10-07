@@ -21,7 +21,7 @@ namespace Farmacia_Arqui_Soft.Repositories
 
         public async Task<User> Create(User entity)
         {
-            string query = "INSERT INTO User (username, password, phone, ci) VALUES (@username, @password, @phone, @ci)";
+            string query = "INSERT INTO users (username, password, phone, ci) VALUES (@username, @password, @phone, @ci)";
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
 
@@ -38,7 +38,7 @@ namespace Farmacia_Arqui_Soft.Repositories
 
         public async Task<User?> GetById(int id)
         {
-            string query = "SELECT * FROM User WHERE id = @id";
+            string query = "SELECT * FROM users WHERE id = @id";
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
 
@@ -62,7 +62,7 @@ namespace Farmacia_Arqui_Soft.Repositories
         public async Task<IEnumerable<User>> GetAll()
         {
             var lista = new List<User>();
-            string query = "SELECT * FROM User";
+            string query = "SELECT * FROM users";
 
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
@@ -85,7 +85,7 @@ namespace Farmacia_Arqui_Soft.Repositories
 
         public async Task Update(User entity)
         {
-            string query = "UPDATE User SET username=@username, password=@password, phone=@phone, ci=@ci WHERE id=@id";
+            string query = "UPDATE users SET username=@username, password=@password, phone=@phone, ci=@ci WHERE id=@id";
 
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
@@ -102,7 +102,7 @@ namespace Farmacia_Arqui_Soft.Repositories
 
         public async Task Delete(int id)
         {
-            string query = "DELETE FROM User WHERE id=@id";
+            string query = "DELETE FROM users WHERE id=@id";
 
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
