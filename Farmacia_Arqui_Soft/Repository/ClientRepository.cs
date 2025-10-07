@@ -24,7 +24,7 @@ namespace Farmacia_Arqui_Soft.Repositories
             await connection.OpenAsync();
 
             const string query = @"
-                INSERT INTO Client (first_name, last_name, nit, email)
+                INSERT INTO clients (first_name, last_name, nit, email)
                 VALUES (@first_name, @last_name, @nit, @email);
             ";
             using var cmd = new MySqlCommand(query, connection);
@@ -42,7 +42,7 @@ namespace Farmacia_Arqui_Soft.Repositories
         {
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
-            const string query = "SELECT id, first_name, last_name, nit, email FROM Client WHERE id = @id;";
+            const string query = "SELECT id, first_name, last_name, nit, email FROM clients WHERE id = @id;";
             using var cmd = new MySqlCommand(query, connection);
 
             cmd.Parameters.AddWithValue("@id", id);
@@ -68,7 +68,7 @@ namespace Farmacia_Arqui_Soft.Repositories
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
 
-            const string query = "SELECT id, first_name, last_name, nit, email FROM Client;";
+            const string query = "SELECT id, first_name, last_name, nit, email FROM clients;";
 
             using var cmd = new MySqlCommand(query, connection);
             using var reader = await cmd.ExecuteReaderAsync();
@@ -93,7 +93,7 @@ namespace Farmacia_Arqui_Soft.Repositories
             await connection.OpenAsync();
 
             const string query = @"
-                UPDATE Client 
+                UPDATE clients 
                 SET first_name = @first_name,
                     last_name  = @last_name,
                     nit        = @nit,
@@ -116,7 +116,7 @@ namespace Farmacia_Arqui_Soft.Repositories
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
 
-            const string query = "DELETE FROM Client WHERE id = @id;";
+            const string query = "DELETE FROM clients WHERE id = @id;";
 
             using var cmd = new MySqlCommand(query, connection);
             cmd.Parameters.AddWithValue("@id", id);
