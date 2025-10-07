@@ -7,7 +7,7 @@ using Farmacia_Arqui_Soft.Models;
 using Farmacia_Arqui_Soft.Repository;
 using MySql.Data.MySqlClient;
 
-namespace Farmacia_Arqui_Soft.Repository
+namespace Farmacia_Arqui_Soft.Repositories
 {
     public class ProviderRepository : RepositoryBase, IRepository<Provider>
     {
@@ -88,6 +88,7 @@ namespace Farmacia_Arqui_Soft.Repository
             var list = new List<Provider>();
             const string sql = @"SELECT id, first_name, last_name, nit, address, email, phone, status
                                  FROM providers
+                                 WHERE status = 1                -- ← solo activos
                                  ORDER BY id DESC;";
 
             using var conn = _db.GetConnection();
@@ -151,10 +152,11 @@ namespace Farmacia_Arqui_Soft.Repository
             await cmd.ExecuteNonQueryAsync();
         }
 
+
         public async Task Delete(object id)
         {
             int key = ToIntId(id);
-            const string sql = @"DELETE FROM providers WHERE id=@id;";
+            const string sql = @"UPDATE providers SET status = 0 WHERE id=@id;";  
 
             using var conn = _db.GetConnection();
             await conn.OpenAsync();

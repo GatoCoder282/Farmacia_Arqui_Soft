@@ -21,10 +21,9 @@ namespace Farmacia_Arqui_Soft.Repositories
         {
             const string query = @"
                 INSERT INTO lots 
-                    (medicine_id, batch_number, expiration_date, quantity, unit_cost)
+                    (medicine_id, batch_number, expiration_date, quantity, unit_cost, status)
                 VALUES
-                    (@medicine_id, @batch_number, @expiration_date, @quantity, @unit_cost)";
-
+                    (@medicine_id, @batch_number, @expiration_date, @quantity, @unit_cost, @status)";
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
 
@@ -34,6 +33,7 @@ namespace Farmacia_Arqui_Soft.Repositories
             cmd.Parameters.AddWithValue("@expiration_date", entity.ExpirationDate);
             cmd.Parameters.AddWithValue("@quantity", entity.Quantity);
             cmd.Parameters.AddWithValue("@unit_cost", entity.UnitCost);
+            cmd.Parameters.AddWithValue("@status", entity.Status);
 
             await cmd.ExecuteNonQueryAsync();
             entity.Id = (int)cmd.LastInsertedId;
@@ -43,7 +43,10 @@ namespace Farmacia_Arqui_Soft.Repositories
         public async Task<Lot?> GetById(object id)
         {
             int key = ToIntId(id);
-            const string query = "SELECT id, medicine_id, batch_number, expiration_date, quantity, unit_cost FROM lots WHERE id=@id";
+            const string query = @"
+                SELECT id, medicine_id, batch_number, expiration_date, quantity, unit_cost, status
+                FROM lots
+                WHERE id=@id";
 
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
@@ -60,6 +63,7 @@ namespace Farmacia_Arqui_Soft.Repositories
                 int oed = reader.GetOrdinal("expiration_date");
                 int oq = reader.GetOrdinal("quantity");
                 int ouc = reader.GetOrdinal("unit_cost");
+                int ost = reader.GetOrdinal("status");
 
                 return new Lot(
                     reader.GetInt32(oid),
@@ -67,7 +71,8 @@ namespace Farmacia_Arqui_Soft.Repositories
                     reader.GetString(obn),
                     reader.GetDateTime(oed),
                     reader.GetInt32(oq),
-                    reader.GetDecimal(ouc)
+                    reader.GetDecimal(ouc),
+                    reader.GetByte(ost)
                 );
             }
             return null;
@@ -76,7 +81,10 @@ namespace Farmacia_Arqui_Soft.Repositories
         public async Task<IEnumerable<Lot>> GetAll()
         {
             var list = new List<Lot>();
-            const string query = "SELECT id, medicine_id, batch_number, expiration_date, quantity, unit_cost FROM lots";
+            const string query = @"
+                SELECT id, medicine_id, batch_number, expiration_date, quantity, unit_cost, status
+                FROM lots
+                WHERE status = 1";
 
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
@@ -90,6 +98,7 @@ namespace Farmacia_Arqui_Soft.Repositories
             int oed = reader.GetOrdinal("expiration_date");
             int oq = reader.GetOrdinal("quantity");
             int ouc = reader.GetOrdinal("unit_cost");
+            int ost = reader.GetOrdinal("status");
 
             while (await reader.ReadAsync())
             {
@@ -99,7 +108,8 @@ namespace Farmacia_Arqui_Soft.Repositories
                     reader.GetString(obn),
                     reader.GetDateTime(oed),
                     reader.GetInt32(oq),
-                    reader.GetDecimal(ouc)
+                    reader.GetDecimal(ouc),
+                    reader.GetByte(ost)
                 ));
             }
             return list;
@@ -113,9 +123,9 @@ namespace Farmacia_Arqui_Soft.Repositories
                     batch_number=@batch_number,
                     expiration_date=@expiration_date,
                     quantity=@quantity,
-                    unit_cost=@unit_cost
+                    unit_cost=@unit_cost,
+                    status=@status
                 WHERE id=@id";
-
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
 
@@ -125,15 +135,17 @@ namespace Farmacia_Arqui_Soft.Repositories
             cmd.Parameters.AddWithValue("@expiration_date", entity.ExpirationDate);
             cmd.Parameters.AddWithValue("@quantity", entity.Quantity);
             cmd.Parameters.AddWithValue("@unit_cost", entity.UnitCost);
+            cmd.Parameters.AddWithValue("@status", entity.Status);
             cmd.Parameters.AddWithValue("@id", entity.Id);
 
             await cmd.ExecuteNonQueryAsync();
         }
 
+        // Soft delete: desactivar
         public async Task Delete(object id)
         {
             int key = ToIntId(id);
-            const string query = "DELETE FROM lots WHERE id=@id";
+            const string query = "UPDATE lots SET status = 0 WHERE id=@id";
 
             using var connection = _db.GetConnection();
             await connection.OpenAsync();

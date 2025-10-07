@@ -6,7 +6,7 @@ using Farmacia_Arqui_Soft.Models;
 using Farmacia_Arqui_Soft.Repository;
 using MySql.Data.MySqlClient;
 
-namespace Farmacia_Arqui_Soft.Repository
+namespace Farmacia_Arqui_Soft.Repositories
 {
     public class ClientRepository : RepositoryBase, IRepository<Client>
     {
@@ -20,8 +20,8 @@ namespace Farmacia_Arqui_Soft.Repository
         public async Task<Client> Create(Client entity)
         {
             const string query = @"
-                INSERT INTO clients (first_name, last_name, nit, email)
-                VALUES (@first_name, @last_name, @nit, @email);";
+                INSERT INTO clients (first_name, last_name, nit, email, status)
+                VALUES (@first_name, @last_name, @nit, @email, @status);";
 
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
@@ -31,6 +31,7 @@ namespace Farmacia_Arqui_Soft.Repository
             cmd.Parameters.AddWithValue("@last_name", entity.last_name);
             cmd.Parameters.AddWithValue("@nit", entity.nit);
             cmd.Parameters.AddWithValue("@email", entity.email);
+            cmd.Parameters.AddWithValue("@status", entity.status);
 
             await cmd.ExecuteNonQueryAsync();
             entity.id = (int)cmd.LastInsertedId;
@@ -40,7 +41,10 @@ namespace Farmacia_Arqui_Soft.Repository
         public async Task<Client?> GetById(object id)
         {
             int key = ToIntId(id);
-            const string query = "SELECT id, first_name, last_name, nit, email FROM clients WHERE id = @id;";
+            const string query = @"
+                SELECT id, first_name, last_name, nit, email, status
+                FROM clients
+                WHERE id = @id;";
 
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
@@ -56,13 +60,15 @@ namespace Farmacia_Arqui_Soft.Repository
                 int oln = reader.GetOrdinal("last_name");
                 int on = reader.GetOrdinal("nit");
                 int oe = reader.GetOrdinal("email");
+                int ost = reader.GetOrdinal("status");
 
                 return new Client(
                     reader.GetInt32(oid),
                     reader.GetString(ofn),
                     reader.GetString(oln),
                     reader.GetString(on),
-                    reader.GetString(oe)
+                    reader.GetString(oe),
+                    reader.GetByte(ost)
                 );
             }
             return null;
@@ -71,7 +77,10 @@ namespace Farmacia_Arqui_Soft.Repository
         public async Task<IEnumerable<Client>> GetAll()
         {
             var list = new List<Client>();
-            const string query = "SELECT id, first_name, last_name, nit, email FROM clients;";
+            const string query = @"
+                SELECT id, first_name, last_name, nit, email, status
+                FROM clients
+                WHERE status = 1;";
 
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
@@ -84,6 +93,7 @@ namespace Farmacia_Arqui_Soft.Repository
             int oln = reader.GetOrdinal("last_name");
             int on = reader.GetOrdinal("nit");
             int oe = reader.GetOrdinal("email");
+            int ost = reader.GetOrdinal("status");
 
             while (await reader.ReadAsync())
             {
@@ -92,9 +102,11 @@ namespace Farmacia_Arqui_Soft.Repository
                     reader.GetString(ofn),
                     reader.GetString(oln),
                     reader.GetString(on),
-                    reader.GetString(oe)
+                    reader.GetString(oe),
+                    reader.GetByte(ost)
                 ));
             }
+
             return list;
         }
 
@@ -105,7 +117,8 @@ namespace Farmacia_Arqui_Soft.Repository
                 SET first_name = @first_name,
                     last_name  = @last_name,
                     nit        = @nit,
-                    email      = @email
+                    email      = @email,
+                    status     = @status
                 WHERE id = @id;";
 
             using var connection = _db.GetConnection();
@@ -116,15 +129,17 @@ namespace Farmacia_Arqui_Soft.Repository
             cmd.Parameters.AddWithValue("@last_name", entity.last_name);
             cmd.Parameters.AddWithValue("@nit", entity.nit);
             cmd.Parameters.AddWithValue("@email", entity.email);
+            cmd.Parameters.AddWithValue("@status", entity.status);
             cmd.Parameters.AddWithValue("@id", entity.id);
 
             await cmd.ExecuteNonQueryAsync();
         }
 
+        
         public async Task Delete(object id)
         {
             int key = ToIntId(id);
-            const string query = "DELETE FROM clients WHERE id = @id;";
+            const string query = "UPDATE clients SET status = 0 WHERE id = @id;";
 
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
