@@ -7,6 +7,10 @@ using Farmacia_Arqui_Soft.Validations.Interfaces;
 using Farmacia_Arqui_Soft.Validations.Users;
 using Farmacia_Arqui_Soft.Validations.Clients;
 using Farmacia_Arqui_Soft.Validations.Lots;
+
+// ?? NUEVO:
+using Farmacia_Arqui_Soft.Validations.Providers;
+
 using Farmacia_Arqui_Soft.Repository;
 
 namespace Farmacia_Arqui_Soft
@@ -16,6 +20,7 @@ namespace Farmacia_Arqui_Soft
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
             DatabaseConnection.Initialize(builder.Configuration);
 
             // Factory & Repositories
@@ -25,11 +30,16 @@ namespace Farmacia_Arqui_Soft
             builder.Services.AddSingleton<UserRepositoryFactory>();
             builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
-            // IValidator<User> -> UserValidator
+            // ?? NUEVO: repo para Provider (si lo quieres también disponible por DI)
+            builder.Services.AddScoped<IRepository<Provider>, ProviderRepository>();
+
+            // Validators
             builder.Services.AddScoped<IValidator<User>, UserValidator>();
             builder.Services.AddScoped<IValidator<Client>, ClientValidator>();
             builder.Services.AddScoped<IValidator<Lot>, LotValidator>();
 
+            // ?? NUEVO: validator de Provider
+            builder.Services.AddScoped<IValidator<Provider>, ProviderValidator>();
 
             // Razor Pages
             builder.Services.AddRazorPages();

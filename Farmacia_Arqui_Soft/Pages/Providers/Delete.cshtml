@@ -1,0 +1,17 @@
+﻿@page "{id:int}"
+@model Farmacia_Arqui_Soft.Pages.Providers.DeleteModel
+@{
+    ViewData["Title"] = "Eliminar Proveedor";
+}
+
+<h2>Eliminar Proveedor</h2>
+
+<div class="alert alert-warning">
+    <p>¿Seguro que deseas eliminar al proveedor <strong>@Model.Provider.firstName @Model.Provider.lastName</strong>?</p>
+</div>
+
+<form method="post">
+    <input type="hidden" asp-for="Provider.id" />
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
+</form>
