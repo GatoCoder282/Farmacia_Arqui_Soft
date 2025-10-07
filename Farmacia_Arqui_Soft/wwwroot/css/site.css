@@ -1,46 +1,39 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
+    position: relative;
+    min-height: 100%;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+    html {
+        font-size: 16px;
+    }
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    font-family: "Segoe UI", sans-serif;
+    background-color: #FAFAFA;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
-}
-
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
-}
-/* ======= HOME CUSTOM STYLES (versión centrada y suave) ======= */
+/* =========================================================
+   VARIABLES DE COLOR
+   ========================================================= */
 :root {
-    --main: #E8F5E9; /* Verde muy claro (armoniza con tu logo) */
-    --accent: #A5D6A7; /* Verde pastel para acentos */
+    --main: #E8F5E9; /* Verde muy claro */
+    --accent: #A5D6A7; /* Verde pastel */
     --white: #FFFFFF;
     --off-white: #FAFAFA;
     --gray-light: #F2F2F2;
     --gray-medium: #666666;
     --gray-dark: #2E2E2E;
+    --bs-primary: #66BB6A;
+    --bs-primary-rgb: 102, 187, 106;
 }
 
-/* ======= Sección principal (Home) ======= */
+/* =========================================================
+   HOME / PAGINA PRINCIPAL
+   ========================================================= */
 .home-section {
     background: linear-gradient(180deg, var(--off-white) 0%, var(--main) 100%);
     color: var(--gray-dark);
@@ -49,11 +42,10 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    text-align: center; /* <-- centra el texto horizontalmente */
+    text-align: center;
     padding: 60px 20px;
 }
 
-/* Logo */
 .logo-home {
     width: 130px;
     height: auto;
@@ -61,25 +53,20 @@ body {
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
-/* Título principal */
 .home-section h1 {
     font-size: 2.8rem;
     font-weight: 700;
     margin-bottom: 15px;
     color: var(--gray-dark);
-    text-align: center; /* <-- asegura que esté centrado */
 }
 
-/* Descripción */
 .home-section p {
     font-size: 1.1rem;
     color: var(--gray-medium);
     max-width: 600px;
-    margin: 0 auto 30px auto; /* centra el párrafo y da espacio inferior */
-    text-align: center;
+    margin: 0 auto 30px auto;
 }
 
-/* Botones */
 .btn-custom {
     background-color: var(--white);
     color: var(--gray-dark);
@@ -90,8 +77,6 @@ body {
     padding: 12px 28px;
     text-decoration: none;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-    display: inline-block;
-    text-align: center;
     margin: 5px;
 }
 
@@ -101,7 +86,9 @@ body {
         transform: translateY(-3px);
     }
 
-/* ======= Sección de características ======= */
+/* =========================================================
+   SECCION DE CARACTERISTICAS
+   ========================================================= */
 .features {
     background-color: var(--off-white);
     padding: 70px 0;
@@ -133,18 +120,69 @@ body {
         box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
     }
 
-/* ======= Footer ======= */
-footer {
-    background-color: var(--white);
-    color: var(--white);
-    padding: 18px 0;
-    text-align: center;
+/* =========================================================
+   NAVBAR Y LAYOUT GENERAL
+   ========================================================= */
+.top-bar {
+    background: linear-gradient(90deg, #66BB6A, #43A047);
+    color: #fefefe;
     font-size: 0.9rem;
+    padding: 6px 0;
+    text-align: center;
     letter-spacing: 0.3px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-/* ======= Estilos personalizados para la tabla de Clientes ======= */
+    .top-bar i {
+        color: #C8E6C9;
+        margin-right: 6px;
+    }
 
+.navbar {
+    background: linear-gradient(90deg, #4CAF50, #2E7D32);
+    border-bottom: 3px solid #A5D6A7;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    padding: 10px 0;
+    transition: background-color 0.3s ease;
+}
+
+    .navbar:hover {
+        background: linear-gradient(90deg, #43A047, #1B5E20);
+    }
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #fff !important;
+    letter-spacing: 0.5px;
+}
+
+    .navbar-brand img {
+        height: 45px;
+        width: auto;
+        margin-right: 10px;
+        transition: transform 0.3s ease-in-out;
+    }
+
+        .navbar-brand img:hover {
+            transform: rotate(-5deg) scale(1.1);
+        }
+
+.nav-link {
+    color: #ffffff !important;
+    font-weight: 500;
+    margin-left: 10px;
+    transition: all 0.3s ease-in-out;
+}
+
+    .nav-link:hover {
+        color: #C8E6C9 !important;
+        transform: scale(1.05);
+    }
+
+/* =========================================================
+   TABLAS CRUD FARMACIA
+   ========================================================= */
 .card {
     border-radius: 12px;
     overflow: hidden;
@@ -157,7 +195,7 @@ footer {
 }
 
     .table thead {
-        background-color: #D9FBE6; /* Verde muy suave */
+        background-color: #D9FBE6;
     }
 
         .table thead th {
@@ -167,7 +205,7 @@ footer {
         }
 
     .table tbody tr:hover {
-        background-color: #f8fdf9; /* efecto hover suave */
+        background-color: #f8fdf9;
     }
 
     .table td, .table th {
@@ -175,177 +213,43 @@ footer {
         vertical-align: middle;
     }
 
-.btn-outline-info {
-    border-color: #0dcaf0;
-    color: #0dcaf0;
-}
-
-    .btn-outline-info:hover {
-        background-color: #0dcaf0;
-        color: white;
-    }
-
-.btn-outline-warning {
-    border-color: #ffc107;
-    color: #b8860b;
-}
-
-    .btn-outline-warning:hover {
-        background-color: #ffc107;
-        color: black;
-    }
-
-.btn-outline-danger {
-    border-color: #dc3545;
-    color: #b02a37;
-}
-
-    .btn-outline-danger:hover {
-        background-color: #dc3545;
-        color: white;
-    }
-
-
-/* ======= Estilos para tablas tipo farmacia ======= */
-.card {
-    border-radius: 12px;
-    overflow: hidden;
-}
-
-.table {
-    margin-bottom: 0;
-    border-collapse: separate;
-    border-spacing: 0;
-}
-
-    .table thead {
-        background-color: #D9FBE6; /* Verde suave pastel */
-    }
-
-        .table thead th {
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            border-bottom: 2px solid #b8f0cb;
-        }
-
-    .table tbody tr:hover {
-        background-color: #f8fdf9; /* efecto hover ligero */
-    }
-
-    .table td, .table th {
-        padding: 0.9rem 1rem;
-        vertical-align: middle;
-    }
-
-        /* Botones alineados en fila */
         .table td .btn {
-            min-width: 85px;
+            min-width: 90px;
+            border-radius: 8px;
             font-weight: 500;
+            transition: all 0.2s ease-in-out;
         }
 
             .table td .btn:hover {
                 transform: translateY(-2px);
-                transition: all 0.2s ease-in-out;
             }
 
-/* Colores personalizados */
-.btn-outline-warning {
-    border-color: #ffc107;
-    color: #b8860b;
-}
-
-    .btn-outline-warning:hover {
-        background-color: #ffc107;
-        color: black;
-    }
-
-.btn-outline-danger {
-    border-color: #dc3545;
-    color: #b02a37;
-}
-
-    .btn-outline-danger:hover {
-        background-color: #dc3545;
-        color: white;
-    }
-
-/* ======= Estilos para tablas tipo farmacia ======= */
-.card {
-    border-radius: 12px;
-    overflow: hidden;
-}
-
-.table {
-    margin-bottom: 0;
-    border-collapse: separate;
-    border-spacing: 0;
-}
-
-    .table thead {
-        background-color: #D9FBE6; /* Verde pastel */
-    }
-
-        .table thead th {
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            border-bottom: 2px solid #b8f0cb;
-        }
-
-    .table tbody tr:hover {
-        background-color: #f8fdf9; /* Hover suave */
-    }
-
-    .table td, .table th {
-        padding: 0.9rem 1rem;
-        vertical-align: middle;
-    }
-
-        /* Botones alineados en fila */
-        .table td .btn {
-            min-width: 85px;
-            font-weight: 500;
-        }
-
-            .table td .btn:hover {
-                transform: translateY(-2px);
-                transition: all 0.2s ease-in-out;
-            }
-
-/* ======= BOTONES PERSONALIZADOS (verde farmacia) ======= */
-
-/* Botón principal */
-.btn-success,
-.btn-outline-success {
+/* Botones personalizados */
+.btn-success, .btn-outline-success {
     background-color: var(--accent);
     border-color: var(--accent);
     color: var(--gray-dark);
     font-weight: 600;
-    transition: all 0.3s ease-in-out;
 }
 
-    .btn-success:hover,
-    .btn-outline-success:hover {
-        background-color: #81C784; /* verde más intenso */
+    .btn-success:hover, .btn-outline-success:hover {
+        background-color: #81C784;
         border-color: #81C784;
         color: var(--gray-dark);
-        transform: translateY(-2px);
     }
 
-/* Botón informativo (Detalles) */
 .btn-outline-info {
-    border-color: #A5D6A7; /* Verde pastel */
+    border-color: #A5D6A7;
     color: var(--gray-dark);
 }
 
     .btn-outline-info:hover {
         background-color: #A5D6A7;
-        border-color: #A5D6A7;
         color: var(--gray-dark);
     }
 
-/* Botón advertencia (Editar) */
 .btn-outline-warning {
-    border-color: #AED581; /* Verde lima suave */
+    border-color: #AED581;
     color: var(--gray-dark);
 }
 
@@ -354,40 +258,55 @@ footer {
         color: var(--gray-dark);
     }
 
-/* Botón peligro (Eliminar) */
 .btn-outline-danger {
-    border-color: #81C784; /* Verde intenso */
+    border-color: #81C784;
     color: var(--gray-dark);
 }
 
     .btn-outline-danger:hover {
-        background-color: #66BB6A; /* Verde más oscuro */
+        background-color: #66BB6A;
         border-color: #66BB6A;
         color: var(--white);
     }
 
-/* Botón agregar (por ejemplo "+ Nuevo") */
-.btn-add {
-    background-color: #A5D6A7;
-    border-color: #A5D6A7;
-    color: var(--gray-dark);
-    font-weight: 600;
+/* =========================================================
+   FOOTER
+   ========================================================= */
+footer {
+    background: linear-gradient(90deg, #2E7D32, #1B5E20);
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    font-size: 0.95rem;
+    letter-spacing: 0.4px;
+    box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.05);
 }
 
-    .btn-add:hover {
-        background-color: #81C784;
-        border-color: #81C784;
-        color: var(--white);
+    footer a {
+        color: #A5D6A7;
+        text-decoration: none;
     }
 
-/* Transiciones suaves */
-.table td .btn {
-    min-width: 90px;
-    border-radius: 8px;
-    font-weight: 500;
-}
+        footer a:hover {
+            color: #C8E6C9;
+            text-decoration: underline;
+        }
 
-:root {
-    --bs-primary: #66BB6A; /* verde medio */
-    --bs-primary-rgb: 102, 187, 106;
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.3rem;
+    }
+
+    .top-bar {
+        font-size: 0.8rem;
+    }
+
+    .navbar-nav .nav-link {
+        margin-left: 0;
+        padding: 8px 0;
+        text-align: center;
+    }
 }
