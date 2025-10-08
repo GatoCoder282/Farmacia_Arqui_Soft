@@ -9,6 +9,8 @@
         public int phone { get; set; }
         public string ci { get; set; }
 
+        public byte status { get; set; } = 1;
+
         #endregion
 
         #region Constructor
@@ -17,13 +19,14 @@
         {
          
         }
-        public User(int id, string username, string password, int phone, string ci)
+        public User(int id, string username, string password, int phone, string ci, byte status)
         {
             this.id = id;
             this.username = username;
             this.password = password;
             this.phone = phone;
             this.ci = ci;
+            this.status = status;
         }
 
         #endregion

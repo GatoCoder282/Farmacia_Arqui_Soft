@@ -3,9 +3,10 @@
     public interface IRepository<T> where T : class
     {
         Task<T> Create(T entity);
-        Task<T> GetById(int id);
+        Task<T?> GetById(object id);  
         Task<IEnumerable<T>> GetAll();
         Task Update(T entity);
-        Task Delete(int id);
+        Task Delete(object id);   
     }
 }
+

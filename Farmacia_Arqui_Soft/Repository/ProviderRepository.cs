@@ -9,7 +9,7 @@ using MySql.Data.MySqlClient;
 
 namespace Farmacia_Arqui_Soft.Repositories
 {
-    public class ProviderRepository : IRepository<Provider>
+    public class ProviderRepository : RepositoryBase, IRepository<Provider>
     {
         private readonly DatabaseConnection _db;
 
@@ -39,12 +39,13 @@ namespace Farmacia_Arqui_Soft.Repositories
             cmd.Parameters.AddWithValue("@status", entity.status);
 
             await cmd.ExecuteNonQueryAsync();
-            entity.id = Convert.ToInt32(cmd.LastInsertedId); // <-- int seguro
+            entity.id = Convert.ToInt32(cmd.LastInsertedId);
             return entity;
         }
 
-        public async Task<Provider?> GetById(int id)
+        public async Task<Provider?> GetById(object id)
         {
+            int key = ToIntId(id);
             const string sql = @"SELECT id, first_name, last_name, nit, address, email, phone, status
                                  FROM providers
                                  WHERE id = @id;";
@@ -53,12 +54,11 @@ namespace Farmacia_Arqui_Soft.Repositories
             await conn.OpenAsync();
 
             using var cmd = new MySqlCommand(sql, conn);
-            cmd.Parameters.AddWithValue("@id", id);
+            cmd.Parameters.AddWithValue("@id", key);
 
             using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleRow);
             if (await reader.ReadAsync())
             {
-                // Usamos ordinales + tipos ADO.NET
                 int oId = reader.GetOrdinal("id");
                 int ofn = reader.GetOrdinal("first_name");
                 int oln = reader.GetOrdinal("last_name");
@@ -88,6 +88,7 @@ namespace Farmacia_Arqui_Soft.Repositories
             var list = new List<Provider>();
             const string sql = @"SELECT id, first_name, last_name, nit, address, email, phone, status
                                  FROM providers
+                                 WHERE status = 1                -- ← solo activos
                                  ORDER BY id DESC;";
 
             using var conn = _db.GetConnection();
@@ -96,7 +97,6 @@ namespace Farmacia_Arqui_Soft.Repositories
             using var cmd = new MySqlCommand(sql, conn);
             using var reader = await cmd.ExecuteReaderAsync();
 
-            // Pre-resolvemos ordinales una sola vez
             int oId = reader.GetOrdinal("id");
             int ofn = reader.GetOrdinal("first_name");
             int oln = reader.GetOrdinal("last_name");
@@ -152,15 +152,17 @@ namespace Farmacia_Arqui_Soft.Repositories
             await cmd.ExecuteNonQueryAsync();
         }
 
-        public async Task Delete(int id)
+
+        public async Task Delete(object id)
         {
-            const string sql = @"DELETE FROM providers WHERE id=@id;";
+            int key = ToIntId(id);
+            const string sql = @"UPDATE providers SET status = 0 WHERE id=@id;";  
 
             using var conn = _db.GetConnection();
             await conn.OpenAsync();
 
             using var cmd = new MySqlCommand(sql, conn);
-            cmd.Parameters.AddWithValue("@id", id);
+            cmd.Parameters.AddWithValue("@id", key);
 
             await cmd.ExecuteNonQueryAsync();
         }
