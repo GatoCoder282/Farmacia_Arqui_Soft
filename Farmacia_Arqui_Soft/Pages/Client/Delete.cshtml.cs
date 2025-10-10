@@ -11,6 +11,7 @@ namespace Farmacia_Arqui_Soft.Pages.Client
     {
         private readonly IRepository<ClientEntity> _ClientRepository;
 
+        [BindProperty]
         public ClientEntity Record { get; set; }
 
         public DeleteModel()
@@ -26,7 +27,7 @@ namespace Farmacia_Arqui_Soft.Pages.Client
 
             if (userFromDb == null)
             {
-                return RedirectToPage("Index");
+                return RedirectToPage("IndexClient");
             }
 
             Record = userFromDb;
@@ -36,7 +37,7 @@ namespace Farmacia_Arqui_Soft.Pages.Client
         public async Task<IActionResult> OnPostAsync()
         {
             await _ClientRepository.Delete(Record);
-            return RedirectToPage("Index");
+            return RedirectToPage("IndexClient");
         }
 
     }

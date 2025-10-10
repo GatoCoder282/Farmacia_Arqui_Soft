@@ -7,122 +7,33 @@ using System.Data;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Farmacia_Arqui_Soft.Repositories
+namespace Farmacia_Arqui_Soft.Models
 {
-    public class ClientRepository : IRepository<Client>
+    public class User
     {
-        private readonly DatabaseConnection _db;
+        #region Atributos
+        public int id { get; set; }
+        public string username { get; set; }
+        public string password { get; set; }
+        public int phone { get; set; }
+        public string ci { get; set; }
 
-        public ClientRepository()
+        // Nuevo campo para soft delete
+        public bool is_deleted { get; set; } = false;
+        #endregion
+
+        #region Constructor
+        public User() { }
+
+        public User(int id, string username, string password, int phone, string ci, bool is_deleted = false)
         {
-            _db = DatabaseConnection.Instance;
+            this.id = id;
+            this.username = username;
+            this.password = password;
+            this.phone = phone;
+            this.ci = ci;
+            this.is_deleted = is_deleted;
         }
-
-        public async Task<Client> Create(Client entity)
-        {
-            using var connection = _db.GetConnection();
-            await connection.OpenAsync();
-
-            const string query = @"
-                INSERT INTO clients (first_name, last_name, nit, email)
-                VALUES (@first_name, @last_name, @nit, @email);
-            ";
-            using var cmd = new MySqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@first_name", entity.first_name);
-            cmd.Parameters.AddWithValue("@last_name", entity.last_name);
-            cmd.Parameters.AddWithValue("@nit", entity.nit);
-            cmd.Parameters.AddWithValue("@email", entity.email);
-
-            await cmd.ExecuteNonQueryAsync();
-            entity.id = (int)cmd.LastInsertedId;
-            return entity;
-        }
-
-        public async Task<Client> GetById(Client entity)
-        {
-            using var connection = _db.GetConnection();
-            await connection.OpenAsync();
-            const string query = "SELECT id, first_name, last_name, nit, email FROM clients WHERE id = @id;";
-            using var cmd = new MySqlCommand(query, connection);
-
-            cmd.Parameters.AddWithValue("@id", entity.id);
-
-            using var reader = await cmd.ExecuteReaderAsync();
-            if (await reader.ReadAsync())
-            {
-                return new Client(
-                    reader.GetInt32("id"),
-                    reader.GetString("first_name"),
-                    reader.GetString("last_name"),
-                    reader.GetString("nit"),
-                    reader.GetString("email")
-                );
-            }
-            return null;
-        }
-
-        public async Task<IEnumerable<Client>> GetAll()
-        {
-            var list = new List<Client>();
-
-            using var connection = _db.GetConnection();
-            await connection.OpenAsync();
-
-            string query = "SELECT * FROM clients WHERE is_deleted = FALSE";
-
-
-            using var cmd = new MySqlCommand(query, connection);
-            using var reader = await cmd.ExecuteReaderAsync();
-
-            while (await reader.ReadAsync())
-            {
-                list.Add(new Client(
-                    reader.GetInt32("id"),
-                    reader.GetString("first_name"),
-                    reader.GetString("last_name"),
-                    reader.GetString("nit"),
-                    reader.GetString("email")
-                ));
-            }
-            
-            return list;
-        }
-
-        public async Task Update(Client entity)
-        {
-            using var connection = _db.GetConnection();
-            await connection.OpenAsync();
-
-            const string query = @"
-                UPDATE clients 
-                SET first_name = @first_name,
-                    last_name  = @last_name,
-                    nit        = @nit,
-                    email      = @email
-                WHERE id = @id;
-            ";
-
-            using var cmd = new MySqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@first_name", entity.first_name);
-            cmd.Parameters.AddWithValue("@last_name", entity.last_name);
-            cmd.Parameters.AddWithValue("@nit", entity.nit);
-            cmd.Parameters.AddWithValue("@email", entity.email);
-            cmd.Parameters.AddWithValue("@id", entity.id);
-
-            await cmd.ExecuteNonQueryAsync();
-        }
-
-        public async Task Delete(Client entity)
-        {
-            string query = "UPDATE clients SET is_deleted = TRUE WHERE id=@id";
-
-            using var connection = _db.GetConnection();
-            await connection.OpenAsync();
-
-            using var cmd = new MySqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@id", entity.id);
-
-            await cmd.ExecuteNonQueryAsync();
-        }
+        #endregion
     }
 }

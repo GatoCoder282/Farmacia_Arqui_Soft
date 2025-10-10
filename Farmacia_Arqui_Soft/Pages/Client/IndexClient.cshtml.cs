@@ -10,7 +10,7 @@ namespace Farmacia_Arqui_Soft.Pages.Client
     public class IndexClientModel : PageModel
     {
         private readonly IRepository<ClientEntity> _ClientRepository;
-        public IEnumerable<ClientEntity> Clients { get; private set; } = new List<ClientEntity>();
+        public IEnumerable<ClientEntity> Clients { get; set; } = new List<ClientEntity>();
 
         public IndexClientModel()
         {
