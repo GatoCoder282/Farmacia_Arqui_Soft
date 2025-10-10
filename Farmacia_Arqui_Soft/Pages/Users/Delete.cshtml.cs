@@ -17,13 +17,14 @@ namespace Farmacia_Arqui_Soft.Pages.Users
 
         [BindProperty]
         public User User { get; set; } = new User();
-
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            var userFromDb = await _userRepository.GetById(id);
+            var tempUser = new User { id = id };
+            var userFromDb = await _userRepository.GetById(tempUser);
+
             if (userFromDb == null)
             {
-                return RedirectToPage("Index"); // Si no existe, regresar al listado
+                return RedirectToPage("Index");
             }
 
             User = userFromDb;
@@ -32,7 +33,7 @@ namespace Farmacia_Arqui_Soft.Pages.Users
 
         public async Task<IActionResult> OnPostAsync()
         {
-            await _userRepository.Delete(User.id);
+            await _userRepository.Delete(User);
             return RedirectToPage("Index");
         }
     }

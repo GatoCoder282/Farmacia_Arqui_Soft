@@ -25,7 +25,8 @@ namespace Farmacia_Arqui_Soft.Pages.Users
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            var existing = await _userRepository.GetById(id);
+            var tempUser = new User { id = id };
+            var existing = await _userRepository.GetById(tempUser);
             if (existing == null)
                 return RedirectToPage("Index"); // o NotFound()
 

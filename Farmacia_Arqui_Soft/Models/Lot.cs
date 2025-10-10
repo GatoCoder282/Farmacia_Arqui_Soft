@@ -8,11 +8,11 @@ namespace Farmacia_Arqui_Soft.Models
         public DateTime ExpirationDate { get; set; }
         public int Quantity { get; set; }
         public decimal UnitCost { get; set; }
-        public byte Status { get; set; } = 1;
+        public bool is_deleted { get; set; } = false;
 
         public Lot() { }
 
-        public Lot(int id, int medicineId, string batchNumber, DateTime expirationDate, int quantity, decimal unitCost, byte status)
+        public Lot(int id, int medicineId, string batchNumber, DateTime expirationDate, int quantity, decimal unitCost, bool is_deleted = false)
         {
             Id = id;
             MedicineId = medicineId;
@@ -20,7 +20,7 @@ namespace Farmacia_Arqui_Soft.Models
             ExpirationDate = expirationDate;
             Quantity = quantity;
             UnitCost = unitCost;
-            Status = status;
+            this.is_deleted = is_deleted;
         }
     }
 }

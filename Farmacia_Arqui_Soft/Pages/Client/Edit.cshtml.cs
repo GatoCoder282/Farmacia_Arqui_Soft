@@ -28,7 +28,8 @@ namespace Farmacia_Arqui_Soft.Pages.Client
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            var found = await _ClientRepository.GetById(id);
+            var tempClient = new ClientEntity { id = id };
+            var found = await _ClientRepository.GetById(tempClient);
             if (found is null) return NotFound();
             Input = found;
             return Page();

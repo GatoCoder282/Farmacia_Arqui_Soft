@@ -28,7 +28,8 @@ namespace Farmacia_Arqui_Soft.Pages.Lots
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            var lote = await _lotRepository.GetById(id);
+            var tempLot = new Lot { Id = id };
+            var lote = await _lotRepository.GetById(tempLot);
             if (lote == null)
                 return NotFound();
 

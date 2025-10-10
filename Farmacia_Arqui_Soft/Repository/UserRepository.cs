@@ -1,15 +1,15 @@
-﻿using System;
+using Farmacia_Arqui_Soft.Data;
+using Farmacia_Arqui_Soft.Models;
+using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
-using Farmacia_Arqui_Soft.Data;
-using Farmacia_Arqui_Soft.Models;
+using Microsoft.Extensions.Configuration;
 using Farmacia_Arqui_Soft.Repository;
-using MySql.Data.MySqlClient;
 
 namespace Farmacia_Arqui_Soft.Repositories
 {
-    public class UserRepository : RepositoryBase, IRepository<User>
+    public class UserRepository : IRepository<User>
     {
         private readonly DatabaseConnection _db;
 
@@ -18,57 +18,42 @@ namespace Farmacia_Arqui_Soft.Repositories
             _db = DatabaseConnection.Instance;
         }
 
+
         public async Task<User> Create(User entity)
         {
-            const string query = @"
-                INSERT INTO users (username, password, phone, ci, status)
-                VALUES (@username, @password, @phone, @ci, @status)";
+            string query = "INSERT INTO users (username, password, phone, ci) VALUES (@username, @password, @phone, @ci)";
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
 
-            using var cmd = new MySqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@username", entity.username);
-            cmd.Parameters.AddWithValue("@password", entity.password);
-            cmd.Parameters.AddWithValue("@phone", entity.phone);
-            cmd.Parameters.AddWithValue("@ci", entity.ci);
-            cmd.Parameters.AddWithValue("@status", entity.status);
+            using var comand = new MySqlCommand(query, connection);
+            comand.Parameters.AddWithValue("@username", entity.username);
+            comand.Parameters.AddWithValue("@password", entity.password);
+            comand.Parameters.AddWithValue("@phone", entity.phone);
+            comand.Parameters.AddWithValue("@ci", entity.ci);
 
-            await cmd.ExecuteNonQueryAsync();
-            entity.id = Convert.ToInt32(cmd.LastInsertedId);
+            await comand.ExecuteNonQueryAsync();
+            entity.id = (int)comand.LastInsertedId;
             return entity;
         }
 
-        public async Task<User?> GetById(object id)
+        public async Task<User?> GetById(User entity)
         {
-            int key = ToIntId(id);
-            const string query = @"
-                SELECT id, username, password, phone, ci, status
-                FROM users
-                WHERE id = @id";
-
+            string query = "SELECT * FROM users WHERE id = @id";
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
 
-            using var cmd = new MySqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@id", key);
+            using var comand = new MySqlCommand(query, connection);
+            comand.Parameters.AddWithValue("@id", entity.id);
 
-            using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleRow);
+            using var reader = await comand.ExecuteReaderAsync();
             if (await reader.ReadAsync())
             {
-                int oid = reader.GetOrdinal("id");
-                int ou = reader.GetOrdinal("username");
-                int op = reader.GetOrdinal("password");
-                int oph = reader.GetOrdinal("phone");
-                int oci = reader.GetOrdinal("ci");
-                int ost = reader.GetOrdinal("status");
-
                 return new User(
-                    reader.GetInt32(oid),
-                    reader.GetString(ou),
-                    reader.GetString(op),
-                    reader.GetInt32(oph),
-                    reader.GetString(oci),
-                    reader.GetByte(ost)
+                    reader.GetInt32("id"),
+                    reader.GetString("username"),
+                    reader.GetString("password"),
+                    reader.GetInt32("phone"),
+                    reader.GetString("ci")
                 );
             }
             return null;
@@ -76,76 +61,57 @@ namespace Farmacia_Arqui_Soft.Repositories
 
         public async Task<IEnumerable<User>> GetAll()
         {
-            var list = new List<User>();
-            const string query = @"
-                SELECT id, username, password, phone, ci, status
-                FROM users
-                WHERE status = 1";
+            var lista = new List<User>();
+            string query = "SELECT * FROM users WHERE is_deleted = FALSE";
+
 
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
 
-            using var cmd = new MySqlCommand(query, connection);
-            using var reader = await cmd.ExecuteReaderAsync();
-
-            int oid = reader.GetOrdinal("id");
-            int ou = reader.GetOrdinal("username");
-            int op = reader.GetOrdinal("password");
-            int oph = reader.GetOrdinal("phone");
-            int oci = reader.GetOrdinal("ci");
-            int ost = reader.GetOrdinal("status");
+            using var comand = new MySqlCommand(query, connection);
+            using var reader = await comand.ExecuteReaderAsync();
 
             while (await reader.ReadAsync())
             {
-                list.Add(new User(
-                    reader.GetInt32(oid),
-                    reader.GetString(ou),
-                    reader.GetString(op),
-                    reader.GetInt32(oph),
-                    reader.GetString(oci),
-                    reader.GetByte(ost)
+                lista.Add(new User(
+                    reader.GetInt32("id"),
+                    reader.GetString("username"),
+                    reader.GetString("password"),
+                    reader.GetInt32("phone"),
+                    reader.GetString("ci")
                 ));
             }
-            return list;
+            return lista;
         }
 
         public async Task Update(User entity)
         {
-            const string query = @"
-                UPDATE users
-                SET username=@username,
-                    password=@password,
-                    phone=@phone,
-                    ci=@ci,
-                    status=@status
-                WHERE id=@id";
+            string query = "UPDATE users SET username=@username, password=@password, phone=@phone, ci=@ci WHERE id=@id";
+
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
 
-            using var cmd = new MySqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@username", entity.username);
-            cmd.Parameters.AddWithValue("@password", entity.password);
-            cmd.Parameters.AddWithValue("@phone", entity.phone);
-            cmd.Parameters.AddWithValue("@ci", entity.ci);
-            cmd.Parameters.AddWithValue("@status", entity.status);
-            cmd.Parameters.AddWithValue("@id", entity.id);
+            using var comand = new MySqlCommand(query, connection);
+            comand.Parameters.AddWithValue("@username", entity.username);
+            comand.Parameters.AddWithValue("@password", entity.password);
+            comand.Parameters.AddWithValue("@phone", entity.phone);
+            comand.Parameters.AddWithValue("@ci", entity.ci);
+            comand.Parameters.AddWithValue("@id", entity.id);
 
-            await cmd.ExecuteNonQueryAsync();
+            await comand.ExecuteNonQueryAsync();
         }
 
-  
-        public async Task Delete(object id)
+        public async Task Delete(User entity)
         {
-            int key = ToIntId(id);
-            const string query = "UPDATE users SET status = 0 WHERE id=@id";
+            string query = "UPDATE users SET is_deleted = TRUE WHERE id=@id";
 
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
 
-            using var cmd = new MySqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@id", key);
+            using var comand = new MySqlCommand(query, connection);
+            comand.Parameters.AddWithValue("@id", entity.id);
 
-            await cmd.ExecuteNonQueryAsync();
+            await comand.ExecuteNonQueryAsync();
         }
     }
 }

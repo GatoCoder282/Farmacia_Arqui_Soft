@@ -1,8 +1,9 @@
-using Farmacia_Arqui_Soft.Models;
 using Farmacia_Arqui_Soft.Factory;
+using Farmacia_Arqui_Soft.Models;
+using Farmacia_Arqui_Soft.Repositories;
+using Farmacia_Arqui_Soft.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Farmacia_Arqui_Soft.Repository;
 
 namespace Farmacia_Arqui_Soft.Pages.Lots
 {
@@ -18,21 +19,25 @@ namespace Farmacia_Arqui_Soft.Pages.Lots
             var factory = new LotRepositoryFactory();
             _lotRepository = factory.CreateRepository<Lot>();
         }
-
-        public async Task<IActionResult> OnGetAsync(int id)
+        public async Task<IActionResult> OnGetAsync(int Id)
         {
-            var lote = await _lotRepository.GetById(id);
-            if (lote == null)
-                return NotFound();
+            var tempLot = new Lot { Id = Id };
+            var userFromDb = await _lotRepository.GetById(tempLot);
 
-            Lot = lote;
+            if (userFromDb == null)
+            {
+                return RedirectToPage("Index");
+            }
+
+            Lot = userFromDb;
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            await _lotRepository.Delete(Lot.Id);
+            await _lotRepository.Delete(Lot);
             return RedirectToPage("Index");
         }
+        
     }
 }
