@@ -11,7 +11,7 @@ namespace Farmacia_Arqui_Soft.Pages.Client
     {
         private readonly IRepository<ClientEntity> _ClientRepository;
 
-        public ClientEntity Record { get; private set; }
+        public ClientEntity Record { get; set; }
 
         public DeleteModel()
         {

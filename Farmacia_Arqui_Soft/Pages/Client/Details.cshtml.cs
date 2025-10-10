@@ -10,7 +10,7 @@ namespace Farmacia_Arqui_Soft.Pages.Client
     public class DetailsModel : PageModel
     {
         private readonly IRepository<ClientEntity> _ClientRepository;
-        public ClientEntity Record { get; private set; }
+        public ClientEntity Record { get; set; }
 
         public DetailsModel()
         {
