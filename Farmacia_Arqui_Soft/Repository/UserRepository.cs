@@ -1,4 +1,4 @@
-﻿using Farmacia_Arqui_Soft.Data;
+using Farmacia_Arqui_Soft.Data;
 using Farmacia_Arqui_Soft.Models;
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;

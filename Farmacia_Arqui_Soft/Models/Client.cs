@@ -1,4 +1,4 @@
-﻿namespace Farmacia_Arqui_Soft.Models
+namespace Farmacia_Arqui_Soft.Models
 {
     public class Client
     {
