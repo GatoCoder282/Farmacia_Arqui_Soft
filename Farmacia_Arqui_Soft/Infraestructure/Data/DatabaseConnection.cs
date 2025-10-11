@@ -1,7 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using Microsoft.Extensions.Configuration;
 
-namespace Farmacia_Arqui_Soft.Data
+namespace Farmacia_Arqui_Soft.Infraestructure.Data
 {
     public sealed class DatabaseConnection
     {

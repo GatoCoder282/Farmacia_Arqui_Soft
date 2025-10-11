@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Farmacia_Arqui_Soft.Factory;
-using ClientEntity = Farmacia_Arqui_Soft.Models.Client;
+using ClientEntity = Farmacia_Arqui_Soft.Domain.Models.Client;
 using Farmacia_Arqui_Soft.Repository;
 
 namespace Farmacia_Arqui_Soft.Pages.Client

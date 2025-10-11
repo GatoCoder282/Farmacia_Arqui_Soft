@@ -1,5 +1,5 @@
 using Farmacia_Arqui_Soft.Data;
-using Farmacia_Arqui_Soft.Models;
+using Farmacia_Arqui_Soft.Domain.Models;
 using Farmacia_Arqui_Soft.Repository;
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;

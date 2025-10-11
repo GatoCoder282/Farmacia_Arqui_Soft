@@ -1,11 +1,11 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Farmacia_Arqui_Soft.Models;
 
 // Validaciones
 using Farmacia_Arqui_Soft.Validations.Interfaces;
 using Farmacia_Arqui_Soft.Repository;
+using Farmacia_Arqui_Soft.Domain.Models;
 
 namespace Farmacia_Arqui_Soft.Pages.Users
 {

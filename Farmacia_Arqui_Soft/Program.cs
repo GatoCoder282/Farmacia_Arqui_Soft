@@ -1,5 +1,4 @@
 using Farmacia_Arqui_Soft.Data;
-using Farmacia_Arqui_Soft.Models;
 using Farmacia_Arqui_Soft.Repositories;
 
 // NUEVOS usings para DI de validaciones
@@ -12,6 +11,7 @@ using Farmacia_Arqui_Soft.Validations.Lots;
 using Farmacia_Arqui_Soft.Validations.Providers;
 
 using Farmacia_Arqui_Soft.Repository;
+using Farmacia_Arqui_Soft.Domain.Models;
 
 namespace Farmacia_Arqui_Soft
 {

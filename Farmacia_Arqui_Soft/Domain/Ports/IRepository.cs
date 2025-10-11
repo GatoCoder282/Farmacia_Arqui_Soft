@@ -1,4 +1,4 @@
-namespace Farmacia_Arqui_Soft.Repository
+namespace Farmacia_Arqui_Soft.Domain.Ports
 {
     public interface IRepository<T> where T : class
     {

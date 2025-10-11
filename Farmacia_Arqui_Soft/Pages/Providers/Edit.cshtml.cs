@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using Farmacia_Arqui_Soft.Models;
+using Farmacia_Arqui_Soft.Domain.Models;
 using Farmacia_Arqui_Soft.Repositories;
 using Farmacia_Arqui_Soft.Repository;
 using Farmacia_Arqui_Soft.Validations.Interfaces;

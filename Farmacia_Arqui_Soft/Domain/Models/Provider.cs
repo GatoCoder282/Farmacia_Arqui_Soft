@@ -1,4 +1,4 @@
-﻿namespace Farmacia_Arqui_Soft.Models
+﻿namespace Farmacia_Arqui_Soft.Domain.Models
 {
     public class Provider
     {
@@ -20,10 +20,10 @@
         public Provider(int id, string firstname, string lastname, string nit, string addres, string email, string phone, byte status, bool is_deleted = false)
         {
             this.id = id;
-            this.firstName = firstname;
-            this.lastName = lastname;
+            firstName = firstname;
+            lastName = lastname;
             this.nit = nit;
-            this.address = addres;
+            address = addres;
             this.email = email;
             this.phone = phone;
             this.status = status;

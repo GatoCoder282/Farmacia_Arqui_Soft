@@ -1,5 +1,4 @@
 using Farmacia_Arqui_Soft.Data;
-using Farmacia_Arqui_Soft.Models;
 using Farmacia_Arqui_Soft.Repository;
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.Data;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Farmacia_Arqui_Soft.Models
+namespace Farmacia_Arqui_Soft.Domain.Models
 {
     public class User
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using Farmacia_Arqui_Soft.Models;
+using Farmacia_Arqui_Soft.Domain.Models;
 using Farmacia_Arqui_Soft.Validations.Interfaces;
 
 namespace Farmacia_Arqui_Soft.Validations.Lots

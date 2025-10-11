@@ -1,11 +1,11 @@
 using Farmacia_Arqui_Soft.Data;
-using Farmacia_Arqui_Soft.Models;
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Farmacia_Arqui_Soft.Repository;
+using Farmacia_Arqui_Soft.Domain.Models;
 
 namespace Farmacia_Arqui_Soft.Repositories
 {
