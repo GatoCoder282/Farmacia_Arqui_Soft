@@ -4,10 +4,12 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>69be74dd-d14d-41b1-a806-b156f8eca623</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
+    <Folder Include="Aplication\Interfaces\" />
+    <Folder Include="Domain\Services\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 

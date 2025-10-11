@@ -1,8 +1,7 @@
 ﻿using Farmacia_Arqui_Soft.Domain.Models;
-using Farmacia_Arqui_Soft.Repositories;
-using Farmacia_Arqui_Soft.Repository;
+using Farmacia_Arqui_Soft.Domain.Ports;
 
-namespace Farmacia_Arqui_Soft.Factory
+namespace Farmacia_Arqui_Soft.Infraestructure.Persistence
 {
     public sealed class ClientRepositoryFactory : RepositoryFactory
     {

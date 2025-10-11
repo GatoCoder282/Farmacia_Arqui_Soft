@@ -1,12 +1,12 @@
-using Farmacia_Arqui_Soft.Data;
 using Farmacia_Arqui_Soft.Domain.Models;
-using Farmacia_Arqui_Soft.Repository;
+using Farmacia_Arqui_Soft.Domain.Ports;
+using Farmacia_Arqui_Soft.Infraestructure.Data;
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 
-namespace Farmacia_Arqui_Soft.Repositories
+namespace Farmacia_Arqui_Soft.Infraestructure.Persistence
 {
     public class LotRepository : IRepository<Lot>
     {

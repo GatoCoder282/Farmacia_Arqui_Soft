@@ -7,6 +7,7 @@ using Farmacia_Arqui_Soft.Factory;
 using Farmacia_Arqui_Soft.Validations.Interfaces;
 using Farmacia_Arqui_Soft.Repository;
 using Farmacia_Arqui_Soft.Domain.Models;
+using Farmacia_Arqui_Soft.Domain.Ports;
 
 namespace Farmacia_Arqui_Soft.Pages.Lots
 {

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Farmacia_Arqui_Soft.Factory;
 using System.Threading.Tasks;
 using ClientEntity = Farmacia_Arqui_Soft.Domain.Models.Client;
-using Farmacia_Arqui_Soft.Repository;
+using Farmacia_Arqui_Soft.Domain.Ports;
 
 namespace Farmacia_Arqui_Soft.Pages.Client
 {

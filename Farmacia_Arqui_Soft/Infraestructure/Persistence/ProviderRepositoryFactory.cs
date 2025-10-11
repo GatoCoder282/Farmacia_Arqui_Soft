@@ -1,6 +1,5 @@
 ﻿using Farmacia_Arqui_Soft.Domain.Models;
 using Farmacia_Arqui_Soft.Domain.Ports;
-using Farmacia_Arqui_Soft.Repositories;
 
 namespace Farmacia_Arqui_Soft.Infraestructure.Persistence
 {
