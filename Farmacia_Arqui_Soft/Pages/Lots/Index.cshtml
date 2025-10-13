@@ -4,63 +4,65 @@
     ViewData["Title"] = "Lotes";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="fw-bold text-success">Lotes</h2>
-    <a asp-page="/Lots/Create" class="btn btn-success shadow-sm">
-        + Nuevo Lote
-    </a>
-</div>
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-success">
+            <i class="bi bi-box-seam me-2"></i>Gestión de Lotes
+        </h2>
+        <a asp-page="/Lots/Create" class="btn btn-success shadow-sm rounded-pill px-4">
+            <i class="bi bi-plus-circle me-2"></i>Nuevo Lote
+        </a>
+    </div>
 
-<div class="card shadow-sm border-0">
-    <div class="card-body p-0">
-        <table class="table table-hover align-middle mb-0">
-            <thead class="table-success text-dark">
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">ID del Medicamento</th>
-                    <th scope="col">Lote</th>
-                    <th scope="col">Fecha de Vencimiento</th>
-                    <th scope="col">Cantidad</th>
-                    <th scope="col">Costo Unitario</th>
-                    <th scope="col" class="text-center" style="width:200px;">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model.Lots is not null && Model.Lots.Any())
-                {
-                    foreach (var lot in Model.Lots)
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-body p-0">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-success text-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>ID Medicamento</th>
+                        <th>N° Lote</th>
+                        <th>Vencimiento</th>
+                        <th>Cantidad</th>
+                        <th>Costo Unitario (Bs.)</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Lots.Any())
+                    {
+                        foreach (var lot in Model.Lots)
+                        {
+                            <tr>
+                                <td>@lot.Id</td>
+                                <td>@lot.MedicineId</td>
+                                <td>@lot.BatchNumber</td>
+                                <td>@lot.ExpirationDate.ToShortDateString()</td>
+                                <td>@lot.Quantity</td>
+                                <td>@lot.UnitCost.ToString("F2")</td>
+                                <td class="text-center">
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <a asp-page="/Lots/Edit" asp-route-id="@lot.Id" class="btn btn-sm btn-outline-warning px-3">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                        <a asp-page="/Lots/Delete" asp-route-id="@lot.Id" class="btn btn-sm btn-outline-danger px-3">
+                                            <i class="bi bi-trash3"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
                     {
                         <tr>
-                            <td>@lot.Id</td>
-                            <td>@lot.MedicineId</td>
-                            <td>@lot.BatchNumber</td>
-                            <td>@lot.ExpirationDate.ToShortDateString()</td>
-                            <td>@lot.Quantity</td>
-                            <td>@lot.UnitCost.ToString("F2")</td>
-                            <td class="text-center">
-                                <div class="d-flex justify-content-center gap-2">
-                                    <a asp-page="/Lots/Edit" asp-route-id="@lot.Id"
-                                       class="btn btn-sm btn-outline-warning px-3">
-                                        Editar
-                                    </a>
-                                    <a asp-page="/Lots/Delete" asp-route-id="@lot.Id"
-                                       class="btn btn-sm btn-outline-danger px-3">
-                                        Eliminar
-                                    </a>
-                                </div>
+                            <td colspan="7" class="text-center text-muted py-4">
+                                <i class="bi bi-info-circle me-2"></i>No hay lotes registrados.
                             </td>
                         </tr>
                     }
-                }
-                else
-                {
-                    <tr>
-                        <td colspan="7" class="text-center text-muted py-4">
-                            No hay lotes registrados.
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

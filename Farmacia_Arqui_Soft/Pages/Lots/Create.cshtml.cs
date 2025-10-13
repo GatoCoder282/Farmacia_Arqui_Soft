@@ -32,7 +32,6 @@ namespace Farmacia_Arqui_Soft.Pages.Lots
                 return Page();
             }
 
-            // ✅ Redirige a página de confirmación en lugar de alertas del sistema
             return RedirectToPage("/Shared/Success", new { message = "Lote creado exitosamente" });
         }
     }
