@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -12,42 +11,31 @@ namespace Farmacia_Arqui_Soft.Pages.Lots
 {
     public class CreateModel : PageModel
     {
-        private readonly IRepository<Lot> _lotRepository;
-        private readonly IValidator<Lot> _lotValidator;
+        private readonly LotService _service;
 
         [BindProperty]
         public Lot Lot { get; set; } = new();
 
-        public CreateModel(IValidator<Lot> lotValidator)
+        public CreateModel(IValidator<Lot> validator)
         {
-            _lotValidator = lotValidator;
-
-            var factory = new LotRepositoryFactory();
-            _lotRepository = factory.CreateRepository<Lot>();
+            _service = new LotService(validator);
         }
 
         public void OnGet() { }
 
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
-                return Page();
+            if (!ModelState.IsValid) return Page();
 
-            var result = _lotValidator.Validate(Lot);
-            if (!result.IsValid)
+            var (success, errors) = await _service.CreateAsync(Lot);
+            if (!success && errors != null)
             {
-                foreach (var error in result.Errors)
-                {
-                    var key = error.Key.StartsWith("Lot.") ? error.Key : $"Lot.{error.Key}";
-                    ModelState.AddModelError(key, error.Value);
-                }
+                foreach (var error in errors)
+                    ModelState.AddModelError($"Lot.{error.Key}", error.Value);
                 return Page();
             }
 
-            await _lotRepository.Create(Lot);
-            TempData["Success"] = "Lote registrado correctamente.";
-            return RedirectToPage("Index");
+            return RedirectToPage("/Shared/Success", new { message = "Lote creado exitosamente" });
         }
     }
 }

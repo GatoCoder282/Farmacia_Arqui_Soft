@@ -7,19 +7,18 @@ namespace Farmacia_Arqui_Soft.Pages.Lots
 {
     public class IndexModel : PageModel
     {
-        private readonly IRepository<Lot> _lotRepository;
+        private readonly LotService _lotService;
 
         public IEnumerable<Lot> Lots { get; set; } = new List<Lot>();
 
-        public IndexModel()
+        public IndexModel(IValidator<Lot> validator)
         {
-            var factory = new LotRepositoryFactory();
-            _lotRepository = factory.CreateRepository<Lot>();
+            _lotService = new LotService(validator);
         }
 
         public async Task OnGetAsync()
         {
-            Lots = await _lotRepository.GetAll();
+            Lots = await _lotService.GetAllAsync();
         }
     }
 }

@@ -1,44 +1,62 @@
 @page
 @model Farmacia_Arqui_Soft.Pages.Lots.CreateModel
+@{
+    ViewData["Title"] = "Registrar Lote";
+}
 
-<h2>Registrar Nuevo Lote</h2>
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-success text-white text-center rounded-top-4 py-3">
+            <h3 class="mb-0"><i class="bi bi-plus-circle me-2"></i>Registrar Nuevo Lote</h3>
+        </div>
+        <div class="card-body p-4">
+            <form method="post">
+                <div asp-validation-summary="All" class="alert alert-danger"></div>
 
-<div asp-validation-summary="All" class="text-danger"></div>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">ID del Medicamento</label>
+                        <input asp-for="Lot.MedicineId" type="number" class="form-control rounded-pill" placeholder="Ej. 12" required />
+                        <span asp-validation-for="Lot.MedicineId" class="text-danger small"></span>
+                    </div>
 
-<form method="post" class="mt-4">
-    <div class="form-group mb-3">
-        <label for="MedicineId">ID del Medicamento</label>
-        <input type="number" id="MedicineId" class="form-control" asp-for="Lot.MedicineId" required />
-        <span asp-validation-for="Lot.MedicineId" class="text-danger"></span>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Número de Lote</label>
+                        <input asp-for="Lot.BatchNumber" class="form-control rounded-pill" placeholder="Ej. L-2456" required />
+                        <span asp-validation-for="Lot.BatchNumber" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Fecha de Vencimiento</label>
+                        <input asp-for="Lot.ExpirationDate" type="date" class="form-control rounded-pill" required />
+                        <span asp-validation-for="Lot.ExpirationDate" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold">Cantidad</label>
+                        <input asp-for="Lot.Quantity" type="number" class="form-control rounded-pill" required />
+                        <span asp-validation-for="Lot.Quantity" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold">Costo Unitario (Bs.)</label>
+                        <input asp-for="Lot.UnitCost" type="number" step="0.01" class="form-control rounded-pill" required />
+                        <span asp-validation-for="Lot.UnitCost" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-success px-4 rounded-pill shadow-sm">
+                        <i class="bi bi-save me-2"></i>Guardar
+                    </button>
+                    <a asp-page="Index" class="btn btn-outline-secondary px-4 rounded-pill ms-2">
+                        <i class="bi bi-x-circle me-2"></i>Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
-
-    <div class="form-group mb-3">
-        <label for="BatchNumber">Número de Lote</label>
-        <input type="text" id="BatchNumber" class="form-control" asp-for="Lot.BatchNumber" required />
-        <span asp-validation-for="Lot.BatchNumber" class="text-danger"></span>
-    </div>
-
-    <div class="form-group mb-3">
-        <label for="ExpirationDate">Fecha de Vencimiento</label>
-        <input type="date" id="ExpirationDate" class="form-control" asp-for="Lot.ExpirationDate" required />
-        <span asp-validation-for="Lot.ExpirationDate" class="text-danger"></span>
-    </div>
-
-    <div class="form-group mb-3">
-        <label for="Quantity">Cantidad</label>
-        <input type="number" id="Quantity" class="form-control" asp-for="Lot.Quantity" required />
-        <span asp-validation-for="Lot.Quantity" class="text-danger"></span>
-    </div>
-
-    <div class="form-group mb-3">
-        <label for="UnitCost">Costo Unitario</label>
-        <input type="number" id="UnitCost" class="form-control" asp-for="Lot.UnitCost" step="0.01" required />
-        <span asp-validation-for="Lot.UnitCost" class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-success">Guardar</button>
-    <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
-</form>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
