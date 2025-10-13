@@ -1,30 +1,38 @@
 @page "{id:int}"
 @model Farmacia_Arqui_Soft.Pages.Lots.DeleteModel
+@{
+    ViewData["Title"] = "Eliminar Lote";
+}
 
-<h2>Eliminar Lote</h2>
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-danger text-white text-center rounded-top-4 py-3">
+            <h3 class="mb-0"><i class="bi bi-trash3 me-2"></i>Eliminar Lote</h3>
+        </div>
 
-<div class="alert alert-danger mt-3">
-    <p>¿Estás seguro que deseas eliminar este lote?</p>
-    <dl class="row">
-        <dt class="col-sm-3">ID:</dt>
-        <dd class="col-sm-9">@Model.Lot.Id</dd>
+        <div class="card-body text-center">
+            <p class="fs-5 mb-4">¿Estás seguro de que deseas eliminar este lote?</p>
+            <div class="table-responsive">
+                <table class="table table-bordered w-75 mx-auto">
+                    <tbody>
+                        <tr><th>ID</th><td>@Model.Lot.Id</td></tr>
+                        <tr><th>Número de Lote</th><td>@Model.Lot.BatchNumber</td></tr>
+                        <tr><th>Fecha de Vencimiento</th><td>@Model.Lot.ExpirationDate.ToShortDateString()</td></tr>
+                        <tr><th>Cantidad</th><td>@Model.Lot.Quantity</td></tr>
+                        <tr><th>Costo Unitario (Bs.)</th><td>@Model.Lot.UnitCost.ToString("F2")</td></tr>
+                    </tbody>
+                </table>
+            </div>
 
-        <dt class="col-sm-3">Número de Lote:</dt>
-        <dd class="col-sm-9">@Model.Lot.BatchNumber</dd>
-
-        <dt class="col-sm-3">Fecha de Vencimiento:</dt>
-        <dd class="col-sm-9">@Model.Lot.ExpirationDate.ToShortDateString()</dd>
-
-        <dt class="col-sm-3">Cantidad:</dt>
-        <dd class="col-sm-9">@Model.Lot.Quantity</dd>
-
-        <dt class="col-sm-3">Costo Unitario:</dt>
-        <dd class="col-sm-9">@Model.Lot.UnitCost.ToString("F2")</dd>
-    </dl>
+            <form method="post" class="mt-4">
+                <input type="hidden" asp-for="Lot.Id" />
+                <button type="submit" class="btn btn-danger px-4 rounded-pill shadow-sm">
+                    <i class="bi bi-trash me-2"></i>Eliminar
+                </button>
+                <a asp-page="Index" class="btn btn-outline-secondary px-4 rounded-pill ms-2">
+                    <i class="bi bi-x-circle me-2"></i>Cancelar
+                </a>
+            </form>
+        </div>
+    </div>
 </div>
-
-<form method="post">
-    <input type="hidden" asp-for="Lot.Id" />
-    <button type="submit" class="btn btn-danger">Eliminar</button>
-    <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
-</form>

@@ -1,44 +1,40 @@
-using Farmacia_Arqui_Soft.Domain.Models;
-using Farmacia_Arqui_Soft.Domain.Ports;
-using Farmacia_Arqui_Soft.Factory;
-using Farmacia_Arqui_Soft.Repositories;
-using Farmacia_Arqui_Soft.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Farmacia_Arqui_Soft.Application.Services;
+using Farmacia_Arqui_Soft.Domain.Models;
+using Farmacia_Arqui_Soft.Validations.Interfaces;
 
 namespace Farmacia_Arqui_Soft.Pages.Lots
 {
     public class DeleteModel : PageModel
     {
-        private readonly IRepository<Lot> _lotRepository;
+        private readonly LotService _service;
 
         [BindProperty]
         public Lot Lot { get; set; } = new();
 
-        public DeleteModel()
+        public DeleteModel(IValidator<Lot> validator)
         {
-            var factory = new LotRepositoryFactory();
-            _lotRepository = factory.CreateRepository<Lot>();
+            _service = new LotService(validator);
         }
-        public async Task<IActionResult> OnGetAsync(int Id)
+
+        public async Task<IActionResult> OnGetAsync(int id)
         {
-            var tempLot = new Lot { Id = Id };
-            var userFromDb = await _lotRepository.GetById(tempLot);
+            var lote = await _service.GetByIdAsync(id);
+            if (lote == null)
+                return RedirectToPage("/Shared/Error", new { message = "Lote no encontrado" });
 
-            if (userFromDb == null)
-            {
-                return RedirectToPage("Index");
-            }
-
-            Lot = userFromDb;
+            Lot = lote;
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            await _lotRepository.Delete(Lot);
-            return RedirectToPage("Index");
+            var deleted = await _service.DeleteAsync(Lot.Id);
+            if (!deleted)
+                return RedirectToPage("/Shared/Error", new { message = "Error al eliminar lote" });
+
+            return RedirectToPage("/Shared/Success", new { message = "Lote eliminado correctamente" });
         }
-        
     }
 }
