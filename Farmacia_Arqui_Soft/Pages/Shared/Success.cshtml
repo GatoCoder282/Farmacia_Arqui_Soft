@@ -1,0 +1,11 @@
+@page
+@model dynamic
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Operación Exitosa";
+}
+
+<div class="text-center mt-5">
+    <h2 class="text-success"> @Model.message</h2>
+    <a href="/Lots/Index" class="btn btn-outline-success mt-4">Volver a Lotes</a>
+</div>

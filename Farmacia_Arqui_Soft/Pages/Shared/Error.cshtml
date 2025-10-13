@@ -1,0 +1,11 @@
+@page
+@model dynamic
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Error en la operación";
+}
+
+<div class="text-center mt-5">
+    <h2 class="text-danger"> @Model.message</h2>
+    <a href="/Lots/Index" class="btn btn-outline-danger mt-4">Volver</a>
+</div>

@@ -1,29 +1,28 @@
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Farmacia_Arqui_Soft.Application.Services;
-using Farmacia_Arqui_Soft.Validations.Interfaces;
 using Farmacia_Arqui_Soft.Domain.Models;
+using Farmacia_Arqui_Soft.Validations.Interfaces;
 
 namespace Farmacia_Arqui_Soft.Pages.Lots
 {
     public class EditModel : PageModel
     {
-        private readonly LotService _lotService;
+        private readonly LotService _service;
 
         [BindProperty]
         public Lot Lot { get; set; } = new();
 
         public EditModel(IValidator<Lot> validator)
         {
-            _lotService = new LotService(validator);
+            _service = new LotService(validator);
         }
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            var lote = await _lotService.GetByIdAsync(id);
+            var lote = await _service.GetByIdAsync(id);
             if (lote == null)
-                return NotFound();
+                return RedirectToPage("/Shared/Error", new { message = "Lote no encontrado" });
 
             Lot = lote;
             return Page();
@@ -31,11 +30,7 @@ namespace Farmacia_Arqui_Soft.Pages.Lots
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
-                return Page();
-
-            var (success, errors) = await _lotService.UpdateAsync(Lot);
-
+            var (success, errors) = await _service.UpdateAsync(Lot);
             if (!success && errors != null)
             {
                 foreach (var error in errors)
@@ -43,8 +38,7 @@ namespace Farmacia_Arqui_Soft.Pages.Lots
                 return Page();
             }
 
-            TempData["Success"] = "Lote actualizado correctamente.";
-            return RedirectToPage("Index");
+            return RedirectToPage("/Shared/Success", new { message = "Lote actualizado correctamente" });
         }
     }
 }
