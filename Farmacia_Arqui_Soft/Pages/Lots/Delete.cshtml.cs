@@ -1,44 +1,38 @@
-using Farmacia_Arqui_Soft.Domain.Models;
-using Farmacia_Arqui_Soft.Domain.Ports;
-using Farmacia_Arqui_Soft.Factory;
-using Farmacia_Arqui_Soft.Repositories;
-using Farmacia_Arqui_Soft.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Farmacia_Arqui_Soft.Application.Services;
+using Farmacia_Arqui_Soft.Validations.Interfaces;
+using Farmacia_Arqui_Soft.Domain.Models;
 
 namespace Farmacia_Arqui_Soft.Pages.Lots
 {
     public class DeleteModel : PageModel
     {
-        private readonly IRepository<Lot> _lotRepository;
+        private readonly LotService _lotService;
 
         [BindProperty]
         public Lot Lot { get; set; } = new();
 
-        public DeleteModel()
+        public DeleteModel(IValidator<Lot> validator)
         {
-            var factory = new LotRepositoryFactory();
-            _lotRepository = factory.CreateRepository<Lot>();
+            _lotService = new LotService(validator);
         }
-        public async Task<IActionResult> OnGetAsync(int Id)
+
+        public async Task<IActionResult> OnGetAsync(int id)
         {
-            var tempLot = new Lot { Id = Id };
-            var userFromDb = await _lotRepository.GetById(tempLot);
-
-            if (userFromDb == null)
-            {
+            var lote = await _lotService.GetByIdAsync(id);
+            if (lote == null)
                 return RedirectToPage("Index");
-            }
 
-            Lot = userFromDb;
+            Lot = lote;
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            await _lotRepository.Delete(Lot);
+            await _lotService.DeleteAsync(Lot.Id);
+            TempData["Success"] = "Lote eliminado correctamente.";
             return RedirectToPage("Index");
         }
-        
     }
 }
