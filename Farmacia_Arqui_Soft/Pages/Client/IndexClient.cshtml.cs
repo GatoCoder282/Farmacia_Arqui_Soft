@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Farmacia_Arqui_Soft.Factory;
 using ClientEntity = Farmacia_Arqui_Soft.Domain.Models.Client;
 using Farmacia_Arqui_Soft.Domain.Ports;
+using Farmacia_Arqui_Soft.Infraestructure.Persistence;
 
 namespace Farmacia_Arqui_Soft.Pages.Client
 {
