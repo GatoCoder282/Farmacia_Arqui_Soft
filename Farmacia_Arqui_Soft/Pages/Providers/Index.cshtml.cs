@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Farmacia_Arqui_Soft.Repository;
-using Farmacia_Arqui_Soft.Repositories;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Farmacia_Arqui_Soft.Domain.Models;
 using Farmacia_Arqui_Soft.Domain.Ports;
+using Farmacia_Arqui_Soft.Infraestructure.Persistence;
 
 namespace Farmacia_Arqui_Soft.Pages.Providers
 {
