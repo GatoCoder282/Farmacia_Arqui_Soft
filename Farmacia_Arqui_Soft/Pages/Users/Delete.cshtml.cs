@@ -1,41 +1,51 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Threading.Tasks;
 using Farmacia_Arqui_Soft.Domain.Models;
 using Farmacia_Arqui_Soft.Domain.Ports;
-using Farmacia_Arqui_Soft.Infraestructure.Persistence;
 
 namespace Farmacia_Arqui_Soft.Pages.Users
 {
     public class DeleteModel : PageModel
     {
-        private readonly IRepository<User> _userRepository;
+        private readonly IUserService _users;
 
-        public DeleteModel(RepositoryFactory factory)
+        public DeleteModel(IUserService users)
         {
-            _userRepository = factory.CreateRepository<User>();
+            _users = users;
         }
 
-        [BindProperty]
-        public User User { get; set; } = new User();
+        [BindProperty] public int Id { get; set; }   // <- bindea el id del form
+        public User? User { get; private set; }
+
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            var tempUser = new User { id = id };
-            var userFromDb = await _userRepository.GetById(tempUser);
-
-            if (userFromDb == null)
+            var u = await _users.GetByIdAsync(id);
+            if (u is null)
             {
+                TempData["Error"] = "El usuario no existe.";
                 return RedirectToPage("Index");
             }
 
-            User = userFromDb;
+            User = u;
+            Id = id; // <- guardar para el POST
             return Page();
         }
 
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostAsync()
         {
-            await _userRepository.Delete(User);
-            return RedirectToPage("Index");
+            try
+            {
+                const int actorId = 1; // sin auth por ahora
+                await _users.SoftDeleteAsync(Id, actorId);
+                TempData["Success"] = "Usuario eliminado.";
+                return RedirectToPage("Index");
+            }
+            catch (Farmacia_Arqui_Soft.Domain.Services.NotFoundException)
+            {
+                TempData["Error"] = "El usuario ya no existe.";
+                return RedirectToPage("Index");
+            }
         }
     }
 }

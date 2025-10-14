@@ -1,15 +1,19 @@
-// NUEVOS usings para DI de validaciones
+// Nuevos usings para auth y DI de servicios
+using Microsoft.AspNetCore.Authentication.Cookies;
+
+using Farmacia_Arqui_Soft.Domain.Models;
+using Farmacia_Arqui_Soft.Domain.Ports;
+using Farmacia_Arqui_Soft.Domain.Services;
+
+using Farmacia_Arqui_Soft.Infraestructure.Data;
+using Farmacia_Arqui_Soft.Infraestructure.Persistence;
+
+// Validations
 using Farmacia_Arqui_Soft.Validations.Interfaces;
 using Farmacia_Arqui_Soft.Validations.Users;
 using Farmacia_Arqui_Soft.Validations.Clients;
 using Farmacia_Arqui_Soft.Validations.Lots;
-
-// ?? NUEVO:
 using Farmacia_Arqui_Soft.Validations.Providers;
-using Farmacia_Arqui_Soft.Domain.Models;
-using Farmacia_Arqui_Soft.Infraestructure.Data;
-using Farmacia_Arqui_Soft.Domain.Ports;
-using Farmacia_Arqui_Soft.Infraestructure.Persistence;
 
 namespace Farmacia_Arqui_Soft
 {
@@ -19,28 +23,50 @@ namespace Farmacia_Arqui_Soft
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // ADO.NET singleton para conexión
             DatabaseConnection.Initialize(builder.Configuration);
 
-            // Factory & Repositories
+            // -------------------- Infra: Factory & Repos --------------------
+            // Mantengo ambas por compatibilidad con tus colegas
             builder.Services.AddSingleton<RepositoryFactory, UserRepositoryFactory>();
-            builder.Services.AddScoped<IRepository<User>, UserRepository>();
-            builder.Services.AddScoped<IRepository<Lot>, LotRepository>();
             builder.Services.AddSingleton<UserRepositoryFactory>();
+
             builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
-            // ?? NUEVO: repo para Provider (si lo quieres también disponible por DI)
+            builder.Services.AddScoped<IRepository<User>, UserRepository>();
+            builder.Services.AddScoped<IRepository<Lot>, LotRepository>();
             builder.Services.AddScoped<IRepository<Provider>, ProviderRepository>();
+            // Si tienes repos para Client/others, agrégalos igual
 
-            // Validators
+            // -------------------- Validadores --------------------
             builder.Services.AddScoped<IValidator<User>, UserValidator>();
             builder.Services.AddScoped<IValidator<Client>, ClientValidator>();
             builder.Services.AddScoped<IValidator<Lot>, LotValidator>();
-
-            // ?? NUEVO: validator de Provider
             builder.Services.AddScoped<IValidator<Provider>, ProviderValidator>();
 
-            // Razor Pages
+            // -------------------- Servicios de Dominio --------------------
+            builder.Services.AddScoped<IUserService, UserService>();
+
+            // Email: implementación de desarrollo que loguea a consola.
+            // Cambia DevEmailSender por tu implementación SMTP real cuando la tengas.
+            builder.Services.AddScoped<IEmailSender, DevEmailSender>();
+
+            // -------------------- Razor Pages --------------------
             builder.Services.AddRazorPages();
+
+            // -------------------- Auth mínima (para evitar tu excepción) --------------------
+            // Si todavía no usarán [Authorize], igual deja esto para tener esquema por defecto.
+            builder.Services
+                .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Auth/Login";           // crea esta page cuando integren login
+                    options.AccessDeniedPath = "/Auth/Denied";   // y esta también
+                });
+
+            
+
+            builder.Services.AddAuthorization();
 
             var app = builder.Build();
 
@@ -49,13 +75,34 @@ namespace Farmacia_Arqui_Soft
                 app.UseExceptionHandler("/Error");
             }
 
+            // -------------------- Pipeline --------------------
+            // app.UseStaticFiles(); // Si usas archivos estáticos clásicos, puedes habilitarlo
             app.UseRouting();
+
+            app.UseAuthentication(); // IMPORTANTE: antes de UseAuthorization
             app.UseAuthorization();
 
+            // Aspire/Static Assets helpers que ya usaban
             app.MapStaticAssets();
             app.MapRazorPages().WithStaticAssets();
 
             app.Run();
+        }
+
+        // -------------------- Implementación DEV de IEmailSender --------------------
+        // No rompe nada y te deja ver el "correo" en la consola de salida.
+        // Reemplázala por tu implementación real (SMTP, API, etc.) cuando esté lista.
+        internal sealed class DevEmailSender : IEmailSender
+        {
+            public Task SendAsync(string to, string subject, string body)
+            {
+                Console.WriteLine("=== DEV EMAIL SENDER ===");
+                Console.WriteLine($"To: {to}");
+                Console.WriteLine($"Subject: {subject}");
+                Console.WriteLine(body);
+                Console.WriteLine("========================");
+                return Task.CompletedTask;
+            }
         }
     }
 }
