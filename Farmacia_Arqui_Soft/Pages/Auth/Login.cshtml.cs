@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Farmacia_Arqui_Soft.Domain.Ports;
+using Farmacia_Arqui_Soft.Domain.Ports.UserPorts;
 
 namespace Farmacia_Arqui_Soft.Pages.Auth
 {

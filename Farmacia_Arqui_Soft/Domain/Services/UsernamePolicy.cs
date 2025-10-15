@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
-using Farmacia_Arqui_Soft.Domain.Ports;
+using Farmacia_Arqui_Soft.Domain.Ports.UserPorts;
 
 namespace Farmacia_Arqui_Soft.Domain.Services
 {

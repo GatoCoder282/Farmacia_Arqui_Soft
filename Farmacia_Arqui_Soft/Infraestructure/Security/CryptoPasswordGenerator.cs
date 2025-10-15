@@ -1,5 +1,5 @@
 ﻿using System.Security.Cryptography;
-using Farmacia_Arqui_Soft.Domain.Ports;
+using Farmacia_Arqui_Soft.Domain.Ports.UserPorts;
 
 namespace Farmacia_Arqui_Soft.Infraestructure.Security
 {

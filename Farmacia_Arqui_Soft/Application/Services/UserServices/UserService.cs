@@ -1,6 +1,7 @@
 ﻿using Farmacia_Arqui_Soft.Application.DTOS;
 using Farmacia_Arqui_Soft.Domain.Models;
 using Farmacia_Arqui_Soft.Domain.Ports;
+using Farmacia_Arqui_Soft.Domain.Ports.UserPorts;
 using Farmacia_Arqui_Soft.Validations.Interfaces;
 
 namespace Farmacia_Arqui_Soft.Application.Services.UserServices

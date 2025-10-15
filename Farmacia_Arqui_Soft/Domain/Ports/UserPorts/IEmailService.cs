@@ -1,4 +1,4 @@
-﻿namespace Farmacia_Arqui_Soft.Domain.Ports
+﻿namespace Farmacia_Arqui_Soft.Domain.Ports.UserPorts
 {
     public interface IEmailSender
     {

@@ -2,6 +2,7 @@
 using Farmacia_Arqui_Soft.Application.Services.UserServices;
 using Farmacia_Arqui_Soft.Domain.Models;
 using Farmacia_Arqui_Soft.Domain.Ports;
+using Farmacia_Arqui_Soft.Domain.Ports.UserPorts;
 using Farmacia_Arqui_Soft.Domain.Services;
 using Farmacia_Arqui_Soft.Infraestructure.Data;
 using Farmacia_Arqui_Soft.Infraestructure.Persistence;
