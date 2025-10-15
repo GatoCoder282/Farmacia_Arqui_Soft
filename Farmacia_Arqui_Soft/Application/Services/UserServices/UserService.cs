@@ -1,4 +1,4 @@
-﻿using Farmacia_Arqui_Soft.Application.DTOS;
+﻿using Farmacia_Arqui_Soft.Application.DTOs;
 using Farmacia_Arqui_Soft.Domain.Models;
 using Farmacia_Arqui_Soft.Domain.Ports;
 using Farmacia_Arqui_Soft.Domain.Ports.UserPorts;
@@ -11,9 +11,9 @@ namespace Farmacia_Arqui_Soft.Application.Services.UserServices
         private readonly IRepository<User> _repo;
         private readonly IValidator<User> _validator;
         private readonly IEmailSender _email;
-        private readonly IPasswordHasher _hasher;       // nuevo
-        private readonly IPasswordGenerator _pwdGen;    // nuevo
-        private readonly IUsernamePolicy _username;     // nuevo
+        private readonly IPasswordHasher _hasher;       
+        private readonly IPasswordGenerator _pwdGen;    
+        private readonly IUsernamePolicy _username;     
 
         public UserService(
             IRepository<User> repo,
@@ -125,17 +125,21 @@ namespace Farmacia_Arqui_Soft.Application.Services.UserServices
             await _repo.Delete(current);
         }
 
-        public async Task<User> AuthenticateAsync(string username, string password)
-        {
-            var all = await _repo.GetAll(); // se queda así por ahora
-            var user = all.FirstOrDefault(u =>
-                u.username.Equals(username, StringComparison.OrdinalIgnoreCase) && !u.is_deleted);
+    public async Task<User> AuthenticateAsync(LoginDto dto)
+    {
+        var all = await _repo.GetAll();
+        var user = all.FirstOrDefault(u =>
+            u.username.Equals(dto.Username, StringComparison.OrdinalIgnoreCase) && !u.is_deleted);
 
-            if (user is null || !_hasher.Verify(password, user.password))
-                throw new DomainException("Credenciales inválidas.");
+        if (user is null || !_hasher.Verify(dto.Password, user.password))
+            throw new DomainException("Credenciales inválidas.");
 
-            return user;
-        }
+        return user;
+    }
+
+    public async Task<User> AuthenticateAsync(string username, string password)
+        => await AuthenticateAsync(new LoginDto(username, password));
+
 
         public bool CanPerformAction(User user, string action)
         {

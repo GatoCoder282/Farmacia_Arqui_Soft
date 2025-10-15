@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Farmacia_Arqui_Soft.Domain.Models;
 using Farmacia_Arqui_Soft.Application.Services.UserServices;
-using Farmacia_Arqui_Soft.Application.DTOS;
+using Farmacia_Arqui_Soft.Application.DTOs;
 using Farmacia_Arqui_Soft.Domain.Ports.UserPorts;
 
 namespace Farmacia_Arqui_Soft.Pages.Users
@@ -53,7 +53,7 @@ namespace Farmacia_Arqui_Soft.Pages.Users
 
             try
             {
-                // Usa parámetros con nombre para no depender del orden del record
+                // Usa parï¿½metros con nombre para no depender del orden del record
                 var dto = new UserUpdateDto(
                     FirstName: Input.FirstName,
                     SecondName: Input.SecondName,
@@ -106,14 +106,14 @@ namespace Farmacia_Arqui_Soft.Pages.Users
 
             [Required, EmailAddress, Display(Name = "Correo")] public string Mail { get; set; } = "";
 
-            [Required, Range(100000, 9999999999), Display(Name = "Teléfono")]
+            [Required, Range(100000, 9999999999), Display(Name = "Telï¿½fono")]
             public int Phone { get; set; }
 
             [Required, Display(Name = "CI")] public string Ci { get; set; } = "";
 
             [Required, Display(Name = "Rol")] public UserRole Role { get; set; } = UserRole.Cajero;
 
-            [MinLength(4), DataType(DataType.Password), Display(Name = "Nueva contraseña")]
+            [MinLength(4), DataType(DataType.Password), Display(Name = "Nueva contraseï¿½a")]
             public string? Password { get; set; }
         }
     }
