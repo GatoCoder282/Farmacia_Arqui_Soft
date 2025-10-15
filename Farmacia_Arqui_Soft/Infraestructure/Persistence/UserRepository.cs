@@ -23,9 +23,9 @@ namespace Farmacia_Arqui_Soft.Infraestructure.Persistence
             // + first_name, second_name, last_name
             string query = @"
 INSERT INTO users 
-(first_name, second_name, last_name, username, mail, phone, ci, role, created_at, created_by, is_deleted) 
+(first_name, second_name, last_name, username, password, mail, phone, ci, role, created_at, created_by, is_deleted) 
 VALUES 
-(@first_name, @second_name, @last_name, @username, @mail, @phone, @ci, @role, @created_at, @created_by, @is_deleted)";
+(@first_name, @second_name, @last_name, @username,@password, @mail, @phone, @ci, @role, @created_at, @created_by, @is_deleted)";
 
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
@@ -34,9 +34,9 @@ VALUES
             comand.Parameters.AddWithValue("@first_name", entity.first_name);
             comand.Parameters.AddWithValue("@second_name", (object?)entity.second_name ?? DBNull.Value);
             comand.Parameters.AddWithValue("@last_name", entity.last_name);
-
             comand.Parameters.AddWithValue("@username", entity.username);
-            comand.Parameters.AddWithValue("@mail", (object?)entity.mail ?? DBNull.Value);
+            comand.Parameters.AddWithValue("@password", entity.password);
+            comand.Parameters.AddWithValue("@mail", entity.mail);
             comand.Parameters.AddWithValue("@phone", entity.phone);
             comand.Parameters.AddWithValue("@ci", entity.ci);
             comand.Parameters.AddWithValue("@role", entity.role.ToString());
