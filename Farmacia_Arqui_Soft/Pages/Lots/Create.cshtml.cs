@@ -6,6 +6,10 @@ using Farmacia_Arqui_Soft.Validations.Interfaces;
 using Farmacia_Arqui_Soft.Domain.Models;
 using Farmacia_Arqui_Soft.Domain.Ports;
 using Farmacia_Arqui_Soft.Infraestructure.Persistence;
+<<<<<<< HEAD
+=======
+using Farmacia_Arqui_Soft.Aplication.Services;
+>>>>>>> master
 using Farmacia_Arqui_Soft.Application.Services;
 
 namespace Farmacia_Arqui_Soft.Pages.Lots

@@ -3,9 +3,14 @@ using Farmacia_Arqui_Soft.Domain.Ports;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Farmacia_Arqui_Soft.Infraestructure.Persistence;
+<<<<<<< HEAD
 using Farmacia_Arqui_Soft.Application.Services;
 using Farmacia_Arqui_Soft.Validations.Interfaces;
 
+=======
+using Farmacia_Arqui_Soft.Validations.Interfaces;
+using Farmacia_Arqui_Soft.Application.Services;
+>>>>>>> master
 
 namespace Farmacia_Arqui_Soft.Pages.Lots
 {
