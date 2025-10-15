@@ -1,5 +1,6 @@
 ﻿
 using Farmacia_Arqui_Soft.Domain.Models;
+using Farmacia_Arqui_Soft.Application.DTOS;
 
 namespace Farmacia_Arqui_Soft.Domain.Ports
 {
@@ -18,26 +19,5 @@ namespace Farmacia_Arqui_Soft.Domain.Ports
         bool CanPerformAction(User user, string action);
     }
 
-    // Alta: SIN password (se genera) y SIN username (se genera)
-    public record UserCreateDto(
-        string FirstName,
-        string? SecondName,
-        string LastName,
-        string Mail,
-        int Phone,
-        string Ci,
-        UserRole Role
-    );
-
-    // Update: todo opcional, y NO se permite editar username
-    public record UserUpdateDto(
-        string? FirstName,
-        string? SecondName,
-        string? LastName,
-        string? Mail,
-        int? Phone,
-        string? Ci,
-        UserRole? Role,
-        string? Password // si quisieras resetear manualmente
-    );
+    
 }

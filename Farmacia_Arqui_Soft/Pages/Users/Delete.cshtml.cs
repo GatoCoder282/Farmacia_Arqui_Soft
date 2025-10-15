@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Farmacia_Arqui_Soft.Domain.Models;
 using Farmacia_Arqui_Soft.Domain.Ports;
+using Farmacia_Arqui_Soft.Application.Services.UserServices;
 
 namespace Farmacia_Arqui_Soft.Pages.Users
 {
@@ -41,7 +42,7 @@ namespace Farmacia_Arqui_Soft.Pages.Users
                 TempData["Success"] = "Usuario eliminado.";
                 return RedirectToPage("Index");
             }
-            catch (Farmacia_Arqui_Soft.Domain.Services.NotFoundException)
+            catch (NotFoundException)
             {
                 TempData["Error"] = "El usuario ya no existe.";
                 return RedirectToPage("Index");

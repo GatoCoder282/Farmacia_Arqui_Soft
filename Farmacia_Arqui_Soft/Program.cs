@@ -1,19 +1,18 @@
 // Nuevos usings para auth y DI de servicios
-using Microsoft.AspNetCore.Authentication.Cookies;
-
+using Farmacia_Arqui_Soft.Application.Services.UserServices;
 using Farmacia_Arqui_Soft.Domain.Models;
 using Farmacia_Arqui_Soft.Domain.Ports;
 using Farmacia_Arqui_Soft.Domain.Services;
-
 using Farmacia_Arqui_Soft.Infraestructure.Data;
 using Farmacia_Arqui_Soft.Infraestructure.Persistence;
-
+using Farmacia_Arqui_Soft.Infraestructure.Security;
+using Farmacia_Arqui_Soft.Validations.Clients;
 // Validations
 using Farmacia_Arqui_Soft.Validations.Interfaces;
-using Farmacia_Arqui_Soft.Validations.Users;
-using Farmacia_Arqui_Soft.Validations.Clients;
 using Farmacia_Arqui_Soft.Validations.Lots;
 using Farmacia_Arqui_Soft.Validations.Providers;
+using Farmacia_Arqui_Soft.Validations.Users;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Farmacia_Arqui_Soft
 {
@@ -46,6 +45,14 @@ namespace Farmacia_Arqui_Soft
 
             // -------------------- Servicios de Dominio --------------------
             builder.Services.AddScoped<IUserService, UserService>();
+            // Hasher y generador de password
+            builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+            builder.Services.AddScoped<IPasswordGenerator, CryptoPasswordGenerator>();
+
+            // Política de username (pura lógica de dominio)
+            builder.Services.AddSingleton<IUsernamePolicy, UsernamePolicy>();
+
+           
 
             // Email: implementación de desarrollo que loguea a consola.
             // Cambia DevEmailSender por tu implementación SMTP real cuando la tengas.
