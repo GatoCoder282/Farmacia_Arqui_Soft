@@ -1,16 +1,11 @@
-using Farmacia_Arqui_Soft.Domain.Models;
-using Farmacia_Arqui_Soft.Domain.Ports;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Farmacia_Arqui_Soft.Infraestructure.Persistence;
-<<<<<<< HEAD
 using Farmacia_Arqui_Soft.Application.Services;
 using Farmacia_Arqui_Soft.Validations.Interfaces;
 
-=======
 using Farmacia_Arqui_Soft.Validations.Interfaces;
 using Farmacia_Arqui_Soft.Application.Services;
->>>>>>> master
 
 namespace Farmacia_Arqui_Soft.Pages.Lots
 {
@@ -30,7 +25,10 @@ namespace Farmacia_Arqui_Soft.Pages.Lots
         {
             var lote = await _service.GetByIdAsync(id);
             if (lote == null)
-                return RedirectToPage("/Shared/Error", new { message = "Lote no encontrado" });
+            {
+                TempData["ErrorMessage"] = "Lote no encontrado.";
+                return RedirectToPage("Index");
+            }
 
             Lot = lote;
             return Page();
@@ -38,11 +36,9 @@ namespace Farmacia_Arqui_Soft.Pages.Lots
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var deleted = await _service.DeleteAsync(Lot.Id);
-            if (!deleted)
-                return RedirectToPage("/Shared/Error", new { message = "Error al eliminar lote" });
-
-            return RedirectToPage("/Shared/Success", new { message = "Lote eliminado correctamente" });
+            await _service.DeleteAsync(Lot.Id);
+            TempData["SuccessMessage"] = "Lote eliminado correctamente.";
+            return RedirectToPage("Index");
         }
     }
 }

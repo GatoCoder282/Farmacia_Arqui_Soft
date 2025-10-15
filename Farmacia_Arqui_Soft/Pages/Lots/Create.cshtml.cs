@@ -1,15 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-
 using Farmacia_Arqui_Soft.Validations.Interfaces;
 using Farmacia_Arqui_Soft.Domain.Models;
 using Farmacia_Arqui_Soft.Domain.Ports;
 using Farmacia_Arqui_Soft.Infraestructure.Persistence;
-<<<<<<< HEAD
-=======
-using Farmacia_Arqui_Soft.Aplication.Services;
->>>>>>> master
+
 using Farmacia_Arqui_Soft.Application.Services;
 
 namespace Farmacia_Arqui_Soft.Pages.Lots
@@ -40,7 +36,8 @@ namespace Farmacia_Arqui_Soft.Pages.Lots
                 return Page();
             }
 
-            return RedirectToPage("/Shared/Success", new { message = "Lote creado exitosamente" });
+            TempData["SuccessMessage"] = "Lote creado exitosamente.";
+            return RedirectToPage("Index");
         }
     }
 }

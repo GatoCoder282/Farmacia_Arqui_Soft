@@ -97,7 +97,7 @@ body {
     }
 
 /* =========================================================
-   HOME / P¡GINA PRINCIPAL
+   HOME / PÔøΩGINA PRINCIPAL
    ========================================================= */
 .home-section {
     background: linear-gradient(180deg, var(--off-white) 0%, var(--main) 100%);
@@ -152,7 +152,7 @@ body {
     }
 
 /* =========================================================
-   SECCI”N DE CARACTERÕSTICAS
+   SECCIÔøΩN DE CARACTERÔøΩSTICAS
    ========================================================= */
 .features {
     background-color: var(--off-white);
@@ -298,6 +298,39 @@ footer {
             color: #C8E6C9;
             text-decoration: underline;
         }
+
+        /* ===============================
+   üß© MODAL GLOBAL REUTILIZABLE
+   =============================== */
+.modal-content {
+    animation: fadeInUp 0.4s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-backdrop.show {
+    backdrop-filter: blur(5px);
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+/* √çconos animados */
+.modal-content i {
+    font-size: 3rem;
+    transition: transform 0.3s ease;
+}
+
+.modal-content i:hover {
+    transform: scale(1.1);
+}
 
 /* =========================================================
    RESPONSIVE
