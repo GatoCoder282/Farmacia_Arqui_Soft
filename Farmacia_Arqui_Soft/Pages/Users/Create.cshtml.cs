@@ -49,7 +49,7 @@ namespace Farmacia_Arqui_Soft.Pages.Users
                 const int actorId = 1; // sin auth por ahora
                 await _users.RegisterAsync(dto, actorId);
 
-                TempData["Success"] = "Usuario creado correctamente. Se envi� una contrase�a temporal al correo.";
+                TempData["SuccessMessage"] = "Usuario creado correctamente. Se envi� una contrase�a temporal al correo.";
                 return RedirectToPage("Index");
             }
             catch (Application.Services.UserServices.ValidationException vex)
@@ -84,7 +84,7 @@ namespace Farmacia_Arqui_Soft.Pages.Users
             [Required, EmailAddress, Display(Name = "Correo")]
             public string Mail { get; set; } = "";
 
-            [Required, Range(100000, 9999999999), Display(Name = "Tel�fono")]
+            [Required, Range(100000, 9999999999), Display(Name = "Teléfono")]
             public int Phone { get; set; }
 
             [Required, Display(Name = "CI")]

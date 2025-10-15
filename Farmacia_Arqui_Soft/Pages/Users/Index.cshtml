@@ -8,7 +8,8 @@
     <h2 class="fw-bold text-success mb-0">
         <i class="bi bi-people-fill me-2"></i> Gestión de Usuarios
     </h2>
-    <a asp-page="/Users/Create" class="btn btn-success shadow-sm rounded-pill px-4">
+
+    <a asp-page="/Users/Create" class="btn btn-success shadow-sm rounded-pill px-4 d-flex align-items-center">
         <i class="bi bi-plus-circle me-2"></i> Nuevo Usuario
     </a>
 </div>
@@ -20,6 +21,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
     </div>
 }
+
 @if (TempData["Error"] is string err && !string.IsNullOrWhiteSpace(err))
 {
     <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
@@ -28,67 +30,64 @@
     </div>
 }
 
-<!-- Contenedor con desplazamiento horizontal si la tabla es grande -->
 <div class="card shadow-sm border-0">
     <div class="card-body p-0">
-        <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
-                <thead class="table-success text-dark">
-                    <tr>
-                        <th scope="col">Usuario</th>
-                        <th scope="col">Nombre(s)</th>
-                        <th scope="col">Apellido</th>
-                        <th scope="col">Correo</th>
-                        <th scope="col">Teléfono</th>
-                        <th scope="col">CI</th>
-                        <th scope="col">Rol</th>
-                        <th scope="col">Creado</th>
-                        <th scope="col" class="text-center" style="min-width: 180px;">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (Model.Users != null && Model.Users.Any())
-                    {
-                        foreach (var u in Model.Users)
-                        {
-                            <tr>
-                                <td class="fw-semibold">@u.username</td>
-                                <td>@u.first_name @u.second_name</td>
-                                <td>@u.last_name</td>
-                                <td>@u.mail</td>
-                                <td>@u.phone</td>
-                                <td>@u.ci</td>
-                                <td>
-                                    <span class="badge bg-success-subtle text-success border border-success rounded-pill px-3">
-                                        @u.role
-                                    </span>
-                                </td>
-                                <td>@u.created_at.ToString("yyyy-MM-dd HH:mm")</td>
-                                <td class="text-center">
-                                    <div class="d-flex justify-content-center gap-2 flex-wrap">
-                                        <a asp-page="/Users/Edit" asp-route-id="@u.id"
-                                           class="btn btn-sm btn-outline-warning px-3 rounded-pill" title="Editar">
-                                            <i class="bi bi-pencil"></i>
-                                        </a>
-                                        <a asp-page="/Users/Delete" asp-route-id="@u.id"
-                                           class="btn btn-sm btn-outline-danger px-3 rounded-pill" title="Eliminar">
-                                            <i class="bi bi-trash3"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                        }
-                    }
-                    else
+        <table class="table table-hover align-middle mb-0 text-center">
+            <thead class="table-success text-dark">
+                <tr>
+                    <th>Usuario</th>
+                    <th>Nombre(s)</th>
+                    <th>Apellido</th>
+                    <th>Correo</th>
+                    <th>Teléfono</th>
+                    <th>CI</th>
+                    <th>Rol</th>
+                    <th>Creado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Users != null && Model.Users.Any())
+                {
+                    foreach (var u in Model.Users)
                     {
                         <tr>
-                            <td colspan="9" class="text-center text-muted py-4">
-                                <i class="bi bi-inbox me-2"></i> No hay usuarios registrados.
+                            <td class="fw-semibold">@u.username</td>
+                            <td>@u.first_name @u.second_name</td>
+                            <td>@u.last_name</td>
+                            <td>@u.mail</td>
+                            <td>@u.phone</td>
+                            <td>@u.ci</td>
+                            <td>
+                                <span class="badge bg-success-subtle text-success border border-success rounded-pill px-3">
+                                    @u.role
+                                </span>
+                            </td>
+                            <td>@u.created_at.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                            <td>
+                                <div class="d-flex justify-content-center gap-2 flex-nowrap">
+                                    <a asp-page="/Users/Edit" asp-route-id="@u.id"
+                                       class="btn btn-sm btn-outline-warning rounded-circle" title="Editar">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a asp-page="/Users/Delete" asp-route-id="@u.id"
+                                       class="btn btn-sm btn-outline-danger rounded-circle" title="Eliminar">
+                                        <i class="bi bi-trash3"></i>
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                     }
-                </tbody>
-            </table>
-        </div>
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="9" class="text-center text-muted py-4">
+                            <i class="bi bi-inbox me-2"></i> No hay usuarios registrados.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 </div>

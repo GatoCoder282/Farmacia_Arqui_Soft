@@ -39,12 +39,12 @@ namespace Farmacia_Arqui_Soft.Pages.Users
             {
                 const int actorId = 1; // sin auth por ahora
                 await _users.SoftDeleteAsync(Id, actorId);
-                TempData["Success"] = "Usuario eliminado.";
+                TempData["SuccessMessage"] = "Usuario eliminado.";
                 return RedirectToPage("Index");
             }
             catch (NotFoundException)
             {
-                TempData["Error"] = "El usuario ya no existe.";
+                TempData["ErrorMessage"] = "El usuario ya no existe.";
                 return RedirectToPage("Index");
             }
         }
