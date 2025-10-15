@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 using Farmacia_Arqui_Soft.Validations.Interfaces;
 using Farmacia_Arqui_Soft.Domain.Models;
-using Farmacia_Arqui_Soft.Domain.Ports;
-using Farmacia_Arqui_Soft.Infraestructure.Persistence;
 using Farmacia_Arqui_Soft.Application.Services;
 
 namespace Farmacia_Arqui_Soft.Pages.Lots
@@ -25,7 +23,10 @@ namespace Farmacia_Arqui_Soft.Pages.Lots
         {
             var lote = await _service.GetByIdAsync(id);
             if (lote == null)
-                return RedirectToPage("/Shared/Error", new { message = "Lote no encontrado" });
+            {
+                TempData["ErrorMessage"] = "Lote no encontrado.";
+                return RedirectToPage("Index");
+            }
 
             Lot = lote;
             return Page();
@@ -33,6 +34,8 @@ namespace Farmacia_Arqui_Soft.Pages.Lots
 
         public async Task<IActionResult> OnPostAsync()
         {
+            if (!ModelState.IsValid) return Page();
+
             var (success, errors) = await _service.UpdateAsync(Lot);
             if (!success && errors != null)
             {
@@ -41,7 +44,8 @@ namespace Farmacia_Arqui_Soft.Pages.Lots
                 return Page();
             }
 
-            return RedirectToPage("/Shared/Success", new { message = "Lote actualizado correctamente" });
+            TempData["SuccessMessage"] = "Lote actualizado correctamente.";
+            return RedirectToPage("Index");
         }
     }
 }
