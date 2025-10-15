@@ -8,8 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Aplication\Interfaces\" />
-    <Folder Include="Domain\Services\" />
+    <Folder Include="Application\Interfaces\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 

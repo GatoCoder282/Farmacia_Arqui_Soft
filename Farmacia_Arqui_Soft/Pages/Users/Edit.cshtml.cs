@@ -1,61 +1,120 @@
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-
-// Validaciones
-using Farmacia_Arqui_Soft.Validations.Interfaces;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Farmacia_Arqui_Soft.Domain.Models;
-using Farmacia_Arqui_Soft.Domain.Ports;
-using Farmacia_Arqui_Soft.Infraestructure.Persistence;
+using Farmacia_Arqui_Soft.Application.Services.UserServices;
+using Farmacia_Arqui_Soft.Application.DTOS;
+using Farmacia_Arqui_Soft.Domain.Ports.UserPorts;
 
 namespace Farmacia_Arqui_Soft.Pages.Users
 {
     public class EditModel : PageModel
     {
-        private readonly IRepository<User> _userRepository;
-        private readonly IValidator<User> _userValidator;
+        private readonly IUserService _users;
 
-        public EditModel(RepositoryFactory factory, IValidator<User> userValidator)
+        public EditModel(IUserService users)
         {
-            _userRepository = factory.CreateRepository<User>();
-            _userValidator = userValidator;
+            _users = users;
         }
 
         [BindProperty]
-        public User User { get; set; } = new User();
+        public UserEditVm Input { get; set; } = new();
+
+        public SelectList Roles { get; private set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            var tempUser = new User { id = id };
-            var existing = await _userRepository.GetById(tempUser);
-            if (existing == null)
-                return RedirectToPage("Index"); // o NotFound()
+            LoadRoles();
 
-            User = existing;
+            var u = await _users.GetByIdAsync(id);
+            if (u is null) return RedirectToPage("Index");
+
+            Input = new UserEditVm
+            {
+                Id = u.id,
+                Username = u.username,
+                FirstName = u.first_name,
+                SecondName = u.second_name,
+                LastName = u.last_name,
+                Mail = u.mail ?? "",
+                Phone = u.phone,
+                Ci = u.ci,
+                Role = u.role
+            };
+
             return Page();
         }
 
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
-                return Page();
+            LoadRoles();
+            if (!ModelState.IsValid) return Page();
 
-            // Validación de negocio
-            var result = _userValidator.Validate(User);
-            if (!result.IsValid)
+            try
             {
-                foreach (var error in result.Errors)
-                {
-                    var key = error.Key.StartsWith("User.") ? error.Key : $"User.{error.Key}";
-                    ModelState.AddModelError(key, error.Value);
-                }
+                // Usa parámetros con nombre para no depender del orden del record
+                var dto = new UserUpdateDto(
+                    FirstName: Input.FirstName,
+                    SecondName: Input.SecondName,
+                    LastName: Input.LastName,
+                    Mail: Input.Mail,
+                    Phone: Input.Phone,
+                    Ci: Input.Ci,
+                    Role: Input.Role,
+                    Password: string.IsNullOrWhiteSpace(Input.Password) ? null : Input.Password
+                );
+
+                const int actorId = 1;
+                await _users.UpdateAsync(Input.Id, dto, actorId);
+
+                TempData["Success"] = "Usuario actualizado.";
+                return RedirectToPage("Index");
+            }
+            catch (NotFoundException)
+            {
+                TempData["Error"] = "El usuario ya no existe.";
+                return RedirectToPage("Index");
+            }
+            catch (Application.Services.UserServices.ValidationException vex)
+            {
+                foreach (var kv in vex.Errors)
+                    ModelState.AddModelError(kv.Key ?? string.Empty, kv.Value);
                 return Page();
             }
+            catch (DomainException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+            }
+        }
 
-            await _userRepository.Update(User);
-            TempData["Success"] = "Usuario actualizado correctamente.";
-            return RedirectToPage("Index");
+        private void LoadRoles()
+        {
+            Roles = new SelectList(Enum.GetValues(typeof(UserRole)));
+        }
+
+        public class UserEditVm
+        {
+            [HiddenInput] public int Id { get; set; }
+
+            [Display(Name = "Usuario")] public string Username { get; set; } = "";
+
+            [Required, Display(Name = "Nombre")] public string FirstName { get; set; } = "";
+            [Display(Name = "Segundo nombre")] public string? SecondName { get; set; }
+            [Required, Display(Name = "Apellido")] public string LastName { get; set; } = "";
+
+            [Required, EmailAddress, Display(Name = "Correo")] public string Mail { get; set; } = "";
+
+            [Required, Range(100000, 9999999999), Display(Name = "Teléfono")]
+            public int Phone { get; set; }
+
+            [Required, Display(Name = "CI")] public string Ci { get; set; } = "";
+
+            [Required, Display(Name = "Rol")] public UserRole Role { get; set; } = UserRole.Cajero;
+
+            [MinLength(4), DataType(DataType.Password), Display(Name = "Nueva contraseña")]
+            public string? Password { get; set; }
         }
     }
 }

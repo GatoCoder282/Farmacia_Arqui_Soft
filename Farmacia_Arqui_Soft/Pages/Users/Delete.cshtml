@@ -1,4 +1,4 @@
-﻿@page "{id:int}"
+﻿@page
 @model Farmacia_Arqui_Soft.Pages.Users.DeleteModel
 @{
     ViewData["Title"] = "Eliminar Usuario";
@@ -6,12 +6,22 @@
 
 <h2>Eliminar Usuario</h2>
 
-<div class="alert alert-warning">
-    <p>¿Estás seguro que deseas eliminar al usuario <strong>@Model.User.username</strong>?</p>
-</div>
+@if (Model.User is null)
+{
+    <div class="alert alert-warning">El usuario no existe.</div>
+    <a asp-page="Index" class="btn btn-secondary">Volver</a>
+}
+else
+{
+    <div class="alert alert-danger">
+        ¿Seguro que deseas eliminar a
+        <strong>@Model.User.username</strong>
+        (@Model.User.first_name @Model.User.second_name @Model.User.last_name)?
+    </div>
 
-<form method="post">
-    <input type="hidden" asp-for="User.id" />
-    <button type="submit" class="btn btn-danger">Eliminar</button>
-    <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
-</form>
+    <form method="post">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+        <a asp-page="Index" class="btn btn-secondary ms-2">Cancelar</a>
+    </form>
+}

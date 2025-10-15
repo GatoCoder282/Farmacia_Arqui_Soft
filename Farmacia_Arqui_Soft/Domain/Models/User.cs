@@ -9,12 +9,16 @@ namespace Farmacia_Arqui_Soft.Domain.Models
     public enum UserRole
     {
         Administrador,
-        Cajero
+        Cajero,
+        Almacenero
     }
     public class User
     {
         #region Atributos
         public int id { get; set; }
+        public string first_name { get; set; }
+        public string? second_name { get; set; }
+        public string last_name { get; set; } 
         public string username { get; set; }
         public string password { get; set; }
         public string mail { get; set; }
@@ -22,9 +26,9 @@ namespace Farmacia_Arqui_Soft.Domain.Models
         public string ci { get; set; }
         public UserRole role { get; set; } = UserRole.Cajero;
         public DateTime created_at { get; set; } = DateTime.Now;
-        public DateTime updated_at { get; set; } = DateTime.Now;
-        public int created_by { get; set; }
-        public int updated_by { get; set; }
+        public DateTime? updated_at { get; set; } = DateTime.Now;
+        public int? created_by { get; set; }
+        public int? updated_by { get; set; }
         public bool is_deleted { get; set; } = false;
         #endregion
 

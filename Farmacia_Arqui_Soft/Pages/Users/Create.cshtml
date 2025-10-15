@@ -6,39 +6,55 @@
 
 <h2>Nuevo Usuario</h2>
 
-
-<div asp-validation-summary="All" class="text-danger"></div>
+<div asp-validation-summary="All" class="text-danger mb-3"></div>
 
 <form method="post">
-    <div class="form-group mb-2">
-        <label>Usuario</label>
-        <input asp-for="User.username" class="form-control" required />
-        <span asp-validation-for="User.username" class="text-danger"></span>
+    <div class="mb-2">
+        <label asp-for="Input.FirstName" class="form-label"></label>
+        <input asp-for="Input.FirstName" class="form-control" />
+        <span asp-validation-for="Input.FirstName" class="text-danger"></span>
     </div>
 
-    <div class="form-group mb-2">
-        <label>Contraseña</label>
-        <input asp-for="User.password" class="form-control" required type="password" />
-        <span asp-validation-for="User.password" class="text-danger"></span>
+    <div class="mb-2">
+        <label asp-for="Input.SecondName" class="form-label"></label>
+        <input asp-for="Input.SecondName" class="form-control" />
+        <span asp-validation-for="Input.SecondName" class="text-danger"></span>
     </div>
 
-    <div class="form-group mb-2">
-        <label>Teléfono</label>
-        <input asp-for="User.phone" class="form-control" required type="number" />
-        <span asp-validation-for="User.phone" class="text-danger"></span>
+    <div class="mb-2">
+        <label asp-for="Input.LastName" class="form-label"></label>
+        <input asp-for="Input.LastName" class="form-control" />
+        <span asp-validation-for="Input.LastName" class="text-danger"></span>
     </div>
 
-    <div class="form-group mb-2">
-        <label>CI</label>
-        <input asp-for="User.ci" class="form-control" required />
-        <span asp-validation-for="User.ci" class="text-danger"></span>
+    <div class="mb-2">
+        <label asp-for="Input.Mail" class="form-label"></label>
+        <input asp-for="Input.Mail" class="form-control" />
+        <span asp-validation-for="Input.Mail" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary mt-2">Guardar</button>
-    <a asp-page="Index" class="btn btn-secondary mt-2">Volver</a>
+    <div class="mb-2">
+        <label asp-for="Input.Phone" class="form-label"></label>
+        <input asp-for="Input.Phone" type="number" class="form-control" />
+        <span asp-validation-for="Input.Phone" class="text-danger"></span>
+    </div>
+
+    <div class="mb-2">
+        <label asp-for="Input.Ci" class="form-label"></label>
+        <input asp-for="Input.Ci" class="form-control" />
+        <span asp-validation-for="Input.Ci" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Input.Role" class="form-label"></label>
+        <select asp-for="Input.Role" class="form-select" asp-items="Model.Roles"></select>
+        <span asp-validation-for="Input.Role" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a asp-page="Index" class="btn btn-secondary ms-2">Volver</a>
 </form>
 
 @section Scripts {
-    
     <partial name="_ValidationScriptsPartial" />
 }

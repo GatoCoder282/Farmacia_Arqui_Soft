@@ -42,6 +42,33 @@
                         <li class="nav-item"><a class="nav-link text-white" asp-page="/Lots/Index">Lotes</a></li>
                         <li class="nav-item"><a class="nav-link text-white" asp-page="/Providers/Index">Proveedores</a></li>
                     </ul>
+                    @using System.Security.Claims
+
+                    <div class="d-flex align-items-center gap-2">
+                        @if (User?.Identity?.IsAuthenticated == true)
+                        {
+                            var role = User.FindFirst(ClaimTypes.Role)?.Value ?? "SinRol";
+                            <span class="navbar-text me-2">
+                                <i class="bi bi-person-circle"></i>
+                                @User.Identity!.Name <small class="text-muted">(@role)</small>
+                            </span>
+
+                            <form method="post" asp-page="/Auth/Logout" class="mb-0">
+                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-box-arrow-right"></i> Salir
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <a class="btn btn-sm btn-outline-primary"
+                               asp-page="/Auth/Login"
+                               asp-route-returnUrl="@(Context.Request.Path + Context.Request.QueryString)">
+                                <i class="bi bi-box-arrow-in-right"></i> Ingresar
+                            </a>
+                        }
+                    </div>
+
                 </div>
             </div>
         </nav>
