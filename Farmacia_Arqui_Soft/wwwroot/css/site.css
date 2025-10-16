@@ -46,9 +46,6 @@ body {
     margin-right: 6px;
 }
 
-/* ============================ */
-/* 🔹 NAVBAR */
-/* ============================ */
 .navbar {
     background: linear-gradient(90deg, #4CAF50, #2E7D32);
     border-bottom: 3px solid #A5D6A7;
@@ -93,9 +90,6 @@ body {
     transform: scale(1.05);
 }
 
-/* ============================ */
-/* 🔹 HOME SECTION */
-/* ============================ */
 .home-section {
     background: linear-gradient(180deg, var(--off-white) 0%, var(--main) 100%);
     color: var(--gray-dark);
@@ -129,9 +123,6 @@ body {
     margin: 0 auto 30px auto;
 }
 
-/* ============================ */
-/* 🔹 BOTONES GENERALES */
-/* ============================ */
 .btn-custom {
     background-color: var(--white);
     color: var(--gray-dark);
@@ -151,9 +142,6 @@ body {
     transform: translateY(-3px);
 }
 
-/* ============================ */
-/* 🔹 SECCIÓN FEATURES */
-/* ============================ */
 .features {
     background-color: var(--off-white);
     padding: 70px 0;
@@ -185,37 +173,15 @@ body {
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
 }
 
-/* ============================ */
-/* 🔹 TABLAS CON SCROLL ELEGANTE */
-/* ============================ */
 .card {
     border-radius: 12px;
     overflow: hidden;
 }
 
 .card-body {
-    overflow-x: auto;
-    scrollbar-width: thin;
-    scrollbar-color: #A5D6A7 #F1F8F2;
+    overflow-x: visible !important;
 }
 
-/* Scroll elegante (Chrome, Edge, Safari) */
-.card-body::-webkit-scrollbar {
-    height: 8px;
-}
-.card-body::-webkit-scrollbar-track {
-    background: #F1F8F2;
-    border-radius: 8px;
-}
-.card-body::-webkit-scrollbar-thumb {
-    background: #A5D6A7;
-    border-radius: 8px;
-}
-.card-body::-webkit-scrollbar-thumb:hover {
-    background: #81C784;
-}
-
-/* Tabla principal */
 .table {
     width: 100%;
     border-collapse: collapse;
@@ -223,7 +189,6 @@ body {
     border-radius: 12px;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
     table-layout: auto;
-    min-width: 1100px; /* Fuerza ancho base */
 }
 
 .table thead {
@@ -243,9 +208,8 @@ body {
     padding: 0.9rem 1rem;
     vertical-align: middle;
     text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: normal !important;
+    word-break: break-word;
 }
 
 .table-hover tbody tr:hover {
@@ -253,20 +217,11 @@ body {
     transition: background-color 0.2s ease-in-out;
 }
 
-/* Columnas amplias (correo y fecha) */
-.table td:nth-child(4),
-.table td:nth-child(8) {
-    min-width: 220px;
-}
-
-/* Acciones */
 .table td:last-child {
     white-space: nowrap !important;
-    max-width: none !important;
     width: 120px;
 }
 
-/* 🔸 Botones dentro de la tabla */
 .table .btn {
     width: 36px;
     height: 36px;
@@ -277,39 +232,32 @@ body {
     padding: 0;
     transition: all 0.2s ease-in-out;
     background-color: transparent;
-    border: 1.8px solid #A5D6A7; /* Verde tenue */
+    border: 1.8px solid #A5D6A7;
     color: var(--gray-dark);
 }
 
-/* Hover suave */
 .table .btn:hover {
     background-color: #E8F5E9;
     border-color: #66BB6A;
     transform: scale(1.08);
 }
 
-/* Click (solo Delete) */
 .table .btn-outline-danger:active {
     background-color: #FDEAEA;
     border-color: #E57373;
     color: #C62828;
 }
 
-/* Íconos */
 .table .btn i {
     font-size: 1rem;
 }
 
-/* Badge */
 .badge {
     font-size: 0.85rem;
     padding: 6px 14px;
     border-radius: 30px !important;
 }
 
-/* ============================ */
-/* 🔹 FOOTER */
-/* ============================ */
 footer {
     background: linear-gradient(90deg, #2E7D32, #1B5E20);
     color: white;
@@ -330,9 +278,6 @@ footer a:hover {
     text-decoration: underline;
 }
 
-/* ============================ */
-/* 🔹 MODAL */
-/* ============================ */
 .modal-content {
     animation: fadeInUp 0.4s ease;
 }
@@ -362,9 +307,6 @@ footer a:hover {
     transform: scale(1.1);
 }
 
-/* ============================ */
-/* 🔹 RESPONSIVE */
-/* ============================ */
 @media (max-width: 992px) {
     .table td, .table th {
         font-size: 0.85rem;

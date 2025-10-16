@@ -20,8 +20,9 @@ namespace Farmacia_Arqui_Soft.Infraestructure.Persistence
         public async Task<Lot> Create(Lot entity)
         {
             string query = @"INSERT INTO lots 
-                            (medicine_id, batch_number, expiration_date, quantity, unit_cost)
-                            VALUES (@medicine_id, @batch_number, @expiration_date, @quantity, @unit_cost)";
+                            (medicine_id, batch_number, expiration_date, quantity, unit_cost, created_at, created_by)
+                            VALUES (@medicine_id, @batch_number, @expiration_date, @quantity, @unit_cost, @created_at, @created_by)";
+            
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
 
@@ -31,6 +32,8 @@ namespace Farmacia_Arqui_Soft.Infraestructure.Persistence
             cmd.Parameters.AddWithValue("@expiration_date", entity.ExpirationDate);
             cmd.Parameters.AddWithValue("@quantity", entity.Quantity);
             cmd.Parameters.AddWithValue("@unit_cost", entity.UnitCost);
+            cmd.Parameters.AddWithValue("@created_at", entity.CreatedAt);
+            cmd.Parameters.AddWithValue("@created_by", entity.CreatedBy);
 
             await cmd.ExecuteNonQueryAsync();
             entity.Id = (int)cmd.LastInsertedId;
@@ -39,7 +42,7 @@ namespace Farmacia_Arqui_Soft.Infraestructure.Persistence
 
         public async Task<Lot?> GetById(Lot entity)
         {
-            string query = "SELECT * FROM lots WHERE id=@id";
+            string query = "SELECT * FROM lots WHERE id=@id AND is_deleted = FALSE";
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
 
@@ -55,8 +58,15 @@ namespace Farmacia_Arqui_Soft.Infraestructure.Persistence
                     reader.GetString("batch_number"),
                     reader.GetDateTime("expiration_date"),
                     reader.GetInt32("quantity"),
-                    reader.GetDecimal("unit_cost")
-                );
+                    reader.GetDecimal("unit_cost"),
+                    reader.GetBoolean("is_deleted")
+                )
+                {
+                    CreatedAt = reader.GetDateTime("created_at"),
+                    UpdatedAt = reader["updated_at"] as DateTime?,
+                    CreatedBy = reader["created_by"] as int?,
+                    UpdatedBy = reader["updated_by"] as int?
+                };
             }
             return null;
         }
@@ -80,8 +90,15 @@ namespace Farmacia_Arqui_Soft.Infraestructure.Persistence
                     reader.GetString("batch_number"),
                     reader.GetDateTime("expiration_date"),
                     reader.GetInt32("quantity"),
-                    reader.GetDecimal("unit_cost")
-                ));
+                    reader.GetDecimal("unit_cost"),
+                    reader.GetBoolean("is_deleted")
+                )
+                {
+                    CreatedAt = reader.GetDateTime("created_at"),
+                    UpdatedAt = reader["updated_at"] as DateTime?,
+                    CreatedBy = reader["created_by"] as int?,
+                    UpdatedBy = reader["updated_by"] as int?
+                });
             }
             return list;
         }
@@ -93,7 +110,9 @@ namespace Farmacia_Arqui_Soft.Infraestructure.Persistence
                                 batch_number=@batch_number,
                                 expiration_date=@expiration_date,
                                 quantity=@quantity,
-                                unit_cost=@unit_cost
+                                unit_cost=@unit_cost,
+                                updated_at=@updated_at,
+                                updated_by=@updated_by
                             WHERE id=@id";
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
@@ -104,6 +123,8 @@ namespace Farmacia_Arqui_Soft.Infraestructure.Persistence
             cmd.Parameters.AddWithValue("@expiration_date", entity.ExpirationDate);
             cmd.Parameters.AddWithValue("@quantity", entity.Quantity);
             cmd.Parameters.AddWithValue("@unit_cost", entity.UnitCost);
+            cmd.Parameters.AddWithValue("@updated_at", entity.UpdatedAt);
+            cmd.Parameters.AddWithValue("@updated_by", entity.UpdatedBy);
             cmd.Parameters.AddWithValue("@id", entity.Id);
 
             await cmd.ExecuteNonQueryAsync();
@@ -111,12 +132,19 @@ namespace Farmacia_Arqui_Soft.Infraestructure.Persistence
 
         public async Task Delete(Lot entity)
         {
-            string query = "UPDATE lots SET is_deleted = TRUE WHERE id=@id";
+            string query = @"UPDATE lots 
+                            SET is_deleted = TRUE,
+                                updated_at = @updated_at,
+                                updated_by = @updated_by
+                            WHERE id=@id";
+
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
 
             using var cmd = new MySqlCommand(query, connection);
             cmd.Parameters.AddWithValue("@id", entity.Id);
+            cmd.Parameters.AddWithValue("@updated_at", entity.UpdatedAt);
+            cmd.Parameters.AddWithValue("@updated_by", entity.UpdatedBy);
 
             await cmd.ExecuteNonQueryAsync();
         }

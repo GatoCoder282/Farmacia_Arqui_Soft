@@ -14,7 +14,7 @@
     </a>
 </div>
 
-@if (TempData["Successss"] is string ok && !string.IsNullOrWhiteSpace(ok))
+@if (TempData["SuccessMessage"] is string ok && !string.IsNullOrWhiteSpace(ok))
 {
     <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
         <i class="bi bi-check-circle-fill me-2"></i> @ok
@@ -22,7 +22,7 @@
     </div>
 }
 
-@if (TempData["Error"] is string err && !string.IsNullOrWhiteSpace(err))
+@if (TempData["ErrorMessage"] is string err && !string.IsNullOrWhiteSpace(err))
 {
     <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
         <i class="bi bi-exclamation-triangle-fill me-2"></i> @err
@@ -30,7 +30,6 @@
     </div>
 }
 
-<!-- ✅ Tabla sin scroll, 100% fluida -->
 <div class="card shadow-sm border-0">
     <div class="card-body p-0">
         <table class="table table-hover align-middle mb-0 text-center">
@@ -43,7 +42,6 @@
                     <th>Teléfono</th>
                     <th>CI</th>
                     <th>Rol</th>
-                    <th>Creado</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -66,19 +64,18 @@
                                     @u.role
                                 </span>
                             </td>
-                            <td style="white-space: normal; word-break: break-word; max-width: 160px;">
-                                @u.created_at.ToString("yyyy-MM-dd HH:mm:ss")
-                            </td>
                             <td>
                                 <div class="d-flex justify-content-center gap-2 flex-nowrap">
                                     <a asp-page="/Users/Edit" asp-route-id="@u.id"
-                                       class="btn btn-sm btn-outline-danger px-3 rounded-pill" title="Editar">
+                                       class="btn btn-sm btn-outline-warning px-3 rounded-pill" title="Editar">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <a asp-page="/Users/Delete" asp-route-id="@u.id"
-                                       class="btn btn-sm btn-outline-danger px-3 rounded-pill" title="Eliminar">
+                                    <button type="button"
+                                            class="btn btn-sm btn-outline-danger px-3 rounded-pill"
+                                            title="Eliminar"
+                                            onclick="openDeleteUserModal(@u.id, '@u.username')">
                                         <i class="bi bi-trash3"></i>
-                                    </a>
+                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -87,7 +84,7 @@
                 else
                 {
                     <tr>
-                        <td colspan="9" class="text-center text-muted py-4">
+                        <td colspan="8" class="text-center text-muted py-4">
                             <i class="bi bi-inbox me-2"></i> No hay usuarios registrados.
                         </td>
                     </tr>
@@ -96,3 +93,19 @@
         </table>
     </div>
 </div>
+
+<!-- 🧩 Modal de eliminación -->
+<partial name="_DeleteUserModalPartial" />
+
+@section Scripts {
+    <script>
+        const deleteModal = new bootstrap.Modal(document.getElementById('deleteUserModal'));
+
+        function openDeleteUserModal(id, username) {
+            document.getElementById('deleteUserId').value = id;
+            document.getElementById('deleteUserMessage').textContent =
+                `¿Estás seguro de eliminar al usuario "${username}"?`;
+            deleteModal.show();
+        }
+    </script>
+}
