@@ -1,3 +1,4 @@
+using Farmacia_Arqui_Soft.Aplication.Services;
 using Farmacia_Arqui_Soft.Application.Services;
 using Farmacia_Arqui_Soft.Domain.Models;
 using Farmacia_Arqui_Soft.Domain.Ports;
@@ -19,20 +20,26 @@ namespace Farmacia_Arqui_Soft
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // ADO.NET singleton para conexi�n
+            // ADO.NET singleton para conexión
             DatabaseConnection.Initialize(builder.Configuration);
 
             // -------------------- Infra: Factory & Repos --------------------
             // Mantengo ambas por compatibilidad con tus colegas
             builder.Services.AddSingleton<RepositoryFactory, UserRepositoryFactory>();
             builder.Services.AddSingleton<UserRepositoryFactory>();
+            // 💡 Agregamos la Factory de Cliente si piensas usarla en alguna parte
+            builder.Services.AddSingleton<ClientRepositoryFactory>();
 
             builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
+            // REPOSITORIOS (Adaptadores de Salida de la Arquitectura Hexagonal)
             builder.Services.AddScoped<IRepository<User>, UserRepository>();
             builder.Services.AddScoped<IRepository<Lot>, LotRepository>();
             builder.Services.AddScoped<IRepository<Provider>, ProviderRepository>();
-            // Si tienes repos para Client/others, agr�galos igual
+
+            // 💡 REGISTRO DE REPOSITORIO DE CLIENTE (Necesario para ClientService)
+            builder.Services.AddScoped<IRepository<Client>, ClientRepository>();
+
 
             // -------------------- Validadores --------------------
             builder.Services.AddScoped<IValidator<User>, UserValidator>();
@@ -40,29 +47,27 @@ namespace Farmacia_Arqui_Soft
             builder.Services.AddScoped<IValidator<Lot>, LotValidator>();
             builder.Services.AddScoped<IValidator<Provider>, ProviderValidator>();
 
-            // -------------------- Servicios de Dominio --------------------
+            // -------------------- Servicios de Aplicación (Puertos de Entrada) --------------------
             builder.Services.AddScoped<IUserService, UserService>();
 
-           
+            // 💡 REGISTRO DE SERVICIO DE CLIENTE (Necesario para IndexClientModel)
+            builder.Services.AddScoped<IClientService, ClientService>();
 
-            // Email: implementaci�n de desarrollo que loguea a consola.
-            // Cambia DevEmailSender por tu implementaci�n SMTP real cuando la tengas.
+
+            // Email: implementación de desarrollo que loguea a consola.
             builder.Services.AddScoped<IEmailSender, DevEmailSender>();
 
             // -------------------- Razor Pages --------------------
             builder.Services.AddRazorPages();
 
-            // -------------------- Auth m�nima (para evitar tu excepci�n) --------------------
-            // Si todav�a no usar�n [Authorize], igual deja esto para tener esquema por defecto.
+            // -------------------- Auth mínima --------------------
             builder.Services
                 .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
-                    options.LoginPath = "/Auth/Login";           // crea esta page cuando integren login
-                    options.AccessDeniedPath = "/Auth/Denied";   // y esta tambi�n
+                    options.LoginPath = "/Auth/Login";
+                    options.AccessDeniedPath = "/Auth/Denied";
                 });
-
-            
 
             builder.Services.AddAuthorization();
 
@@ -74,10 +79,10 @@ namespace Farmacia_Arqui_Soft
             }
 
             // -------------------- Pipeline --------------------
-            // app.UseStaticFiles(); // Si usas archivos est�ticos cl�sicos, puedes habilitarlo
+            app.UseStaticFiles(); // Agrego si usas estáticos como CSS/JS/Imágenes
             app.UseRouting();
 
-            app.UseAuthentication(); // IMPORTANTE: antes de UseAuthorization
+            app.UseAuthentication();
             app.UseAuthorization();
 
             // Aspire/Static Assets helpers que ya usaban
@@ -87,9 +92,7 @@ namespace Farmacia_Arqui_Soft
             app.Run();
         }
 
-        // -------------------- Implementaci�n DEV de IEmailSender --------------------
-        // No rompe nada y te deja ver el "correo" en la consola de salida.
-        // Reempl�zala por tu implementaci�n real (SMTP, API, etc.) cuando est� lista.
+        // -------------------- Implementación DEV de IEmailSender --------------------
         internal sealed class DevEmailSender : IEmailSender
         {
             public Task SendAsync(string to, string subject, string body)

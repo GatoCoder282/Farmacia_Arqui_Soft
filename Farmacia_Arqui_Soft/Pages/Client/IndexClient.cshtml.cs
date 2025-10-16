@@ -1,26 +1,55 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc; 
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ClientEntity = Farmacia_Arqui_Soft.Domain.Models.Client;
 using Farmacia_Arqui_Soft.Domain.Ports;
-using Farmacia_Arqui_Soft.Infraestructure.Persistence;
 
 namespace Farmacia_Arqui_Soft.Pages.Client
 {
     public class IndexClientModel : PageModel
     {
-        private readonly IRepository<ClientEntity> _ClientRepository;
+        private readonly IClientService _clientService;
+        private readonly IUserService _userService;
+
         public IEnumerable<ClientEntity> Clients { get; set; } = new List<ClientEntity>();
 
-        public IndexClientModel()
+        public IndexClientModel(IClientService clientService, IUserService userService)
         {
-            var factory = new ClientRepositoryFactory();
-            _ClientRepository = factory.CreateRepository<ClientEntity>();
+            _clientService = clientService;
+            _userService = userService;
         }
 
         public async Task OnGetAsync()
         {
-            Clients = await _ClientRepository.GetAll();
+            Clients = await _clientService.ListAsync();
+        }
+
+        public async Task<IActionResult> OnPostDeleteAsync(int id)
+        {
+       
+            const int ACTOR_ID = 1; 
+
+            try
+            {
+                await _clientService.SoftDeleteAsync(id, ACTOR_ID);
+
+                TempData["Success"] = $"Cliente con ID {id} eliminado correctamente.";
+            }
+            catch (ArgumentException ex) 
+            {
+                TempData["Error"] = ex.Message;
+            }
+            catch (InvalidOperationException ex) 
+            {
+                TempData["Error"] = ex.Message;
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "Ocurrió un error inesperado al intentar eliminar el cliente.";
+            }
+
+            return RedirectToPage();
         }
     }
 }

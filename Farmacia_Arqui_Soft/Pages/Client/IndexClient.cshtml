@@ -38,22 +38,39 @@
                             <td>@c.nit</td>
                             <td>@c.email</td>
                             <td>
+                                <!-- DIV con "gap-2" maneja el espaciado de todos los botones -->
                                 <div class="d-flex justify-content-center gap-2">
+
+                                    <!-- ENLACE DE DETALLES (Correcto) -->
                                     <a asp-page="/Client/Details" asp-route-id="@c.id"
                                        class="btn btn-sm btn-outline-info rounded-circle"
                                        title="Detalles">
                                         <i class="bi bi-eye"></i>
                                     </a>
+
+                                    <!-- ENLACE DE EDICIÓN (Correcto) -->
                                     <a asp-page="/Client/Edit" asp-route-id="@c.id"
                                        class="btn btn-sm btn-outline-warning rounded-circle"
                                        title="Editar">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <a asp-page="/Client/Delete" asp-route-id="@c.id"
-                                       class="btn btn-sm btn-outline-danger rounded-circle"
-                                       title="Eliminar">
-                                        <i class="bi bi-trash3"></i>
-                                    </a>
+
+                                    <!-- FORMULARIO DE ELIMINAR (Solo contiene el botón y el ID oculto) -->
+                                    <form method="post" asp-page-handler="Delete" onsubmit="return confirm('¿Está seguro de que desea eliminar a @c.first_name @c.last_name? La acción es irreversible (soft delete).');">
+                                        <input type="hidden" name="id" value="@c.id" />
+
+                                        <!--
+                                             *** ESTOS ERAN LOS BOTONES DUPLICADOS QUE FUERON ELIMINADOS ***
+                                             <a asp-page="/Client/Details" asp-route-id="@c.id" ... >...</a>
+                                             <a asp-page="/Client/Edit" asp-route-id="@c.id" ... >...</a>
+                                        -->
+                                        <!-- BOTÓN DE ELIMINAR (Correcto) -->
+                                        <button type="submit"
+                                                class="btn btn-sm btn-outline-danger rounded-circle"
+                                                title="Eliminar">
+                                            <i class="bi bi-trash3"></i>
+                                        </button>
+                                    </form>
                                 </div>
                             </td>
                         </tr>
