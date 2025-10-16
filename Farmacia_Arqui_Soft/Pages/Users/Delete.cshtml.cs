@@ -23,7 +23,7 @@ namespace Farmacia_Arqui_Soft.Pages.Users
             var u = await _users.GetByIdAsync(id);
             if (u is null)
             {
-                TempData["Error"] = "El usuario no existe.";
+                TempData["ErrorMessage"] = "El usuario no existe.";
                 return RedirectToPage("Index");
             }
 

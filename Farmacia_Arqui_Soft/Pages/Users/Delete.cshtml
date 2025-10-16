@@ -4,41 +4,113 @@
     ViewData["Title"] = "Eliminar Usuario";
 }
 
-<div class="container mt-5">
-    <div class="card shadow-lg border-0 rounded-4">
-        <div class="card-header bg-danger text-white text-center rounded-top-4 py-3">
-            <h3 class="mb-0">
-                <i class="bi bi-trash3 me-2"></i>Eliminar Usuario
-            </h3>
-        </div>
+<style>
+    header, footer, .top-contact {
+        display: none !important;
+    }
+    body {
+        background-color: #ffffff !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+    }
+    .delete-modal {
+        width: 100%;
+        max-width: 600px;
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        animation: fadeIn .3s ease;
+        overflow: hidden;
+    }
 
-        <div class="card-body text-center">
-            @if (Model.User is null)
-            {
-                <div class="alert alert-warning shadow-sm">
-                    <i class="bi bi-exclamation-triangle-fill me-2"></i> El usuario no existe.
-                </div>
-                <a asp-page="Index" class="btn btn-outline-secondary px-4 rounded-pill mt-3">
-                    <i class="bi bi-arrow-left me-2"></i>Volver
+    .delete-header {
+        background-color: #e53935;
+        color: white;
+        text-align: center;
+        padding: 18px 0;
+        font-size: 1.4rem;
+        font-weight: 600;
+    }
+
+    .delete-body {
+        padding: 40px 30px;
+        text-align: center;
+    }
+
+    .delete-body p {
+        font-size: 1.1rem;
+        color: #333;
+        margin-bottom: 25px;
+    }
+
+    .btn-delete {
+        background-color: #e53935;
+        border: none;
+        color: #fff;
+        font-weight: 600;
+        padding: 10px 30px;
+        border-radius: 30px;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .btn-delete:hover {
+        background-color: #c62828;
+        transform: translateY(-2px);
+    }
+
+    .btn-cancel {
+        border: 2px solid #ccc;
+        color: #555;
+        padding: 10px 28px;
+        border-radius: 30px;
+        font-weight: 600;
+        background-color: transparent;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .btn-cancel:hover {
+        background-color: #f5f5f5;
+        border-color: #bbb;
+    }
+
+    @@keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.96); }
+        to { opacity: 1; transform: scale(1); }
+    }
+</style>
+
+<div class="delete-modal">
+    <div class="delete-header">
+        <i class="bi bi-trash3 me-2"></i>Eliminar Usuario
+    </div>
+
+    <div class="delete-body">
+        @if (Model.User is null)
+        {
+            <div class="alert alert-warning shadow-sm">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i> El usuario no existe.
+            </div>
+            <a asp-page="Index" class="btn btn-cancel mt-3">Volver</a>
+        }
+        else
+        {
+            <p>
+                ¿Deseas eliminar a <strong>@Model.User.username</strong> 
+                (@Model.User.first_name @Model.User.last_name)?
+            </p>
+            <form method="post">
+                <input type="hidden" asp-for="Id" />
+                <button type="submit" class="btn btn-delete me-2">
+                    <i class="bi bi-trash me-2"></i>Eliminar
+                </button>
+                <a asp-page="Index" class="btn btn-cancel">
+                    <i class="bi bi-x-circle me-2"></i>Cancelar
                 </a>
-            }
-            else
-            {
-                <p class="fs-5 mb-4">
-                    ¿Estás seguro de que deseas eliminar a
-                    <strong>@Model.User.username</strong> (@Model.User.first_name @Model.User.second_name @Model.User.last_name)?
-                </p>
-
-                <form method="post" class="mt-4">
-                    <input type="hidden" asp-for="Id" />
-                    <button type="submit" class="btn btn-danger px-4 rounded-pill shadow-sm">
-                        <i class="bi bi-trash me-2"></i>Eliminar
-                    </button>
-                    <a asp-page="Index" class="btn btn-outline-secondary px-4 rounded-pill ms-2">
-                        <i class="bi bi-x-circle me-2"></i>Cancelar
-                    </a>
-                </form>
-            }
-        </div>
+            </form>
+        }
     </div>
 </div>

@@ -186,13 +186,36 @@ body {
 }
 
 /* ============================ */
-/* 🔹 TABLAS SIN SALTOS */
+/* 🔹 TABLAS CON SCROLL ELEGANTE */
 /* ============================ */
 .card {
     border-radius: 12px;
     overflow: hidden;
 }
 
+.card-body {
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #A5D6A7 #F1F8F2;
+}
+
+/* Scroll elegante (Chrome, Edge, Safari) */
+.card-body::-webkit-scrollbar {
+    height: 8px;
+}
+.card-body::-webkit-scrollbar-track {
+    background: #F1F8F2;
+    border-radius: 8px;
+}
+.card-body::-webkit-scrollbar-thumb {
+    background: #A5D6A7;
+    border-radius: 8px;
+}
+.card-body::-webkit-scrollbar-thumb:hover {
+    background: #81C784;
+}
+
+/* Tabla principal */
 .table {
     width: 100%;
     border-collapse: collapse;
@@ -200,6 +223,7 @@ body {
     border-radius: 12px;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
     table-layout: auto;
+    min-width: 1100px; /* Fuerza ancho base */
 }
 
 .table thead {
@@ -219,10 +243,9 @@ body {
     padding: 0.9rem 1rem;
     vertical-align: middle;
     text-align: center;
-    white-space: nowrap; /* ✅ Todo en una sola línea */
+    white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis; /* ✅ Si se pasa, pone “...” */
-    max-width: 220px;
+    text-overflow: ellipsis;
 }
 
 .table-hover tbody tr:hover {
@@ -230,9 +253,22 @@ body {
     transition: background-color 0.2s ease-in-out;
 }
 
+/* Columnas amplias (correo y fecha) */
+.table td:nth-child(4),
+.table td:nth-child(8) {
+    min-width: 220px;
+}
+
+/* Acciones */
+.table td:last-child {
+    white-space: nowrap !important;
+    max-width: none !important;
+    width: 120px;
+}
+
 /* 🔸 Botones dentro de la tabla */
 .table .btn {
-    min-width: 36px;
+    width: 36px;
     height: 36px;
     border-radius: 50%;
     display: inline-flex;
@@ -240,58 +276,35 @@ body {
     align-items: center;
     padding: 0;
     transition: all 0.2s ease-in-out;
+    background-color: transparent;
+    border: 1.8px solid #A5D6A7; /* Verde tenue */
+    color: var(--gray-dark);
 }
 
+/* Hover suave */
+.table .btn:hover {
+    background-color: #E8F5E9;
+    border-color: #66BB6A;
+    transform: scale(1.08);
+}
+
+/* Click (solo Delete) */
+.table .btn-outline-danger:active {
+    background-color: #FDEAEA;
+    border-color: #E57373;
+    color: #C62828;
+}
+
+/* Íconos */
 .table .btn i {
     font-size: 1rem;
 }
 
-.table .btn:hover {
-    transform: scale(1.08);
-}
-
-/* 🔸 Badge de roles */
+/* Badge */
 .badge {
     font-size: 0.85rem;
     padding: 6px 14px;
     border-radius: 30px !important;
-}
-
-/* ============================ */
-/* 🔹 BOTONES COLOREADOS */
-/* ============================ */
-.btn-success, .btn-outline-success {
-    background-color: var(--accent);
-    border-color: var(--accent);
-    color: var(--gray-dark);
-    font-weight: 600;
-}
-
-.btn-success:hover, .btn-outline-success:hover {
-    background-color: #81C784;
-    border-color: #81C784;
-    color: var(--gray-dark);
-}
-
-.btn-outline-warning {
-    border-color: #AED581;
-    color: var(--gray-dark);
-}
-
-.btn-outline-warning:hover {
-    background-color: #AED581;
-    color: var(--gray-dark);
-}
-
-.btn-outline-danger {
-    border-color: #81C784;
-    color: var(--gray-dark);
-}
-
-.btn-outline-danger:hover {
-    background-color: #66BB6A;
-    border-color: #66BB6A;
-    color: var(--white);
 }
 
 /* ============================ */
@@ -354,17 +367,8 @@ footer a:hover {
 /* ============================ */
 @media (max-width: 992px) {
     .table td, .table th {
-        max-width: 160px;
         font-size: 0.85rem;
-    }
-
-    .table td,
-    .table th {
         padding: 0.6rem;
-    }
-
-    .card-body {
-        overflow-x: hidden !important;
     }
 }
 
