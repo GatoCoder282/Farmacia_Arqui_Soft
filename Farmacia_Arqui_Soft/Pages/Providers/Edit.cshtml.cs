@@ -21,8 +21,7 @@ namespace Farmacia_Arqui_Soft.Pages.Providers
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            var temp = new Provider { id = id };
-            var existing = await _providerService.GetByIdAsync(temp);
+            var existing = await _providerService.GetByIdAsync(id);
 
             if (existing == null)
             {
@@ -34,7 +33,6 @@ namespace Farmacia_Arqui_Soft.Pages.Providers
             return Page();
         }
 
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)

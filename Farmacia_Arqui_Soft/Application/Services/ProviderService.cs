@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Farmacia_Arqui_Soft.Domain.Models;
-using Farmacia_Arqui_Soft.Domain.Ports;
-using Farmacia_Arqui_Soft.Validation.Provider;
-using Farmacia_Arqui_Soft.Infraestructure.Persistence; // Para ProviderRepository
-using Farmacia_Arqui_Soft.Validation.Provider;          // Para ProviderValidator
+using Farmacia_Arqui_Soft.Infraestructure.Persistence;
+using Farmacia_Arqui_Soft.Validations.Providers;
 
 namespace Farmacia_Arqui_Soft.Application.Services
 {
@@ -39,7 +37,9 @@ namespace Farmacia_Arqui_Soft.Application.Services
 
         public async Task<Provider?> GetByIdAsync(int id)
         {
-            return await _repository.GetById(new Provider { id = id });
+            // Corregido: creamos un Provider temporal para enviar al repositorio
+            var temp = new Provider { id = id };
+            return await _repository.GetById(temp);
         }
 
         public async Task UpdateAsync(Provider provider)
@@ -54,7 +54,9 @@ namespace Farmacia_Arqui_Soft.Application.Services
 
         public async Task DeleteAsync(int id)
         {
-            await _repository.Delete(new Provider { id = id });
+            // Corregido: creamos un Provider temporal para enviar al repositorio
+            var temp = new Provider { id = id };
+            await _repository.Delete(temp);
         }
     }
 }

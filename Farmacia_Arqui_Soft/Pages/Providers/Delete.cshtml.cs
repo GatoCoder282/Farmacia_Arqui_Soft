@@ -14,9 +14,13 @@ namespace Farmacia_Arqui_Soft.Pages.Providers
             _service = service;
         }
 
-        public async Task<IActionResult> OnPostAsync(int id)
+        [BindProperty]
+        public int Id { get; set; }
+
+        public async Task<IActionResult> OnPostAsync()
         {
-            await _service.DeleteAsync(id);
+            await _service.DeleteAsync(Id);
+            TempData["Success"] = "Proveedor eliminado correctamente.";
             return RedirectToPage("Index");
         }
     }
