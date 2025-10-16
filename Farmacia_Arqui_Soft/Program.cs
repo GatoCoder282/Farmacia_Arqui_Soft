@@ -50,8 +50,12 @@ namespace Farmacia_Arqui_Soft
             // -------------------- Servicios de Aplicación (Puertos de Entrada) --------------------
             builder.Services.AddScoped<IUserService, UserService>();
 
-            // 💡 REGISTRO DE SERVICIO DE CLIENTE (Necesario para IndexClientModel)
+            // ✅ CORRECCIÓN CRÍTICA: REGISTRO FALTANTE DEL SERVICIO DE CLIENTE
+            // El contenedor de DI necesitaba esta línea para saber qué hacer cuando se pide IClientService.
             builder.Services.AddScoped<IClientService, ClientService>();
+
+            // 💡 REGISTRO DE SERVICIO DE ENCRIPTACIÓN (Necesario para IndexClientModel y EditModel)
+            builder.Services.AddSingleton<Farmacia_Arqui_Soft.Domain.Ports.IEncryptionService, Farmacia_Arqui_Soft.Aplication.Services.EncryptionService>();
 
 
             // Email: implementación de desarrollo que loguea a consola.

@@ -1,26 +1,52 @@
+﻿// Farmacia_Arqui_Soft.Pages.Lots/EditModel.cs
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-
 using Farmacia_Arqui_Soft.Validations.Interfaces;
 using Farmacia_Arqui_Soft.Domain.Models;
 using Farmacia_Arqui_Soft.Application.Services;
+using Farmacia_Arqui_Soft.Domain.Ports; // 👈 Importar el puerto
 
 namespace Farmacia_Arqui_Soft.Pages.Lots
 {
+    // 👈 Cambiar el patrón de ruta para aceptar cualquier string (el ID encriptado)
+    // El patrón "{id}" sin ":int" acepta cualquier string.
+    [Route("Lots/Edit/{encryptedId?}")]
     public class EditModel : PageModel
     {
         private readonly LotService _service;
+        private readonly IEncryptionService _encryptionService; // 👈 Nuevo campo
 
         [BindProperty]
         public Lot Lot { get; set; } = new();
 
-        public EditModel(IValidator<Lot> validator)
+        // 👈 Actualizar constructor para inyectar IEncryptionService
+        public EditModel(IValidator<Lot> validator, IEncryptionService encryptionService)
         {
             _service = new LotService(validator);
+            _encryptionService = encryptionService; // 👈 Asignación
         }
 
-        public async Task<IActionResult> OnGetAsync(int id)
+        // 👈 Recibir el ID encriptado como string
+        public async Task<IActionResult> OnGetAsync(string encryptedId)
         {
+            if (string.IsNullOrEmpty(encryptedId))
+            {
+                TempData["ErrorMessage"] = "ID de lote no proporcionado.";
+                return RedirectToPage("Index");
+            }
+
+            int id;
+            try
+            {
+                // 👈 Descifrar el ID antes de usarlo
+                id = _encryptionService.DecryptId(encryptedId);
+            }
+            catch (FormatException)
+            {
+                TempData["ErrorMessage"] = "ID de lote inválido o corrupto.";
+                return RedirectToPage("Index");
+            }
+
             var lote = await _service.GetByIdAsync(id);
             if (lote == null)
             {
@@ -34,6 +60,9 @@ namespace Farmacia_Arqui_Soft.Pages.Lots
 
         public async Task<IActionResult> OnPostAsync()
         {
+            // El ID original sigue estando en Lot.Id (input hidden), 
+            // no necesitas descifrar en el POST a menos que cambiaras el hidden field.
+
             if (!ModelState.IsValid) return Page();
 
             var (success, errors) = await _service.UpdateAsync(Lot);
