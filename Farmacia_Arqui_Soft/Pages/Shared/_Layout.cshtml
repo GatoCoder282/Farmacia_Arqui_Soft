@@ -15,7 +15,6 @@
 </head>
 
 <body>
-    <!-- Barra de contacto superior -->
     <div class="top-contact text-white text-center py-1" style="background-color:#5E945A;">
         <div class="container d-flex justify-content-between align-items-center flex-wrap">
             <span><i class="bi bi-geo-alt-fill me-1"></i> Av. Aroma #123, Cochabamba, Bolivia</span>
@@ -24,7 +23,6 @@
         </div>
     </div>
 
-    <!-- Barra de navegación -->
     <header>
         <nav class="navbar navbar-expand-sm navbar-light shadow-sm sticky-top" style="background-color:#6DB076;">
             <div class="container">
@@ -34,19 +32,33 @@
                 </a>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu"
-                        aria-controls="navmenu" aria-expanded="false" aria-label="Toggle navigation">
+                                    aria-controls="navmenu" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="navmenu">
+
+                    @* NECESARIO PARA ACCEDER A LOS ROLES *@
+                    @using System.Security.Claims
+
                     <ul class="navbar-nav ms-auto align-items-center gap-3">
-                        <li class="nav-item"><a class="nav-link text-white fw-semibold" asp-page="/Users/Index">Usuarios</a></li>
+
+                        @{
+                            // Se obtiene el rol del usuario autenticado para el control de visibilidad
+                            var currentRole = User.FindFirst(ClaimTypes.Role)?.Value ?? "SinRol";
+                        }
+
+                        @* 🔑 LÓGICA AGREGADA: Solo muestra "Usuarios" si el rol es Administrador *@
+                        @if (currentRole == "Administrador")
+                        {
+                            <li class="nav-item"><a class="nav-link text-white fw-semibold" asp-page="/Users/Index">Usuarios</a></li>
+                        }
+
                         <li class="nav-item"><a class="nav-link text-white fw-semibold" asp-page="/Client/IndexClient">Clientes</a></li>
+                        @* ASUMO que faltan aquí los enlaces a Lotes y Proveedores, basados en el código anterior. Los agrego para que estén completos. *@
                         <li class="nav-item"><a class="nav-link text-white fw-semibold" asp-page="/Lots/Index">Lotes</a></li>
                         <li class="nav-item"><a class="nav-link text-white fw-semibold" asp-page="/Providers/Index">Proveedores</a></li>
                     </ul>
-
-                    @using System.Security.Claims
 
                     <div class="d-flex align-items-center ms-3">
                         @if (User?.Identity?.IsAuthenticated == true)
@@ -76,8 +88,8 @@
                         else
                         {
                             <a class="btn btn-outline-light rounded-pill px-3 fw-semibold"
-                               asp-page="/Auth/Login"
-                               asp-route-returnUrl="@(Context.Request.Path + Context.Request.QueryString)">
+                                               asp-page="/Auth/Login"
+                                               asp-route-returnUrl="@(Context.Request.Path + Context.Request.QueryString)">
                                 <i class="bi bi-box-arrow-in-right me-2"></i> Ingresar
                             </a>
                         }
@@ -87,14 +99,12 @@
         </nav>
     </header>
 
-    <!-- Contenido principal -->
     <main class="main-content py-4">
         <div class="container">
             @RenderBody()
         </div>
     </main>
 
-    <!-- Footer -->
     <footer class="footer text-center text-white mt-auto py-3" style="background-color:#5E945A;">
         <div class="container">
             <p class="mb-0">&copy; 2025 - FarmaPlus | Tu salud, nuestra prioridad</p>
@@ -102,7 +112,6 @@
         </div>
     </footer>
 
-    <!-- Modal Global -->
     <div class="modal fade" id="globalModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content text-center p-4 rounded-4 shadow-lg border-0">
@@ -110,10 +119,10 @@
                 <h4 id="modalTitle" class="fw-bold mb-2"></h4>
                 <p id="modalMessage" class="text-muted mb-0"></p>
             </div>
+
         </div>
     </div>
 
-    <!-- Scripts -->
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
