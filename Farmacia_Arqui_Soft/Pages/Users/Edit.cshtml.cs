@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Farmacia_Arqui_Soft.Domain.Models;
 using Farmacia_Arqui_Soft.Application.Services.UserServices;
-using Farmacia_Arqui_Soft.Application.DTOS;
+using Farmacia_Arqui_Soft.Application.DTOs;
 using Farmacia_Arqui_Soft.Domain.Ports.UserPorts;
 
 namespace Farmacia_Arqui_Soft.Pages.Users
@@ -53,7 +53,7 @@ namespace Farmacia_Arqui_Soft.Pages.Users
 
             try
             {
-                // Usa parámetros con nombre para no depender del orden del record
+                // Usa parï¿½metros con nombre para no depender del orden del record
                 var dto = new UserUpdateDto(
                     FirstName: Input.FirstName,
                     SecondName: Input.SecondName,
@@ -68,12 +68,12 @@ namespace Farmacia_Arqui_Soft.Pages.Users
                 const int actorId = 1;
                 await _users.UpdateAsync(Input.Id, dto, actorId);
 
-                TempData["Success"] = "Usuario actualizado.";
+                TempData["SuccessMessage"] = "Usuario actualizado.";
                 return RedirectToPage("Index");
             }
             catch (NotFoundException)
             {
-                TempData["Error"] = "El usuario ya no existe.";
+                TempData["ErrorMessage"] = "El usuario ya no existe.";
                 return RedirectToPage("Index");
             }
             catch (Application.Services.UserServices.ValidationException vex)
@@ -106,14 +106,14 @@ namespace Farmacia_Arqui_Soft.Pages.Users
 
             [Required, EmailAddress, Display(Name = "Correo")] public string Mail { get; set; } = "";
 
-            [Required, Range(100000, 9999999999), Display(Name = "Teléfono")]
+            [Required, Range(100000, 9999999999), Display(Name = "TelÃ©fono")]
             public int Phone { get; set; }
 
             [Required, Display(Name = "CI")] public string Ci { get; set; } = "";
 
             [Required, Display(Name = "Rol")] public UserRole Role { get; set; } = UserRole.Cajero;
 
-            [MinLength(4), DataType(DataType.Password), Display(Name = "Nueva contraseña")]
+            [MinLength(4), DataType(DataType.Password), Display(Name = "Nueva contraseÃ±a")]
             public string? Password { get; set; }
         }
     }
