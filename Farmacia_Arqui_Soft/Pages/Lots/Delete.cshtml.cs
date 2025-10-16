@@ -1,10 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Farmacia_Arqui_Soft.Infraestructure.Persistence;
 using Farmacia_Arqui_Soft.Application.Services;
 using Farmacia_Arqui_Soft.Validations.Interfaces;
 using Farmacia_Arqui_Soft.Domain.Models;
-
 
 namespace Farmacia_Arqui_Soft.Pages.Lots
 {
@@ -25,7 +23,7 @@ namespace Farmacia_Arqui_Soft.Pages.Lots
             var lote = await _service.GetByIdAsync(id);
             if (lote == null)
             {
-                TempData["ErrorMessage"] = "Lote no encontrado.";
+                TempData["ErrorMessage"] = "El lote no fue encontrado o ya fue eliminado.";
                 return RedirectToPage("Index");
             }
 
@@ -35,10 +33,13 @@ namespace Farmacia_Arqui_Soft.Pages.Lots
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var success = await _service.DeleteAsync(Lot.Id);
+            // 🔹 Simulamos el ID del usuario autenticado (hasta tener auth real)
+            const int actorId = 1;
+
+            var success = await _service.SoftDeleteAsync(Lot.Id, actorId);
             if (!success)
             {
-                TempData["ErrorMessage"] = "Error al eliminar el lote.";
+                TempData["ErrorMessage"] = "Error al eliminar el lote. Puede que no exista o ya esté eliminado.";
                 return RedirectToPage("Index");
             }
 
