@@ -2,6 +2,8 @@
 @model Farmacia_Arqui_Soft.Pages.Lots.IndexModel
 @{
     ViewData["Title"] = "Gestión de Lotes";
+    // 1. Obtener el servicio de encriptación desde el contexto
+    var encryptionService = (Farmacia_Arqui_Soft.Domain.Ports.IEncryptionService)Model.HttpContext.RequestServices.GetService(typeof(Farmacia_Arqui_Soft.Domain.Ports.IEncryptionService))!;
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
@@ -47,6 +49,9 @@
                 {
                     foreach (var lot in Model.Lots)
                     {
+                        // 2. Cifrar el ID del lote
+                        string encryptedId = encryptionService.EncryptId(lot.Id);
+
                         <tr>
                             <td class="fw-semibold">@lot.BatchNumber</td>
                             <td>@lot.ExpirationDate.ToString("dd/MM/yyyy")</td>
@@ -54,14 +59,14 @@
                             <td>@lot.UnitCost.ToString("F2")</td>
                             <td>
                                 <div class="d-flex justify-content-center gap-2">
-                                    <a asp-page="/Lots/Edit" asp-route-id="@lot.Id"
-                                       class="btn btn-sm btn-outline-warning px-3 rounded-pill" title="Editar">
+                                    <a asp-page="/Lots/Edit" asp-route-encryptedId="@encryptedId"
+                                                           class="btn btn-sm btn-outline-warning px-3 rounded-pill" title="Editar">
                                         <i class="bi bi-pencil"></i>
                                     </a>
                                     <button type="button"
-                                            class="btn btn-sm btn-outline-danger px-3 rounded-pill"
-                                            title="Eliminar"
-                                            onclick="openDeleteModal(@lot.Id, '@lot.BatchNumber')">
+                                                                  class="btn btn-sm btn-outline-danger px-3 rounded-pill"
+                                                                  title="Eliminar"
+                                                                                        onclick="openDeleteModal('@encryptedId', '@lot.BatchNumber')">
                                         <i class="bi bi-trash3"></i>
                                     </button>
                                 </div>
@@ -82,15 +87,26 @@
     </div>
 </div>
 
-<!-- 🧩 Modal de eliminación -->
 <partial name="_DeleteModalPartial" />
 
 @section Scripts {
     <script>
         const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
 
-        function openDeleteModal(id, batchNumber) {
-            document.getElementById('deleteId').value = id;
+        // La función ahora recibe el ID encriptado
+        function openDeleteModal(encryptedId, batchNumber) {
+            // 5. Asignar el ID encriptado al input oculto (asumiendo que tiene id="deleteId" y su nombre es "encryptedId" o el PageModel espera "id")
+            // Para que funcione con OnPostDeleteAsync(string encryptedId) en IndexModel.cs, el input debe llamarse 'encryptedId'
+            // Si el input oculto en tu _DeleteModalPartial tiene el nombre 'id', debes cambiar el PageModel a OnPostDeleteAsync(string id)
+            // Por consistencia con el código proporcionado, asumiremos que el input en el modal tiene name="encryptedId" o que el PageModel usa 'id' como nombre del parámetro de la URL.
+            // Para evitar modificar el partial, y basándonos en tu código JS original (que usa id) y el PageModel actualizado (que usa encryptedId), modificaremos el input a continuación:
+            // **IMPORTANTE**: Asumiendo que el input oculto en el modal tiene `id="deleteId"` y estás usando un tag helper con `asp-for="id"` que resulta en `name="id"`. Vamos a asumir que el PageModel espera `encryptedId` y cambiamos el `name` del input si estuviera aquí, o simplemente usamos el `id` para el JS y cambiamos el PageModel para usar `id`.
+
+            // Dada la firma en IndexModel.cs: public async Task<IActionResult> OnPostDeleteAsync(string encryptedId)
+            // La propiedad 'name' del input oculto en el formulario del modal debe ser 'encryptedId'.
+            // Si usas el mismo `id` para el input oculto del modal, asegúrate de que su atributo `name` sea `encryptedId`.
+
+            document.getElementById('deleteId').value = encryptedId;
             document.getElementById('deleteModalMessage').textContent =
                 `¿Estás seguro de eliminar el lote ${batchNumber}?`;
             deleteModal.show();
