@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc; 
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ClientEntity = Farmacia_Arqui_Soft.Domain.Models.Client;
 using Farmacia_Arqui_Soft.Domain.Ports;
@@ -27,26 +27,16 @@ namespace Farmacia_Arqui_Soft.Pages.Client
 
         public async Task<IActionResult> OnPostDeleteAsync(int id)
         {
-       
-            const int ACTOR_ID = 1; 
+            const int ACTOR_ID = 1;
 
             try
             {
                 await _clientService.SoftDeleteAsync(id, ACTOR_ID);
-
-                TempData["Success"] = $"Cliente con ID {id} eliminado correctamente.";
+                TempData["Success"] = $"Cliente eliminado correctamente.";
             }
-            catch (ArgumentException ex) 
+            catch (Exception ex)
             {
-                TempData["Error"] = ex.Message;
-            }
-            catch (InvalidOperationException ex) 
-            {
-                TempData["Error"] = ex.Message;
-            }
-            catch (Exception)
-            {
-                TempData["Error"] = "Ocurrió un error inesperado al intentar eliminar el cliente.";
+                TempData["Error"] = $"Ocurrió un error al eliminar: {ex.Message}";
             }
 
             return RedirectToPage();

@@ -57,11 +57,11 @@ namespace Farmacia_Arqui_Soft.Pages.Client
             }
             catch (MySqlException ex) when (ex.Number == 1062) // Duplicate entry
             {
-                ModelState.AddModelError("Input.email", "Ese email ya está vinculado a otro cliente. Por favor, usa uno distinto.");
+                ModelState.AddModelError("Input.email", "Ese email ya estï¿½ vinculado a otro cliente. Por favor, usa uno distinto.");
                 return Page();
             }
 
-            TempData["Success"] = "Cliente actualizado correctamente.";
+            TempData["SuccessMessage"] = "Cliente actualizado correctamente.";
             return RedirectToPage("/Client/IndexClient");
         }
     }
