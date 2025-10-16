@@ -23,34 +23,12 @@
         }
         else
         {
-            <p class="mb-4">
-                ¿Estás seguro de que deseas eliminar este lote?
+            <p>
+                ¿Deseas eliminar el lote 
+                <strong>@Model.Lot.BatchNumber</strong>?
             </p>
 
-            <div class="table-responsive mb-4">
-                <table class="table table-borderless mx-auto">
-                    <tbody>
-                        <tr>
-                            <th>Código de Lote</th>
-                            <td>@Model.Lot.BatchNumber</td>
-                        </tr>
-                        <tr>
-                            <th>Fecha de Vencimiento</th>
-                            <td>@Model.Lot.ExpirationDate.ToShortDateString()</td>
-                        </tr>
-                        <tr>
-                            <th>Cantidad Disponible</th>
-                            <td>@Model.Lot.Quantity</td>
-                        </tr>
-                        <tr>
-                            <th>Costo Unitario (Bs.)</th>
-                            <td>@Model.Lot.UnitCost.ToString("F2")</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <form method="post">
+            <form method="post" class="mt-3">
                 <input type="hidden" asp-for="Lot.Id" />
                 <button type="submit" class="btn btn-delete me-2">
                     <i class="bi bi-trash me-2"></i>Eliminar
