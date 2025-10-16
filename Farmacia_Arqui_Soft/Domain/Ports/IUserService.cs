@@ -2,7 +2,7 @@
 using Farmacia_Arqui_Soft.Domain.Models;
 using Farmacia_Arqui_Soft.Application.DTOs;
 
-namespace Farmacia_Arqui_Soft.Domain.Ports.UserPorts
+namespace Farmacia_Arqui_Soft.Domain.Ports
 {
     public interface IUserService
     {

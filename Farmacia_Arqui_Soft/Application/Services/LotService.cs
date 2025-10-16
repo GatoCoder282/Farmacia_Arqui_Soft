@@ -2,8 +2,15 @@
 using System.Threading.Tasks;
 using Farmacia_Arqui_Soft.Domain.Models;
 using Farmacia_Arqui_Soft.Domain.Ports;
+<<<<<<< HEAD
+using Farmacia_Arqui_Soft.Infraestructure.Persistence;
+using Farmacia_Arqui_Soft.Validations.Interfaces;
+
+
+=======
 using Farmacia_Arqui_Soft.Validations.Interfaces;
 using Farmacia_Arqui_Soft.Infraestructure.Persistence;
+>>>>>>> e613aa03f1683f7b1154163a08d1bff27455a6c0
 namespace Farmacia_Arqui_Soft.Application.Services
 {
     public class LotService

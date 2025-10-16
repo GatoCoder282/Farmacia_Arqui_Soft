@@ -1,11 +1,14 @@
+<<<<<<< HEAD
+// Nuevos usings para auth y DI de servicios
+using Farmacia_Arqui_Soft.Application.Services;
+=======
 using Farmacia_Arqui_Soft.Application.Services.UserServices;
+>>>>>>> e613aa03f1683f7b1154163a08d1bff27455a6c0
 using Farmacia_Arqui_Soft.Domain.Models;
 using Farmacia_Arqui_Soft.Domain.Ports;
 using Farmacia_Arqui_Soft.Domain.Ports.UserPorts;
-using Farmacia_Arqui_Soft.Domain.Services;
 using Farmacia_Arqui_Soft.Infraestructure.Data;
 using Farmacia_Arqui_Soft.Infraestructure.Persistence;
-using Farmacia_Arqui_Soft.Infraestructure.Security;
 using Farmacia_Arqui_Soft.Validations.Clients;
 using Farmacia_Arqui_Soft.Validations.Interfaces;
 using Farmacia_Arqui_Soft.Validations.Lots;
@@ -44,12 +47,16 @@ namespace Farmacia_Arqui_Soft
 
             // -------------------- Servicios de Dominio --------------------
             builder.Services.AddScoped<IUserService, UserService>();
+<<<<<<< HEAD
+           
+=======
             // Hasher y generador de password
             builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
             builder.Services.AddScoped<IPasswordGenerator, CryptoPasswordGenerator>();
 
             // Pol�tica de username (pura l�gica de dominio)
             builder.Services.AddSingleton<IUsernamePolicy, UsernamePolicy>();
+>>>>>>> e613aa03f1683f7b1154163a08d1bff27455a6c0
 
            
 

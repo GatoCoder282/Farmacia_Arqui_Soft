@@ -3,9 +3,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Farmacia_Arqui_Soft.Domain.Models;
+<<<<<<< HEAD
+using Farmacia_Arqui_Soft.Application.DTOS;
+using Farmacia_Arqui_Soft.Domain.Ports;
+using Farmacia_Arqui_Soft.Application.Services;
+=======
 using Farmacia_Arqui_Soft.Application.Services.UserServices;
 using Farmacia_Arqui_Soft.Application.DTOs;
 using Farmacia_Arqui_Soft.Domain.Ports.UserPorts;
+>>>>>>> e613aa03f1683f7b1154163a08d1bff27455a6c0
 
 namespace Farmacia_Arqui_Soft.Pages.Users
 {
@@ -76,7 +82,7 @@ namespace Farmacia_Arqui_Soft.Pages.Users
                 TempData["ErrorMessage"] = "El usuario ya no existe.";
                 return RedirectToPage("Index");
             }
-            catch (Application.Services.UserServices.ValidationException vex)
+            catch (Application.Services.ValidationException vex)
             {
                 foreach (var kv in vex.Errors)
                     ModelState.AddModelError(kv.Key ?? string.Empty, kv.Value);
