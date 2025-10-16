@@ -11,25 +11,23 @@
         public string? phone { get; set; }
         public byte status { get; set; } = 1;
         public bool is_deleted { get; set; } = false;
+        public DateTime CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
 
-        public Provider()
-        {
+        public Provider() { }
 
-        }
-
-        public Provider(int id, string firstname, string lastname, string nit, string addres, string email, string phone, byte status, bool is_deleted = false)
+        public Provider(int id, string firstName, string lastName, string? nit, string? address, string? email, string? phone, byte status, bool is_deleted = false)
         {
             this.id = id;
-            firstName = firstname;
-            lastName = lastname;
+            this.firstName = firstName;
+            this.lastName = lastName;
             this.nit = nit;
-            address = addres;
+            this.address = address;
             this.email = email;
             this.phone = phone;
             this.status = status;
             this.is_deleted = is_deleted;
         }
-
-
     }
 }
+
