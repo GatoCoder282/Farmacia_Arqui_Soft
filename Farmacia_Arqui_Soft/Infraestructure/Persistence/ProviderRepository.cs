@@ -22,9 +22,9 @@ namespace Farmacia_Arqui_Soft.Infraestructure.Persistence
         {
             const string sql = @"
                 INSERT INTO providers
-                    (first_name, last_name, nit, address, email, phone, status)
+                    (first_name, last_name, nit, address, email, phone, status, is_deleted, CreatedAt)
                 VALUES
-                    (@first_name, @last_name, @nit, @address, @email, @phone, @status);";
+                    (@first_name, @last_name, @nit, @address, @email, @phone, @status, @is_deleted, @CreatedAt);";
 
             using var conn = _db.GetConnection();
             await conn.OpenAsync();
@@ -37,47 +37,35 @@ namespace Farmacia_Arqui_Soft.Infraestructure.Persistence
             cmd.Parameters.AddWithValue("@email", (object?)entity.email ?? DBNull.Value);
             cmd.Parameters.AddWithValue("@phone", (object?)entity.phone ?? DBNull.Value);
             cmd.Parameters.AddWithValue("@status", entity.status);
+            cmd.Parameters.AddWithValue("@is_deleted", entity.is_deleted);
+            cmd.Parameters.AddWithValue("@CreatedAt", entity.CreatedAt);
 
             await cmd.ExecuteNonQueryAsync();
-            entity.id = Convert.ToInt32(cmd.LastInsertedId); // <-- int seguro
+            entity.id = Convert.ToInt32(cmd.LastInsertedId);
             return entity;
         }
 
         public async Task<Provider?> GetById(Provider entity)
         {
-            const string sql = @"SELECT id, first_name, last_name, nit, address, email, phone, status
-                                 FROM providers
-                                 WHERE id = @id;";
-
+            const string sql = @"SELECT * FROM providers WHERE id=@id";
             using var conn = _db.GetConnection();
             await conn.OpenAsync();
-
             using var cmd = new MySqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("@id", entity.id);
-
             using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleRow);
             if (await reader.ReadAsync())
             {
-                // Usamos ordinales + tipos ADO.NET
-                int oId = reader.GetOrdinal("id");
-                int ofn = reader.GetOrdinal("first_name");
-                int oln = reader.GetOrdinal("last_name");
-                int onit = reader.GetOrdinal("nit");
-                int oaddr = reader.GetOrdinal("address");
-                int oem = reader.GetOrdinal("email");
-                int oph = reader.GetOrdinal("phone");
-                int ost = reader.GetOrdinal("status");
-
                 return new Provider
                 {
-                    id = reader.GetInt32(oId),
-                    firstName = reader.GetString(ofn),
-                    lastName = reader.GetString(oln),
-                    nit = reader.IsDBNull(onit) ? null : reader.GetString(onit),
-                    address = reader.IsDBNull(oaddr) ? null : reader.GetString(oaddr),
-                    email = reader.IsDBNull(oem) ? null : reader.GetString(oem),
-                    phone = reader.IsDBNull(oph) ? null : reader.GetString(oph),
-                    status = reader.GetByte(ost)
+                    id = reader.GetInt32("id"),
+                    firstName = reader.GetString("first_name"),
+                    lastName = reader.GetString("last_name"),
+                    nit = reader.IsDBNull(reader.GetOrdinal("nit")) ? null : reader.GetString("nit"),
+                    address = reader.IsDBNull(reader.GetOrdinal("address")) ? null : reader.GetString("address"),
+                    email = reader.IsDBNull(reader.GetOrdinal("email")) ? null : reader.GetString("email"),
+                    phone = reader.IsDBNull(reader.GetOrdinal("phone")) ? null : reader.GetString("phone"),
+                    status = reader.GetByte("status"),
+                    is_deleted = reader.GetBoolean("is_deleted")
                 };
             }
             return null;
@@ -86,37 +74,24 @@ namespace Farmacia_Arqui_Soft.Infraestructure.Persistence
         public async Task<IEnumerable<Provider>> GetAll()
         {
             var list = new List<Provider>();
-            string sql = "SELECT * FROM providers WHERE is_deleted = FALSE";
-            
-
+            const string sql = "SELECT * FROM providers WHERE is_deleted = FALSE";
             using var conn = _db.GetConnection();
             await conn.OpenAsync();
-
             using var cmd = new MySqlCommand(sql, conn);
             using var reader = await cmd.ExecuteReaderAsync();
-
-            // Pre-resolvemos ordinales una sola vez
-            int oId = reader.GetOrdinal("id");
-            int ofn = reader.GetOrdinal("first_name");
-            int oln = reader.GetOrdinal("last_name");
-            int onit = reader.GetOrdinal("nit");
-            int oaddr = reader.GetOrdinal("address");
-            int oem = reader.GetOrdinal("email");
-            int oph = reader.GetOrdinal("phone");
-            int ost = reader.GetOrdinal("status");
-
             while (await reader.ReadAsync())
             {
                 list.Add(new Provider
                 {
-                    id = reader.GetInt32(oId),
-                    firstName = reader.GetString(ofn),
-                    lastName = reader.GetString(oln),
-                    nit = reader.IsDBNull(onit) ? null : reader.GetString(onit),
-                    address = reader.IsDBNull(oaddr) ? null : reader.GetString(oaddr),
-                    email = reader.IsDBNull(oem) ? null : reader.GetString(oem),
-                    phone = reader.IsDBNull(oph) ? null : reader.GetString(oph),
-                    status = reader.GetByte(ost)
+                    id = reader.GetInt32("id"),
+                    firstName = reader.GetString("first_name"),
+                    lastName = reader.GetString("last_name"),
+                    nit = reader.IsDBNull(reader.GetOrdinal("nit")) ? null : reader.GetString("nit"),
+                    address = reader.IsDBNull(reader.GetOrdinal("address")) ? null : reader.GetString("address"),
+                    email = reader.IsDBNull(reader.GetOrdinal("email")) ? null : reader.GetString("email"),
+                    phone = reader.IsDBNull(reader.GetOrdinal("phone")) ? null : reader.GetString("phone"),
+                    status = reader.GetByte("status"),
+                    is_deleted = reader.GetBoolean("is_deleted")
                 });
             }
             return list;
@@ -126,18 +101,11 @@ namespace Farmacia_Arqui_Soft.Infraestructure.Persistence
         {
             const string sql = @"
                 UPDATE providers
-                SET first_name=@first_name,
-                    last_name=@last_name,
-                    nit=@nit,
-                    address=@address,
-                    email=@email,
-                    phone=@phone,
-                    status=@status
+                SET first_name=@first_name, last_name=@last_name, nit=@nit,
+                    address=@address, email=@email, phone=@phone, status=@status, UpdatedAt=@UpdatedAt
                 WHERE id=@id;";
-
             using var conn = _db.GetConnection();
             await conn.OpenAsync();
-
             using var cmd = new MySqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("@first_name", entity.firstName);
             cmd.Parameters.AddWithValue("@last_name", entity.lastName);
@@ -146,21 +114,18 @@ namespace Farmacia_Arqui_Soft.Infraestructure.Persistence
             cmd.Parameters.AddWithValue("@email", (object?)entity.email ?? DBNull.Value);
             cmd.Parameters.AddWithValue("@phone", (object?)entity.phone ?? DBNull.Value);
             cmd.Parameters.AddWithValue("@status", entity.status);
+            cmd.Parameters.AddWithValue("@UpdatedAt", entity.UpdatedAt);
             cmd.Parameters.AddWithValue("@id", entity.id);
-
             await cmd.ExecuteNonQueryAsync();
         }
 
         public async Task Delete(Provider entity)
         {
-            string sql = "UPDATE providers SET is_deleted = TRUE WHERE id=@id";
-
+            const string sql = "UPDATE providers SET is_deleted=TRUE WHERE id=@id";
             using var conn = _db.GetConnection();
             await conn.OpenAsync();
-
             using var cmd = new MySqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("@id", entity.id);
-
             await cmd.ExecuteNonQueryAsync();
         }
     }

@@ -1,23 +1,18 @@
 using System.Threading.Tasks;
+using Farmacia_Arqui_Soft.Application.Services;
 using Farmacia_Arqui_Soft.Domain.Models;
-using Farmacia_Arqui_Soft.Domain.Ports;
-using Farmacia_Arqui_Soft.Validations.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Farmacia_Arqui_Soft.Infraestructure.Persistence;
 
 namespace Farmacia_Arqui_Soft.Pages.Providers
 {
     public class CreateModel : PageModel
     {
-        private readonly IRepository<Provider> _repo;
-        private readonly IValidator<Provider> _validator;
+        private readonly ProviderService _providerService;
 
-        public CreateModel(IValidator<Provider> validator)
+        public CreateModel(ProviderService providerService)
         {
-            _validator = validator;
-            var factory = new ProviderRepositoryFactory();
-            _repo = factory.CreateRepository<Provider>();
+            _providerService = providerService;
         }
 
         [BindProperty]
@@ -25,24 +20,10 @@ namespace Farmacia_Arqui_Soft.Pages.Providers
 
         public void OnGet() { }
 
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid) return Page();
-
-            var result = _validator.Validate(Provider);
-            if (!result.IsValid)
-            {
-                foreach (var err in result.Errors)
-                {
-                    var key = err.Key.StartsWith("Provider.") ? err.Key : $"Provider.{err.Key}";
-                    ModelState.AddModelError(key, err.Value);
-                }
-                return Page();
-            }
-
-            await _repo.Create(Provider);
-            TempData["Success"] = "Proveedor creado correctamente.";
+            await _providerService.CreateAsync(Provider);
             return RedirectToPage("Index");
         }
     }
