@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Farmacia_Arqui_Soft.Domain.Models;
-using Farmacia_Arqui_Soft.Application.Services.UserServices;
-using Farmacia_Arqui_Soft.Domain.Ports.UserPorts;
+using Farmacia_Arqui_Soft.Application.Services;
+using Farmacia_Arqui_Soft.Domain.Ports;
 
 namespace Farmacia_Arqui_Soft.Pages.Users
 {
@@ -23,7 +23,7 @@ namespace Farmacia_Arqui_Soft.Pages.Users
             var u = await _users.GetByIdAsync(id);
             if (u is null)
             {
-                TempData["Error"] = "El usuario no existe.";
+                TempData["ErrorMessage"] = "El usuario no existe.";
                 return RedirectToPage("Index");
             }
 
@@ -39,12 +39,12 @@ namespace Farmacia_Arqui_Soft.Pages.Users
             {
                 const int actorId = 1; // sin auth por ahora
                 await _users.SoftDeleteAsync(Id, actorId);
-                TempData["Success"] = "Usuario eliminado.";
+                TempData["SuccessMessage"] = "Usuario eliminado.";
                 return RedirectToPage("Index");
             }
             catch (NotFoundException)
             {
-                TempData["Error"] = "El usuario ya no existe.";
+                TempData["ErrorMessage"] = "El usuario ya no existe.";
                 return RedirectToPage("Index");
             }
         }

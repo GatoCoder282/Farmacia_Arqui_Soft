@@ -1,55 +1,98 @@
 ﻿@page
 @model Farmacia_Arqui_Soft.Pages.Users.IndexModel
 @{
-    ViewData["Title"] = "Usuarios";
+    ViewData["Title"] = "Gestión de Usuarios";
 }
 
-<h2>Usuarios</h2>
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+    <h2 class="fw-bold text-success mb-0">
+        <i class="bi bi-people-fill me-2"></i> Gestión de Usuarios
+    </h2>
+
+    <a asp-page="/Users/Create" class="btn btn-success shadow-sm rounded-pill px-4 d-flex align-items-center">
+        <i class="bi bi-plus-circle me-2"></i> Nuevo Usuario
+    </a>
+</div>
 
 @if (TempData["Successss"] is string ok && !string.IsNullOrWhiteSpace(ok))
 {
-    <div class="alert alert-success">@ok</div>
+    <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i> @ok
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
 }
+
 @if (TempData["Error"] is string err && !string.IsNullOrWhiteSpace(err))
 {
-    <div class="alert alert-danger">@err</div>
+    <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i> @err
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
 }
 
-<p>
-    <a asp-page="Create" class="btn btn-primary">Nuevo usuario</a>
-</p>
-
-<table class="table table-striped table-bordered">
-    <thead>
-        <tr>
-            <th>Usuario</th>
-            <th>Nombre(s)</th>
-            <th>Apellido</th>
-            <th>Correo</th>
-            <th>Teléfono</th>
-            <th>CI</th>
-            <th>Rol</th>
-            <th>Creado</th>
-            <th style="width:160px;">Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var u in Model.Users)
-        {
-            <tr>
-                <td>@u.username</td>
-                <td>@u.first_name @u.second_name</td>
-                <td>@u.last_name</td>
-                <td>@u.mail</td>
-                <td>@u.phone</td>
-                <td>@u.ci</td>
-                <td>@u.role</td>
-                <td>@u.created_at.ToString("yyyy-MM-dd HH:mm")</td>
-                <td>
-                    <a asp-page="Edit" asp-route-id="@u.id" class="btn btn-sm btn-outline-secondary">Editar</a>
-                    <a asp-page="Delete" asp-route-id="@u.id" class="btn btn-sm btn-outline-danger">Eliminar</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<!-- ✅ Tabla sin scroll, 100% fluida -->
+<div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+        <table class="table table-hover align-middle mb-0 text-center">
+            <thead class="table-success text-dark">
+                <tr>
+                    <th>Usuario</th>
+                    <th>Nombre(s)</th>
+                    <th>Apellido</th>
+                    <th>Correo</th>
+                    <th>Teléfono</th>
+                    <th>CI</th>
+                    <th>Rol</th>
+                    <th>Creado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Users != null && Model.Users.Any())
+                {
+                    foreach (var u in Model.Users)
+                    {
+                        <tr>
+                            <td class="fw-semibold">@u.username</td>
+                            <td>@u.first_name @u.second_name</td>
+                            <td>@u.last_name</td>
+                            <td style="white-space: normal; word-break: break-word; max-width: 220px;">
+                                @u.mail
+                            </td>
+                            <td>@u.phone</td>
+                            <td>@u.ci</td>
+                            <td>
+                                <span class="badge bg-success-subtle text-success border border-success rounded-pill px-3">
+                                    @u.role
+                                </span>
+                            </td>
+                            <td style="white-space: normal; word-break: break-word; max-width: 160px;">
+                                @u.created_at.ToString("yyyy-MM-dd HH:mm:ss")
+                            </td>
+                            <td>
+                                <div class="d-flex justify-content-center gap-2 flex-nowrap">
+                                    <a asp-page="/Users/Edit" asp-route-id="@u.id"
+                                       class="btn btn-sm btn-outline-danger px-3 rounded-pill" title="Editar">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a asp-page="/Users/Delete" asp-route-id="@u.id"
+                                       class="btn btn-sm btn-outline-danger px-3 rounded-pill" title="Eliminar">
+                                        <i class="bi bi-trash3"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="9" class="text-center text-muted py-4">
+                            <i class="bi bi-inbox me-2"></i> No hay usuarios registrados.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

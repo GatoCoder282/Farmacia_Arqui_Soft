@@ -1,59 +1,77 @@
 ﻿@page
 @model Farmacia_Arqui_Soft.Pages.Users.CreateModel
 @{
-    ViewData["Title"] = "Nuevo Usuario";
+    ViewData["Title"] = "Registrar Usuario";
 }
 
-<h2>Nuevo Usuario</h2>
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-success text-white text-center rounded-top-4 py-3">
+            <h3 class="mb-0">
+                <i class="bi bi-person-plus-fill me-2"></i>Registrar Nuevo Usuario
+            </h3>
+        </div>
 
-<div asp-validation-summary="All" class="text-danger mb-3"></div>
+        <div class="card-body p-4">
+            <form method="post">
+                <div asp-validation-summary="All" class="alert alert-danger"></div>
 
-<form method="post">
-    <div class="mb-2">
-        <label asp-for="Input.FirstName" class="form-label"></label>
-        <input asp-for="Input.FirstName" class="form-control" />
-        <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label asp-for="Input.FirstName" class="form-label fw-semibold"></label>
+                        <input asp-for="Input.FirstName" class="form-control rounded-pill" placeholder="Ej. Juan" required />
+                        <span asp-validation-for="Input.FirstName" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Input.SecondName" class="form-label fw-semibold"></label>
+                        <input asp-for="Input.SecondName" class="form-control rounded-pill" placeholder="Ej. Carlos" />
+                        <span asp-validation-for="Input.SecondName" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Input.LastName" class="form-label fw-semibold"></label>
+                        <input asp-for="Input.LastName" class="form-control rounded-pill" placeholder="Ej. Pérez" required />
+                        <span asp-validation-for="Input.LastName" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Input.Mail" class="form-label fw-semibold"></label>
+                        <input asp-for="Input.Mail" type="email" class="form-control rounded-pill" placeholder="correo@ejemplo.com" required />
+                        <span asp-validation-for="Input.Mail" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Input.Phone" class="form-label fw-semibold"></label>
+                        <input asp-for="Input.Phone" type="number" class="form-control rounded-pill" placeholder="Ej. 71234567" required />
+                        <span asp-validation-for="Input.Phone" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Input.Ci" class="form-label fw-semibold"></label>
+                        <input asp-for="Input.Ci" class="form-control rounded-pill" placeholder="Ej. 1234567" required />
+                        <span asp-validation-for="Input.Ci" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Input.Role" class="form-label fw-semibold"></label>
+                        <select asp-for="Input.Role" class="form-select rounded-pill" asp-items="Model.Roles"></select>
+                        <span asp-validation-for="Input.Role" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-success px-4 rounded-pill shadow-sm">
+                        <i class="bi bi-save me-2"></i>Guardar
+                    </button>
+                    <a asp-page="Index" class="btn btn-outline-secondary px-4 rounded-pill ms-2">
+                        <i class="bi bi-x-circle me-2"></i>Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
-
-    <div class="mb-2">
-        <label asp-for="Input.SecondName" class="form-label"></label>
-        <input asp-for="Input.SecondName" class="form-control" />
-        <span asp-validation-for="Input.SecondName" class="text-danger"></span>
-    </div>
-
-    <div class="mb-2">
-        <label asp-for="Input.LastName" class="form-label"></label>
-        <input asp-for="Input.LastName" class="form-control" />
-        <span asp-validation-for="Input.LastName" class="text-danger"></span>
-    </div>
-
-    <div class="mb-2">
-        <label asp-for="Input.Mail" class="form-label"></label>
-        <input asp-for="Input.Mail" class="form-control" />
-        <span asp-validation-for="Input.Mail" class="text-danger"></span>
-    </div>
-
-    <div class="mb-2">
-        <label asp-for="Input.Phone" class="form-label"></label>
-        <input asp-for="Input.Phone" type="number" class="form-control" />
-        <span asp-validation-for="Input.Phone" class="text-danger"></span>
-    </div>
-
-    <div class="mb-2">
-        <label asp-for="Input.Ci" class="form-label"></label>
-        <input asp-for="Input.Ci" class="form-control" />
-        <span asp-validation-for="Input.Ci" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Input.Role" class="form-label"></label>
-        <select asp-for="Input.Role" class="form-select" asp-items="Model.Roles"></select>
-        <span asp-validation-for="Input.Role" class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Guardar</button>
-    <a asp-page="Index" class="btn btn-secondary ms-2">Volver</a>
-</form>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

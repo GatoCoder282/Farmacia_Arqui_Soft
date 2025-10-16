@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;     // <- si vas a proteger la página
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Farmacia_Arqui_Soft.Domain.Models;
-using Farmacia_Arqui_Soft.Domain.Ports.UserPorts;
+using Farmacia_Arqui_Soft.Domain.Ports;
 
 namespace Farmacia_Arqui_Soft.Pages.Users
 {

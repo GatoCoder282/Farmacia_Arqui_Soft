@@ -5,6 +5,7 @@ using Farmacia_Arqui_Soft.Application.Services;
 using Farmacia_Arqui_Soft.Validations.Interfaces;
 using Farmacia_Arqui_Soft.Domain.Models;
 
+
 namespace Farmacia_Arqui_Soft.Pages.Lots
 {
     public class DeleteModel : PageModel
@@ -34,7 +35,13 @@ namespace Farmacia_Arqui_Soft.Pages.Lots
 
         public async Task<IActionResult> OnPostAsync()
         {
-            await _service.DeleteAsync(Lot.Id);
+            var success = await _service.DeleteAsync(Lot.Id);
+            if (!success)
+            {
+                TempData["ErrorMessage"] = "Error al eliminar el lote.";
+                return RedirectToPage("Index");
+            }
+
             TempData["SuccessMessage"] = "Lote eliminado correctamente.";
             return RedirectToPage("Index");
         }

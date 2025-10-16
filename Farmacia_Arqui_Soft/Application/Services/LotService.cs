@@ -5,7 +5,6 @@ using Farmacia_Arqui_Soft.Domain.Ports;
 using Farmacia_Arqui_Soft.Infraestructure.Persistence;
 using Farmacia_Arqui_Soft.Validations.Interfaces;
 
-
 namespace Farmacia_Arqui_Soft.Application.Services
 {
     public class LotService

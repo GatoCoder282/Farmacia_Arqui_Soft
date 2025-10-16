@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Farmacia_Arqui_Soft.Domain.Ports.UserPorts;
+using Farmacia_Arqui_Soft.Domain.Ports;
 
 namespace Farmacia_Arqui_Soft.Pages.Auth
 {
@@ -57,7 +57,7 @@ namespace Farmacia_Arqui_Soft.Pages.Auth
             }
         }
 
-        // Botón “Entrar como Admin QA (fake)”
+        // Botï¿½n ï¿½Entrar como Admin QA (fake)ï¿½
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostQuickAdminAsync()
         {
@@ -84,7 +84,7 @@ namespace Farmacia_Arqui_Soft.Pages.Auth
             [Required, Display(Name = "Usuario")]
             public string Username { get; set; } = "";
 
-            [Required, Display(Name = "Contraseña")]
+            [Required, Display(Name = "Contraseï¿½a")]
             public string Password { get; set; } = "";
         }
     }

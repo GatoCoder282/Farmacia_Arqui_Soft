@@ -1,14 +1,10 @@
-// Nuevos usings para auth y DI de servicios
-using Farmacia_Arqui_Soft.Application.Services.UserServices;
+using Farmacia_Arqui_Soft.Application.Services;
 using Farmacia_Arqui_Soft.Domain.Models;
 using Farmacia_Arqui_Soft.Domain.Ports;
 using Farmacia_Arqui_Soft.Domain.Ports.UserPorts;
-using Farmacia_Arqui_Soft.Domain.Services;
 using Farmacia_Arqui_Soft.Infraestructure.Data;
 using Farmacia_Arqui_Soft.Infraestructure.Persistence;
-using Farmacia_Arqui_Soft.Infraestructure.Security;
 using Farmacia_Arqui_Soft.Validations.Clients;
-// Validations
 using Farmacia_Arqui_Soft.Validations.Interfaces;
 using Farmacia_Arqui_Soft.Validations.Lots;
 using Farmacia_Arqui_Soft.Validations.Providers;
@@ -23,7 +19,7 @@ namespace Farmacia_Arqui_Soft
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // ADO.NET singleton para conexión
+            // ADO.NET singleton para conexiï¿½n
             DatabaseConnection.Initialize(builder.Configuration);
 
             // -------------------- Infra: Factory & Repos --------------------
@@ -36,7 +32,7 @@ namespace Farmacia_Arqui_Soft
             builder.Services.AddScoped<IRepository<User>, UserRepository>();
             builder.Services.AddScoped<IRepository<Lot>, LotRepository>();
             builder.Services.AddScoped<IRepository<Provider>, ProviderRepository>();
-            // Si tienes repos para Client/others, agrégalos igual
+            // Si tienes repos para Client/others, agrï¿½galos igual
 
             // -------------------- Validadores --------------------
             builder.Services.AddScoped<IValidator<User>, UserValidator>();
@@ -46,30 +42,24 @@ namespace Farmacia_Arqui_Soft
 
             // -------------------- Servicios de Dominio --------------------
             builder.Services.AddScoped<IUserService, UserService>();
-            // Hasher y generador de password
-            builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
-            builder.Services.AddScoped<IPasswordGenerator, CryptoPasswordGenerator>();
-
-            // Política de username (pura lógica de dominio)
-            builder.Services.AddSingleton<IUsernamePolicy, UsernamePolicy>();
 
            
 
-            // Email: implementación de desarrollo que loguea a consola.
-            // Cambia DevEmailSender por tu implementación SMTP real cuando la tengas.
+            // Email: implementaciï¿½n de desarrollo que loguea a consola.
+            // Cambia DevEmailSender por tu implementaciï¿½n SMTP real cuando la tengas.
             builder.Services.AddScoped<IEmailSender, DevEmailSender>();
 
             // -------------------- Razor Pages --------------------
             builder.Services.AddRazorPages();
 
-            // -------------------- Auth mínima (para evitar tu excepción) --------------------
-            // Si todavía no usarán [Authorize], igual deja esto para tener esquema por defecto.
+            // -------------------- Auth mï¿½nima (para evitar tu excepciï¿½n) --------------------
+            // Si todavï¿½a no usarï¿½n [Authorize], igual deja esto para tener esquema por defecto.
             builder.Services
                 .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
                     options.LoginPath = "/Auth/Login";           // crea esta page cuando integren login
-                    options.AccessDeniedPath = "/Auth/Denied";   // y esta también
+                    options.AccessDeniedPath = "/Auth/Denied";   // y esta tambiï¿½n
                 });
 
             
@@ -84,7 +74,7 @@ namespace Farmacia_Arqui_Soft
             }
 
             // -------------------- Pipeline --------------------
-            // app.UseStaticFiles(); // Si usas archivos estáticos clásicos, puedes habilitarlo
+            // app.UseStaticFiles(); // Si usas archivos estï¿½ticos clï¿½sicos, puedes habilitarlo
             app.UseRouting();
 
             app.UseAuthentication(); // IMPORTANTE: antes de UseAuthorization
@@ -97,9 +87,9 @@ namespace Farmacia_Arqui_Soft
             app.Run();
         }
 
-        // -------------------- Implementación DEV de IEmailSender --------------------
+        // -------------------- Implementaciï¿½n DEV de IEmailSender --------------------
         // No rompe nada y te deja ver el "correo" en la consola de salida.
-        // Reemplázala por tu implementación real (SMTP, API, etc.) cuando esté lista.
+        // Reemplï¿½zala por tu implementaciï¿½n real (SMTP, API, etc.) cuando estï¿½ lista.
         internal sealed class DevEmailSender : IEmailSender
         {
             public Task SendAsync(string to, string subject, string body)
