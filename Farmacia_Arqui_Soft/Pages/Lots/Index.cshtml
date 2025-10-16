@@ -4,25 +4,42 @@
     ViewData["Title"] = "Gestión de Lotes";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="fw-bold text-success">
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+    <h2 class="fw-bold text-success mb-0">
         <i class="bi bi-box-seam me-2"></i> Gestión de Lotes
     </h2>
-    <a asp-page="/Lots/Create" class="btn btn-success shadow-sm rounded-pill px-4">
+
+    <a asp-page="/Lots/Create" class="btn btn-success shadow-sm rounded-pill px-4 d-flex align-items-center">
         <i class="bi bi-plus-circle me-2"></i> Nuevo Lote
     </a>
 </div>
 
+@if (TempData["SuccessMessage"] is string ok && !string.IsNullOrWhiteSpace(ok))
+{
+    <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i> @ok
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] is string err && !string.IsNullOrWhiteSpace(err))
+{
+    <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i> @err
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
+}
+
 <div class="card shadow-sm border-0">
     <div class="card-body p-0">
-        <table class="table table-hover align-middle mb-0">
+        <table class="table table-hover align-middle mb-0 text-center">
             <thead class="table-success text-dark">
                 <tr>
-                    <th scope="col">Código de Lote</th>
-                    <th scope="col">Fecha de Vencimiento</th>
-                    <th scope="col">Cantidad</th>
-                    <th scope="col">Costo Unitario (Bs.)</th>
-                    <th scope="col" class="text-center" style="width:180px;">Acciones</th>
+                    <th>Código de Lote</th>
+                    <th>Fecha de Vencimiento</th>
+                    <th>Cantidad</th>
+                    <th>Costo Unitario (Bs.)</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,16 +52,18 @@
                             <td>@lot.ExpirationDate.ToString("dd/MM/yyyy")</td>
                             <td>@lot.Quantity</td>
                             <td>@lot.UnitCost.ToString("F2")</td>
-                            <td class="text-center">
+                            <td>
                                 <div class="d-flex justify-content-center gap-2">
                                     <a asp-page="/Lots/Edit" asp-route-id="@lot.Id"
-                                       class="btn btn-sm btn-outline-warning px-3 rounded-pill">
+                                       class="btn btn-sm btn-outline-warning px-3 rounded-pill" title="Editar">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <a asp-page="/Lots/Delete" asp-route-id="@lot.Id"
-                                       class="btn btn-sm btn-outline-danger px-3 rounded-pill">
+                                    <button type="button"
+                                            class="btn btn-sm btn-outline-danger px-3 rounded-pill"
+                                            title="Eliminar"
+                                            onclick="openDeleteModal(@lot.Id, '@lot.BatchNumber')">
                                         <i class="bi bi-trash3"></i>
-                                    </a>
+                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -62,3 +81,19 @@
         </table>
     </div>
 </div>
+
+<!-- 🧩 Modal de eliminación -->
+<partial name="_DeleteModalPartial" />
+
+@section Scripts {
+    <script>
+        const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+
+        function openDeleteModal(id, batchNumber) {
+            document.getElementById('deleteId').value = id;
+            document.getElementById('deleteModalMessage').textContent =
+                `¿Estás seguro de eliminar el lote ${batchNumber}?`;
+            deleteModal.show();
+        }
+    </script>
+}

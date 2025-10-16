@@ -9,7 +9,6 @@ namespace Farmacia_Arqui_Soft.Domain.Models
         public int Quantity { get; set; }
         public decimal UnitCost { get; set; }
 
-        // 🔹 Auditoría
         public bool IsDeleted { get; set; } = false;
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime? UpdatedAt { get; set; }
