@@ -141,7 +141,7 @@ namespace Farmacia_Arqui_Soft.Repositories
             await cmd.ExecuteNonQueryAsync();
         }
 
-        // Soft delete: desactivar
+
         public async Task Delete(object id)
         {
             int key = ToIntId(id);
