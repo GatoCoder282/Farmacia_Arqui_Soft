@@ -24,7 +24,7 @@ namespace Farmacia_Arqui_Soft.Application.Services
         public async Task<Provider> CreateAsync(Provider provider)
         {
             var validationResult = _validator.Validate(provider);
-            if (!validationResult.IsValid)
+            if (!validationResult.IsSuccess)
                 throw new ArgumentException($"Errores de validación: {string.Join(", ", validationResult.Errors)}");
 
             provider.CreatedAt = DateTime.UtcNow;
@@ -46,7 +46,7 @@ namespace Farmacia_Arqui_Soft.Application.Services
         public async Task UpdateAsync(Provider provider)
         {
             var validationResult = _validator.Validate(provider);
-            if (!validationResult.IsValid)
+            if (!validationResult.IsSuccess)
                 throw new ArgumentException($"Errores de validación: {string.Join(", ", validationResult.Errors)}");
 
             provider.UpdatedAt = DateTime.UtcNow;

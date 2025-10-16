@@ -1,55 +1,75 @@
 ﻿using System.Text.RegularExpressions;
+using FluentResults;
 using Farmacia_Arqui_Soft.Domain.Models;
 using Farmacia_Arqui_Soft.Validations.Interfaces;
+using Farmacia_Arqui_Soft.Validations.Core;
 
 namespace Farmacia_Arqui_Soft.Validations.Providers
 {
     public class ProviderValidator : IValidator<Provider>
     {
-        // Reglas base: requeridos, formatos y rangos ligeros
-        // (La unicidad de nit/email la garantizamos en BD con UNIQUE; si quieres, luego agregamos verificación a BD aquí.)
-
-        public ValidationResult Validate(Provider p)
+        public Result Validate(Provider p)
         {
-            var result = new ValidationResult();
+            var result = Result.Ok();
 
-            // --- FIRST NAME ---
+            // FIRST NAME: requerido, mín 2, solo letras y espacios
             if (string.IsNullOrWhiteSpace(p.firstName))
-                result.AddError("firstName", "El nombre es obligatorio.");
-            else if (p.firstName.Length < 2)
-                result.AddError("firstName", "El nombre debe tener al menos 2 caracteres.");
-
-            // --- LAST NAME ---
-            if (string.IsNullOrWhiteSpace(p.lastName))
-                result.AddError("lastName", "El apellido es obligatorio.");
-            else if (p.lastName.Length < 2)
-                result.AddError("lastName", "El apellido debe tener al menos 2 caracteres.");
-
-            // --- NIT (opcional, solo dígitos) ---
-            if (!string.IsNullOrWhiteSpace(p.nit) && !Regex.IsMatch(p.nit, @"^\d+$"))
-                result.AddError("nit", "El NIT solo debe contener números.");
-
-            // --- EMAIL (opcional, formato básico) ---
-            if (!string.IsNullOrWhiteSpace(p.email))
             {
-                // Regex simple y suficiente para vista/servidor; la verificación fuerte la hará el UNIQUE de la BD
-                var emailRegex = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
-                if (!Regex.IsMatch(p.email, emailRegex))
-                    result.AddError("email", "Correo electrónico no válido.");
+                result = result.WithFieldError("firstName", "El nombre es obligatorio.");
+            }
+            else
+            {
+                if (p.firstName.Trim().Length < 2)
+                    result = result.WithFieldError("firstName", "El nombre debe tener al menos 2 caracteres.");
+                if (!Regex.IsMatch(p.firstName, @"^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ\s]+$"))
+                    result = result.WithFieldError("firstName", "El nombre solo debe contener letras y espacios.");
             }
 
-            // --- PHONE (opcional, dígitos, +, espacios y guiones) ---
-            if (!string.IsNullOrWhiteSpace(p.phone) && !Regex.IsMatch(p.phone, @"^[\d\+\-\s]+$"))
-                result.AddError("phone", "El teléfono solo puede contener dígitos, +, - y espacios.");
+            // LAST NAME: requerido, mín 2, solo letras y espacios
+            if (string.IsNullOrWhiteSpace(p.lastName))
+            {
+                result = result.WithFieldError("lastName", "El apellido es obligatorio.");
+            }
+            else
+            {
+                if (p.lastName.Trim().Length < 2)
+                    result = result.WithFieldError("lastName", "El apellido debe tener al menos 2 caracteres.");
+                if (!Regex.IsMatch(p.lastName, @"^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ\s]+$"))
+                    result = result.WithFieldError("lastName", "El apellido solo debe contener letras y espacios.");
+            }
 
-            // --- ADDRESS (opcional) ---
+            // NIT (opcional, solo dígitos)
+            if (!string.IsNullOrWhiteSpace(p.nit))
+            {
+                if (!Regex.IsMatch(p.nit, @"^\d+$"))
+                    result = result.WithFieldError("nit", "El NIT solo debe contener números.");
+            }
+
+            // EMAIL (opcional, formato básico)
+            if (!string.IsNullOrWhiteSpace(p.email))
+            {
+                var emailRegex = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+                if (!Regex.IsMatch(p.email, emailRegex))
+                    result = result.WithFieldError("email", "Correo electrónico no válido.");
+            }
+
+            // PHONE (opcional, dígitos, +, -, espacios)
+            if (!string.IsNullOrWhiteSpace(p.phone))
+            {
+                if (!Regex.IsMatch(p.phone, @"^[\d\+\-\s]+$"))
+                    result = result.WithFieldError("phone", "El teléfono solo puede contener dígitos, +, - y espacios.");
+                // si quieres rangos típicos BO: 6–15
+                if (p.phone.Replace(" ", "").Replace("-", "").Replace("+", "").Length < 6)
+                    result = result.WithFieldError("phone", "El teléfono es demasiado corto.");
+            }
+
+            // ADDRESS (opcional)
             if (!string.IsNullOrWhiteSpace(p.address) && p.address.Length > 500)
-                result.AddError("address", "La dirección no debe exceder 500 caracteres.");
+                result = result.WithFieldError("address", "La dirección no debe exceder 500 caracteres.");
 
-            // --- STATUS (byte) ---
-            // Si manejas 0=inactivo, 1=activo:
+            // STATUS (byte): 0 o 1
             if (p.status != 0 && p.status != 1)
-                result.AddError("status", "Status inválido. Use 0 (inactivo) o 1 (activo).");
+                result = result.WithFieldError("status", "Status inválido. Use 0 (inactivo) o 1 (activo).");
 
             return result;
         }

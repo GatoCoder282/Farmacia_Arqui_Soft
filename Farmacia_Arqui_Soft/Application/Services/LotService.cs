@@ -4,6 +4,7 @@ using Farmacia_Arqui_Soft.Domain.Models;
 using Farmacia_Arqui_Soft.Domain.Ports;
 using Farmacia_Arqui_Soft.Infraestructure.Persistence;
 using Farmacia_Arqui_Soft.Validations.Interfaces;
+using Farmacia_Arqui_Soft.Validations.Core;
 
 namespace Farmacia_Arqui_Soft.Application.Services
 {
@@ -28,8 +29,8 @@ namespace Farmacia_Arqui_Soft.Application.Services
         public async Task<(bool Success, Dictionary<string, string>? Errors)> CreateAsync(Lot lot, int userId = 1)
         {
             var validation = _validator.Validate(lot);
-            if (!validation.IsValid)
-                return (false, validation.Errors);
+            if (!validation.IsSuccess)
+                return (false, validation.Errors.ToDictionary());
 
             lot.CreatedAt = DateTime.Now;
             lot.CreatedBy = userId;
@@ -41,8 +42,8 @@ namespace Farmacia_Arqui_Soft.Application.Services
         public async Task<(bool Success, Dictionary<string, string>? Errors)> UpdateAsync(Lot lot, int userId = 1)
         {
             var validation = _validator.Validate(lot);
-            if (!validation.IsValid)
-                return (false, validation.Errors);
+            if (!validation.IsSuccess)
+                return (false, validation.Errors.ToDictionary());
 
             lot.UpdatedAt = DateTime.Now;
             lot.UpdatedBy = userId;

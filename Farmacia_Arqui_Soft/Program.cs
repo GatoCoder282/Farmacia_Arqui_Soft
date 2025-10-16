@@ -1,3 +1,4 @@
+using System.Globalization;
 using Farmacia_Arqui_Soft.Aplication.Services;
 using Farmacia_Arqui_Soft.Application.Services;
 using Farmacia_Arqui_Soft.Domain.Models;
@@ -11,6 +12,8 @@ using Farmacia_Arqui_Soft.Validations.Lots;
 using Farmacia_Arqui_Soft.Validations.Providers;
 using Farmacia_Arqui_Soft.Validations.Users;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Options;
 
 namespace Farmacia_Arqui_Soft
 {
@@ -20,31 +23,26 @@ namespace Farmacia_Arqui_Soft
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // ADO.NET singleton para conexión
+            // -------------------- Conexión DB --------------------
             DatabaseConnection.Initialize(builder.Configuration);
 
-            // -------------------- Infra: Factory & Repos --------------------
-            // Mantengo ambas por compatibilidad con tus colegas
+            // -------------------- Repositorios --------------------
             builder.Services.AddSingleton<RepositoryFactory, UserRepositoryFactory>();
             builder.Services.AddSingleton<UserRepositoryFactory>();
-            // 💡 Agregamos la Factory de Cliente si piensas usarla en alguna parte
             builder.Services.AddSingleton<ClientRepositoryFactory>();
-
             builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
-            // REPOSITORIOS (Adaptadores de Salida de la Arquitectura Hexagonal)
             builder.Services.AddScoped<IRepository<User>, UserRepository>();
             builder.Services.AddScoped<IRepository<Lot>, LotRepository>();
             builder.Services.AddScoped<IRepository<Provider>, ProviderRepository>();
-            // ✅ SOLUCIÓN DIRECTA: Registrar la clase concreta ProviderService
-            builder.Services.AddScoped<Farmacia_Arqui_Soft.Application.Services.ProviderService>();
-
-            // ✅ CORRECCIÓN CRÍTICA: REGISTRO FALTANTE DEL SERVICIO DE CLIENTE
-            builder.Services.AddScoped<IClientService, ClientService>();
-
-            // 💡 REGISTRO DE REPOSITORIO DE CLIENTE (Necesario para ClientService)
             builder.Services.AddScoped<IRepository<Client>, ClientRepository>();
 
+            // -------------------- Servicios --------------------
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IClientService, ClientService>();
+            builder.Services.AddScoped<Farmacia_Arqui_Soft.Application.Services.ProviderService>();
+            builder.Services.AddSingleton<Farmacia_Arqui_Soft.Domain.Ports.IEncryptionService, EncryptionService>();
+            builder.Services.AddScoped<IEmailSender, DevEmailSender>();
 
             // -------------------- Validadores --------------------
             builder.Services.AddScoped<IValidator<User>, UserValidator>();
@@ -52,24 +50,30 @@ namespace Farmacia_Arqui_Soft
             builder.Services.AddScoped<IValidator<Lot>, LotValidator>();
             builder.Services.AddScoped<IValidator<Provider>, ProviderValidator>();
 
-            // -------------------- Servicios de Aplicación (Puertos de Entrada) --------------------
-            builder.Services.AddScoped<IUserService, UserService>();
-
-            // ✅ CORRECCIÓN CRÍTICA: REGISTRO FALTANTE DEL SERVICIO DE CLIENTE
-            // El contenedor de DI necesitaba esta línea para saber qué hacer cuando se pide IClientService.
-            builder.Services.AddScoped<IClientService, ClientService>();
-
-            // 💡 REGISTRO DE SERVICIO DE ENCRIPTACIÓN (Necesario para IndexClientModel y EditModel)
-            builder.Services.AddSingleton<Farmacia_Arqui_Soft.Domain.Ports.IEncryptionService, Farmacia_Arqui_Soft.Aplication.Services.EncryptionService>();
-
-
-            // Email: implementación de desarrollo que loguea a consola.
-            builder.Services.AddScoped<IEmailSender, DevEmailSender>();
-
             // -------------------- Razor Pages --------------------
-            builder.Services.AddRazorPages();
+            builder.Services.AddRazorPages()
+                .AddViewOptions(o =>
+                {
+                    // Desactivar validación del lado del cliente (HTML5/jQuery)
+                    o.HtmlHelperOptions.ClientValidationEnabled = false;
+                })
+                .AddMvcOptions(options =>
+                {
+                    // Desactivar DataAnnotations: solo validaciones personalizadas
+                    options.ModelMetadataDetailsProviders.Clear();
+                    options.ModelValidatorProviders.Clear();
+                });
 
-            // -------------------- Auth mínima --------------------
+            // -------------------- Localización (opcional) --------------------
+            var supportedCultures = new[] { new CultureInfo("es-BO"), new CultureInfo("es") };
+            builder.Services.Configure<RequestLocalizationOptions>(options =>
+            {
+                options.DefaultRequestCulture = new RequestCulture("es-BO");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+            });
+
+            // -------------------- Autenticación --------------------
             builder.Services
                 .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
@@ -87,14 +91,16 @@ namespace Farmacia_Arqui_Soft
                 app.UseExceptionHandler("/Error");
             }
 
-            // -------------------- Pipeline --------------------
-            app.UseStaticFiles(); // Agrego si usas estáticos como CSS/JS/Imágenes
+            // -------------------- Middleware --------------------
+            var locOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>();
+            app.UseRequestLocalization(locOptions.Value);
+
+            app.UseStaticFiles();
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
 
-            // Aspire/Static Assets helpers que ya usaban
             app.MapStaticAssets();
             app.MapRazorPages().WithStaticAssets();
 
