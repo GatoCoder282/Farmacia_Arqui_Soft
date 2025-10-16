@@ -14,7 +14,6 @@
     </a>
 </div>
 
-@* Mantenemos las claves de TempData originales (SuccessMessage/ErrorMessage) *@
 @if (TempData["SuccessMessage"] is string ok && !string.IsNullOrWhiteSpace(ok))
 {
     <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
@@ -36,7 +35,7 @@
         <table class="table table-hover align-middle mb-0 text-center">
             <thead class="table-success text-dark">
                 <tr>
-                    <th>ID</th>
+                    @* <th>ID</th> —> Eliminado *@
                     <th>Nombre</th>
                     <th>Apellido</th>
                     <th>NIT</th>
@@ -47,11 +46,10 @@
             <tbody>
                 @if (Model.Clients is not null && Model.Clients.Any())
                 {
-                    @* Ahora iteramos correctamente sobre la lista de ClientEntity *@
                     @foreach (var c in Model.Clients)
                     {
                         <tr>
-                            <td>@c.id</td>
+                            @* <td>@c.id</td> —> Eliminado *@
                             <td>@c.first_name</td>
                             <td>@c.last_name</td>
                             <td>@c.nit</td>
@@ -59,21 +57,18 @@
                             <td>
                                 <div class="d-flex justify-content-center gap-2">
 
-                                    @* Details y Delete USAN el ID original *@
                                     <a asp-page="/Client/Details" asp-route-id="@c.id"
                                        class="btn btn-sm btn-outline-info rounded-circle"
                                        title="Detalles">
                                         <i class="bi bi-eye"></i>
                                     </a>
 
-                                    @* ✅ SOLO EDIT USA el ID ENCRIPTADO (buscándolo en el diccionario) *@
                                     <a asp-page="/Client/Edit" asp-route-id="@Model.EncryptedIds[c.id]"
                                        class="btn btn-sm btn-outline-warning rounded-circle"
                                        title="Editar">
                                         <i class="bi bi-pencil"></i>
                                     </a>
 
-                                    @* Delete Modal/Button USAN el ID original *@
                                     <button type="button"
                                             class="btn btn-sm btn-outline-danger rounded-circle"
                                             title="Eliminar"
@@ -88,7 +83,7 @@
                 else
                 {
                     <tr>
-                        <td colspan="6" class="text-center text-muted py-4">
+                        <td colspan="5" class="text-center text-muted py-4">
                             <i class="bi bi-inbox me-2"></i> No hay clientes registrados.
                         </td>
                     </tr>

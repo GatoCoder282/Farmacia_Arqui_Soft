@@ -47,7 +47,7 @@ namespace Farmacia_Arqui_Soft.Pages.Users
                     Role: Input.Role
                 );
 
-                const int actorId = 1; // sin auth por ahora
+                const int actorId = 1; 
                 await _users.RegisterAsync(dto, actorId);
 
                 TempData["SuccessMessage"] = "Usuario creado correctamente. Se envi� una contrase�a temporal al correo.";

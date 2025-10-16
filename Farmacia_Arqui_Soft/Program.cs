@@ -20,56 +20,37 @@ namespace Farmacia_Arqui_Soft
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // ADO.NET singleton para conexión
             DatabaseConnection.Initialize(builder.Configuration);
 
-            // -------------------- Infra: Factory & Repos --------------------
-            // Mantengo ambas por compatibilidad con tus colegas
             builder.Services.AddSingleton<RepositoryFactory, UserRepositoryFactory>();
             builder.Services.AddSingleton<UserRepositoryFactory>();
-            // 💡 Agregamos la Factory de Cliente si piensas usarla en alguna parte
             builder.Services.AddSingleton<ClientRepositoryFactory>();
 
             builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
-
-            // REPOSITORIOS (Adaptadores de Salida de la Arquitectura Hexagonal)
             builder.Services.AddScoped<IRepository<User>, UserRepository>();
             builder.Services.AddScoped<IRepository<Lot>, LotRepository>();
             builder.Services.AddScoped<IRepository<Provider>, ProviderRepository>();
-            // ✅ SOLUCIÓN DIRECTA: Registrar la clase concreta ProviderService
+           
             builder.Services.AddScoped<Farmacia_Arqui_Soft.Application.Services.ProviderService>();
 
-            // ✅ CORRECCIÓN CRÍTICA: REGISTRO FALTANTE DEL SERVICIO DE CLIENTE
             builder.Services.AddScoped<IClientService, ClientService>();
-
-            // 💡 REGISTRO DE REPOSITORIO DE CLIENTE (Necesario para ClientService)
             builder.Services.AddScoped<IRepository<Client>, ClientRepository>();
 
-
-            // -------------------- Validadores --------------------
             builder.Services.AddScoped<IValidator<User>, UserValidator>();
             builder.Services.AddScoped<IValidator<Client>, ClientValidator>();
             builder.Services.AddScoped<IValidator<Lot>, LotValidator>();
             builder.Services.AddScoped<IValidator<Provider>, ProviderValidator>();
 
-            // -------------------- Servicios de Aplicación (Puertos de Entrada) --------------------
             builder.Services.AddScoped<IUserService, UserService>();
 
-            // ✅ CORRECCIÓN CRÍTICA: REGISTRO FALTANTE DEL SERVICIO DE CLIENTE
-            // El contenedor de DI necesitaba esta línea para saber qué hacer cuando se pide IClientService.
             builder.Services.AddScoped<IClientService, ClientService>();
 
-            // 💡 REGISTRO DE SERVICIO DE ENCRIPTACIÓN (Necesario para IndexClientModel y EditModel)
             builder.Services.AddSingleton<Farmacia_Arqui_Soft.Domain.Ports.IEncryptionService, Farmacia_Arqui_Soft.Aplication.Services.EncryptionService>();
 
-
-            // Email: implementación de desarrollo que loguea a consola.
             builder.Services.AddScoped<IEmailSender, DevEmailSender>();
 
-            // -------------------- Razor Pages --------------------
             builder.Services.AddRazorPages();
 
-            // -------------------- Auth mínima --------------------
             builder.Services
                 .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
@@ -87,26 +68,21 @@ namespace Farmacia_Arqui_Soft
                 app.UseExceptionHandler("/Error");
             }
 
-            // -------------------- Pipeline --------------------
-            app.UseStaticFiles(); // Agrego si usas estáticos como CSS/JS/Imágenes
+            app.UseStaticFiles(); 
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
-
-            // Aspire/Static Assets helpers que ya usaban
             app.MapStaticAssets();
             app.MapRazorPages().WithStaticAssets();
 
             app.Run();
         }
-
-        // -------------------- Implementación DEV de IEmailSender --------------------
         internal sealed class DevEmailSender : IEmailSender
         {
             public Task SendAsync(string to, string subject, string body)
             {
-                Console.WriteLine("=== DEV EMAIL SENDER ===");
+                Console.WriteLine("Enviando al correo electrónico");
                 Console.WriteLine($"To: {to}");
                 Console.WriteLine($"Subject: {subject}");
                 Console.WriteLine(body);
