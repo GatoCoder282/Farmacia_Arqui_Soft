@@ -2,6 +2,8 @@
 @model Farmacia_Arqui_Soft.Pages.Providers.IndexModel
 @{
     ViewData["Title"] = "Gestión de Proveedores";
+    // 👈 Obtener el servicio de encriptación desde el contexto
+    var encryptionService = (Farmacia_Arqui_Soft.Domain.Ports.IEncryptionService)Model.HttpContext.RequestServices.GetService(typeof(Farmacia_Arqui_Soft.Domain.Ports.IEncryptionService))!;
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
@@ -18,7 +20,8 @@
 {
     <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
         <i class="bi bi-check-circle-fill me-2"></i> @ok
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <button type="button" class="btn-close"
+                data-bs-dismiss="alert"></button>
     </div>
 }
 @if (TempData["Error"] is string err && !string.IsNullOrWhiteSpace(err))
@@ -33,11 +36,13 @@
     <div class="card-body p-0">
         <table class="table table-hover align-middle mb-0 text-center">
             <thead class="table-success text-dark">
+
                 <tr>
                     <th>Nombre</th>
                     <th>NIT</th>
                     <th>Email</th>
                     <th>Teléfono</th>
+
                     <th>Estado</th>
                     <th>Acciones</th>
                 </tr>
@@ -45,39 +50,52 @@
             <tbody>
                 @if (Model.Providers != null && Model.Providers.Any())
                 {
+
                     foreach (var p in Model.Providers)
                     {
+                        // 👈 Cifrar el ID del proveedor
+                        string encryptedId = encryptionService.EncryptId(p.id);
+
                         <tr>
                             <td class="fw-semibold">@p.firstName @p.lastName</td>
+
                             <td>@p.nit</td>
                             <td>@p.email</td>
                             <td>@p.phone</td>
+
                             <td>
-                                <span class="badge @(p.status == 1 ? "bg-success" : "bg-secondary")">
-                                    @(p.status == 1 ? "Activo" : "Inactivo")
-                                </span>
+                                <span class="badge @(p.status == 1 ?
+                                      "bg-success" : "bg-secondary")">
+                            @(p.status == 1 ? "Activo" : "Inactivo")
+                        </span>
+
                             </td>
                             <td>
                                 <div class="d-flex justify-content-center gap-2 flex-nowrap">
-                                    <a asp-page="/Providers/Edit" asp-route-id="@p.id"
+
+                                    <a asp-page="/Providers/Edit" asp-route-encryptedId="@encryptedId"
                                        class="btn btn-sm btn-outline-warning px-3 rounded-pill" title="Editar">
                                         <i class="bi bi-pencil"></i>
+
                                     </a>
                                     <button type="button"
                                             class="btn btn-sm btn-outline-danger px-3 rounded-pill"
                                             title="Eliminar"
-                                            onclick="openDeleteProviderModal(@p.id, '@p.firstName @p.lastName')">
+                                            onclick="openDeleteProviderModal('@encryptedId', '@p.firstName @p.lastName')">
                                         <i class="bi bi-trash3"></i>
                                     </button>
+
                                 </div>
                             </td>
                         </tr>
-                    }
+                                }
+
                 }
                 else
                 {
                     <tr>
                         <td colspan="6" class="text-center text-muted py-4">
+
                             <i class="bi bi-inbox me-2"></i> No hay proveedores registrados.
                         </td>
                     </tr>
@@ -87,18 +105,19 @@
     </div>
 </div>
 
-<!-- 🔹 Modal de eliminación -->
 <partial name="_DeleteProviderModalPartial" />
 
 @section Scripts {
     <script>
-        const deleteModal = new bootstrap.Modal(document.getElementById('deleteProviderModal'));
+                const deleteModal = new bootstrap.Modal(document.getElementById('deleteProviderModal'));
 
-        function openDeleteProviderModal(id, name) {
-            document.getElementById('deleteProviderId').value = id;
-            document.getElementById('deleteProviderMessage').textContent =
-                `¿Estás seguro de eliminar al proveedor "${name}"?`;
-            deleteModal.show();
-        }
+                // 👈 La función ahora recibe el ID encriptado
+                function openDeleteProviderModal(encryptedId, name) {
+                    // Asumiendo que el input oculto tiene id="deleteProviderId" y name="encryptedId" para que el PageModel lo reciba.
+                    document.getElementById('deleteProviderId').value = encryptedId;
+                    document.getElementById('deleteProviderMessage').textContent =
+                        `¿Estás seguro de eliminar al proveedor "${name}"?`;
+        deleteModal.show();
+                }
     </script>
 }

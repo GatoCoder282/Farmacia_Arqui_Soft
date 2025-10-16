@@ -36,6 +36,11 @@ namespace Farmacia_Arqui_Soft
             builder.Services.AddScoped<IRepository<User>, UserRepository>();
             builder.Services.AddScoped<IRepository<Lot>, LotRepository>();
             builder.Services.AddScoped<IRepository<Provider>, ProviderRepository>();
+            // ✅ SOLUCIÓN DIRECTA: Registrar la clase concreta ProviderService
+            builder.Services.AddScoped<Farmacia_Arqui_Soft.Application.Services.ProviderService>();
+
+            // ✅ CORRECCIÓN CRÍTICA: REGISTRO FALTANTE DEL SERVICIO DE CLIENTE
+            builder.Services.AddScoped<IClientService, ClientService>();
 
             // 💡 REGISTRO DE REPOSITORIO DE CLIENTE (Necesario para ClientService)
             builder.Services.AddScoped<IRepository<Client>, ClientRepository>();
