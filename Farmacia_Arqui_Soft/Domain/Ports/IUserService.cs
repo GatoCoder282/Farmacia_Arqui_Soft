@@ -2,7 +2,7 @@
 using Farmacia_Arqui_Soft.Domain.Models;
 using Farmacia_Arqui_Soft.Application.DTOS;
 
-namespace Farmacia_Arqui_Soft.Domain.Ports.UserPorts
+namespace Farmacia_Arqui_Soft.Domain.Ports
 {
     public interface IUserService
     {
@@ -12,10 +12,8 @@ namespace Farmacia_Arqui_Soft.Domain.Ports.UserPorts
         Task UpdateAsync(int id, UserUpdateDto dto, int actorId);
         Task SoftDeleteAsync(int id, int actorId);
 
-        // Login por username + password
         Task<User> AuthenticateAsync(string username, string password);
 
-        // Autorización simple por rol/acción
         bool CanPerformAction(User user, string action);
     }
 

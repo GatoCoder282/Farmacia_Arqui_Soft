@@ -9,6 +9,8 @@
 
   <ItemGroup>
     <Folder Include="Application\Interfaces\" />
+    <Folder Include="Domain\Services\" />
+    <Folder Include="Infraestructure\Security\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
