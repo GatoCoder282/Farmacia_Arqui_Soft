@@ -1,10 +1,9 @@
-﻿// Farmacia_Arqui_Soft.Pages.Lots/EditModel.cs
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Farmacia_Arqui_Soft.Validations.Interfaces;
 using Farmacia_Arqui_Soft.Domain.Models;
 using Farmacia_Arqui_Soft.Application.Services;
-using Farmacia_Arqui_Soft.Domain.Ports; // 👈 Importar el puerto
+using Farmacia_Arqui_Soft.Domain.Ports; 
 
 namespace Farmacia_Arqui_Soft.Pages.Lots
 {
@@ -14,19 +13,18 @@ namespace Farmacia_Arqui_Soft.Pages.Lots
     public class EditModel : PageModel
     {
         private readonly LotService _service;
-        private readonly IEncryptionService _encryptionService; // 👈 Nuevo campo
+        private readonly IEncryptionService _encryptionService;
 
         [BindProperty]
         public Lot Lot { get; set; } = new();
 
-        // 👈 Actualizar constructor para inyectar IEncryptionService
+        
         public EditModel(IValidator<Lot> validator, IEncryptionService encryptionService)
         {
             _service = new LotService(validator);
-            _encryptionService = encryptionService; // 👈 Asignación
+            _encryptionService = encryptionService; 
         }
 
-        // 👈 Recibir el ID encriptado como string
         public async Task<IActionResult> OnGetAsync(string encryptedId)
         {
             if (string.IsNullOrEmpty(encryptedId))
@@ -38,7 +36,6 @@ namespace Farmacia_Arqui_Soft.Pages.Lots
             int id;
             try
             {
-                // 👈 Descifrar el ID antes de usarlo
                 id = _encryptionService.DecryptId(encryptedId);
             }
             catch (FormatException)
@@ -60,8 +57,7 @@ namespace Farmacia_Arqui_Soft.Pages.Lots
 
         public async Task<IActionResult> OnPostAsync()
         {
-            // El ID original sigue estando en Lot.Id (input hidden), 
-            // no necesitas descifrar en el POST a menos que cambiaras el hidden field.
+            
 
             if (!ModelState.IsValid) return Page();
 

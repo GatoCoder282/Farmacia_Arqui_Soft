@@ -2,7 +2,6 @@
 @model Farmacia_Arqui_Soft.Pages.Lots.IndexModel
 @{
     ViewData["Title"] = "Gestión de Lotes";
-    // 1. Obtener el servicio de encriptación desde el contexto
     var encryptionService = (Farmacia_Arqui_Soft.Domain.Ports.IEncryptionService)Model.HttpContext.RequestServices.GetService(typeof(Farmacia_Arqui_Soft.Domain.Ports.IEncryptionService))!;
 }
 

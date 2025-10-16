@@ -12,7 +12,6 @@ namespace Farmacia_Arqui_Soft.Validations.Clients
         {
             var result = Result.Ok();
 
-            // FIRST NAME: requerido, solo letras y espacios, mínimo 2
             if (string.IsNullOrWhiteSpace(client.first_name))
             {
                 result = result.WithFieldError("first_name", "El nombre es obligatorio.");
@@ -26,7 +25,6 @@ namespace Farmacia_Arqui_Soft.Validations.Clients
                     result = result.WithFieldError("first_name", "El nombre solo debe contener letras y espacios.");
             }
 
-            // LAST NAME: requerido, solo letras y espacios, mínimo 2
             if (string.IsNullOrWhiteSpace(client.last_name))
             {
                 result = result.WithFieldError("last_name", "El apellido es obligatorio.");

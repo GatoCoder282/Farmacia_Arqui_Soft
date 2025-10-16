@@ -2,7 +2,6 @@
 @model Farmacia_Arqui_Soft.Pages.Providers.IndexModel
 @{
     ViewData["Title"] = "Gestión de Proveedores";
-    // 👈 Obtener el servicio de encriptación desde el contexto
     var encryptionService = (Farmacia_Arqui_Soft.Domain.Ports.IEncryptionService)Model.HttpContext.RequestServices.GetService(typeof(Farmacia_Arqui_Soft.Domain.Ports.IEncryptionService))!;
 }
 
@@ -53,7 +52,6 @@
 
                     foreach (var p in Model.Providers)
                     {
-                        // 👈 Cifrar el ID del proveedor
                         string encryptedId = encryptionService.EncryptId(p.id);
 
                         <tr>

@@ -24,7 +24,6 @@ namespace Farmacia_Arqui_Soft.Pages.Client
         [BindProperty]
         public ClientEntity Input { get; set; } = new ClientEntity();
 
-        // ✅ CORRECCIÓN: Inyección de IEncryptionService
         public EditModel(IValidator<ClientEntity> validator, IEncryptionService encryptionService)
         {
             _validator = validator;
@@ -32,13 +31,9 @@ namespace Farmacia_Arqui_Soft.Pages.Client
             var factory = new ClientRepositoryFactory();
             _ClientRepository = factory.CreateRepository<ClientEntity>();
 
-            _encryptionService = encryptionService; // Asignación de la dependencia
+            _encryptionService = encryptionService; 
         }
 
-        /// <summary>
-        /// Maneja la solicitud GET, recibiendo el ID encriptado de la URL.
-        /// </summary>
-        /// <param name="id">El ID del cliente en formato encriptado (string).</param>
         public async Task<IActionResult> OnGetAsync(string id)
         {
             if (string.IsNullOrEmpty(id))

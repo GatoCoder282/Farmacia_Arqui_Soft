@@ -13,7 +13,6 @@ namespace Farmacia_Arqui_Soft.Validations.Lots
         {
             var result = Result.Ok();
 
-            // MedicineId: requerido y > 0
             if (lot.MedicineId <= 0)
                 result = result.WithFieldError("MedicineId", "Debes seleccionar un medicamento válido.");
 

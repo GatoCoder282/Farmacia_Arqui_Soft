@@ -44,18 +44,15 @@
                     <ul class="navbar-nav ms-auto align-items-center gap-3">
 
                         @{
-                            // Se obtiene el rol del usuario autenticado para el control de visibilidad
                             var currentRole = User.FindFirst(ClaimTypes.Role)?.Value ?? "SinRol";
                         }
 
-                        @* 🔑 LÓGICA AGREGADA: Solo muestra "Usuarios" si el rol es Administrador *@
                         @if (currentRole == "Administrador")
                         {
                             <li class="nav-item"><a class="nav-link text-white fw-semibold" asp-page="/Users/Index">Usuarios</a></li>
                         }
 
                         <li class="nav-item"><a class="nav-link text-white fw-semibold" asp-page="/Client/IndexClient">Clientes</a></li>
-                        @* ASUMO que faltan aquí los enlaces a Lotes y Proveedores, basados en el código anterior. Los agrego para que estén completos. *@
                         <li class="nav-item"><a class="nav-link text-white fw-semibold" asp-page="/Lots/Index">Lotes</a></li>
                         <li class="nav-item"><a class="nav-link text-white fw-semibold" asp-page="/Providers/Index">Proveedores</a></li>
                     </ul>
