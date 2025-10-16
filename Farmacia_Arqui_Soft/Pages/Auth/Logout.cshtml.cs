@@ -10,7 +10,7 @@ namespace Farmacia_Arqui_Soft.Pages.Auth
         public async Task<IActionResult> OnPostAsync()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToPage("/Index");
+            return RedirectToPage("/Auth/Login"); 
         }
     }
 }

@@ -57,7 +57,7 @@ namespace Farmacia_Arqui_Soft.Pages.Auth
             }
         }
 
-        // Botón “Entrar como Admin QA (fake)”
+        // Botï¿½n ï¿½Entrar como Admin QA (fake)ï¿½
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostQuickAdminAsync()
         {
@@ -84,7 +84,7 @@ namespace Farmacia_Arqui_Soft.Pages.Auth
             [Required, Display(Name = "Usuario")]
             public string Username { get; set; } = "";
 
-            [Required, Display(Name = "Contraseña")]
+            [Required, Display(Name = "Contraseï¿½a")]
             public string Password { get; set; } = "";
         }
     }

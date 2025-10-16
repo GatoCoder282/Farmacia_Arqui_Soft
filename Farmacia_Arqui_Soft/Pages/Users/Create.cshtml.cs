@@ -3,9 +3,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Farmacia_Arqui_Soft.Domain.Models;
+<<<<<<< HEAD
 using Farmacia_Arqui_Soft.Application.Services;
 using Farmacia_Arqui_Soft.Application.DTOS;
 using Farmacia_Arqui_Soft.Domain.Ports;
+=======
+using Farmacia_Arqui_Soft.Application.Services.UserServices;
+using Farmacia_Arqui_Soft.Application.DTOs;
+using Farmacia_Arqui_Soft.Domain.Ports.UserPorts;
+>>>>>>> e613aa03f1683f7b1154163a08d1bff27455a6c0
 
 namespace Farmacia_Arqui_Soft.Pages.Users
 {
@@ -49,7 +55,7 @@ namespace Farmacia_Arqui_Soft.Pages.Users
                 const int actorId = 1; // sin auth por ahora
                 await _users.RegisterAsync(dto, actorId);
 
-                TempData["Success"] = "Usuario creado correctamente. Se envió una contraseña temporal al correo.";
+                TempData["SuccessMessage"] = "Usuario creado correctamente. Se enviï¿½ una contraseï¿½a temporal al correo.";
                 return RedirectToPage("Index");
             }
             catch (Application.Services.ValidationException vex)
@@ -84,7 +90,7 @@ namespace Farmacia_Arqui_Soft.Pages.Users
             [Required, EmailAddress, Display(Name = "Correo")]
             public string Mail { get; set; } = "";
 
-            [Required, Range(100000, 9999999999), Display(Name = "Teléfono")]
+            [Required, Range(100000, 9999999999), Display(Name = "TelÃ©fono")]
             public int Phone { get; set; }
 
             [Required, Display(Name = "CI")]

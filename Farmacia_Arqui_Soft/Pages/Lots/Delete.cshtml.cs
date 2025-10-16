@@ -3,8 +3,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Farmacia_Arqui_Soft.Infraestructure.Persistence;
 using Farmacia_Arqui_Soft.Application.Services;
 using Farmacia_Arqui_Soft.Validations.Interfaces;
+<<<<<<< HEAD
 using Farmacia_Arqui_Soft.Domain.Models;
 
+=======
+using Farmacia_Arqui_Soft.Domain.Models; 
+>>>>>>> e613aa03f1683f7b1154163a08d1bff27455a6c0
 
 namespace Farmacia_Arqui_Soft.Pages.Lots
 {
@@ -35,7 +39,13 @@ namespace Farmacia_Arqui_Soft.Pages.Lots
 
         public async Task<IActionResult> OnPostAsync()
         {
-            await _service.DeleteAsync(Lot.Id);
+            var success = await _service.DeleteAsync(Lot.Id);
+            if (!success)
+            {
+                TempData["ErrorMessage"] = "Error al eliminar el lote.";
+                return RedirectToPage("Index");
+            }
+
             TempData["SuccessMessage"] = "Lote eliminado correctamente.";
             return RedirectToPage("Index");
         }

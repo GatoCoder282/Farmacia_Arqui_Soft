@@ -1,6 +1,6 @@
 ﻿using Farmacia_Arqui_Soft.Domain.Models;
 
-namespace Farmacia_Arqui_Soft.Application.DTOS
+namespace Farmacia_Arqui_Soft.Application.DTOs
 {
     public record UserCreateDto(
         string FirstName,

@@ -1,6 +1,6 @@
 ﻿
 using Farmacia_Arqui_Soft.Domain.Models;
-using Farmacia_Arqui_Soft.Application.DTOS;
+using Farmacia_Arqui_Soft.Application.DTOs;
 
 namespace Farmacia_Arqui_Soft.Domain.Ports
 {

@@ -4,24 +4,26 @@
     ViewData["Title"] = "Clientes";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="fw-bold text-success">Clientes</h2>
-    <a asp-page="/Client/Create" class="btn btn-success shadow-sm">
-        + Agregar cliente
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+    <h2 class="fw-bold text-success mb-0">
+        <i class="bi bi-people-fill me-2"></i> Clientes
+    </h2>
+    <a asp-page="/Client/Create" class="btn btn-success shadow-sm rounded-pill px-4">
+        <i class="bi bi-plus-circle me-2"></i> Agregar cliente
     </a>
 </div>
 
 <div class="card shadow-sm border-0">
     <div class="card-body p-0">
-        <table class="table table-hover align-middle mb-0">
+        <table class="table table-hover align-middle mb-0 text-center" style="min-width: 950px;">
             <thead class="table-success text-dark">
                 <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Apellido</th>
-                    <th scope="col">NIT</th>
-                    <th scope="col">Email</th>
-                    <th scope="col" class="text-center" style="width:220px;">Acciones</th>
+                    <th scope="col" style="width:6%;">ID</th>
+                    <th scope="col" style="width:18%;">Nombre</th>
+                    <th scope="col" style="width:18%;">Apellido</th>
+                    <th scope="col" style="width:15%;">NIT</th>
+                    <th scope="col" style="width:25%;">Email</th>
+                    <th scope="col" style="width:18%;">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,19 +37,22 @@
                             <td>@c.last_name</td>
                             <td>@c.nit</td>
                             <td>@c.email</td>
-                            <td class="text-center">
+                            <td>
                                 <div class="d-flex justify-content-center gap-2">
                                     <a asp-page="/Client/Details" asp-route-id="@c.id"
-                                       class="btn btn-sm btn-outline-info px-3">
-                                        Detalles
+                                       class="btn btn-sm btn-outline-info rounded-circle"
+                                       title="Detalles">
+                                        <i class="bi bi-eye"></i>
                                     </a>
                                     <a asp-page="/Client/Edit" asp-route-id="@c.id"
-                                       class="btn btn-sm btn-outline-warning px-3">
-                                        Editar
+                                       class="btn btn-sm btn-outline-warning rounded-circle"
+                                       title="Editar">
+                                        <i class="bi bi-pencil"></i>
                                     </a>
                                     <a asp-page="/Client/Delete" asp-route-id="@c.id"
-                                       class="btn btn-sm btn-outline-danger px-3">
-                                        Eliminar
+                                       class="btn btn-sm btn-outline-danger rounded-circle"
+                                       title="Eliminar">
+                                        <i class="bi bi-trash3"></i>
                                     </a>
                                 </div>
                             </td>
@@ -58,7 +63,7 @@
                 {
                     <tr>
                         <td colspan="6" class="text-center text-muted py-4">
-                            No hay clientes registrados.
+                            <i class="bi bi-inbox me-2"></i> No hay clientes registrados.
                         </td>
                     </tr>
                 }
