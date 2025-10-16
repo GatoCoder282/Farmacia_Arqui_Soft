@@ -21,12 +21,11 @@ namespace Farmacia_Arqui_Soft.Pages.Providers
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            var temp = new Provider { id = id };
-            var existing = await _providerService.GetByIdAsync(temp);
+            var existing = await _providerService.GetByIdAsync(id);
 
             if (existing == null)
             {
-                TempData["Error"] = "Proveedor no encontrado.";
+                TempData["ErrorMessage"] = "Proveedor no encontrado.";
                 return RedirectToPage("Index");
             }
 
@@ -43,7 +42,7 @@ namespace Farmacia_Arqui_Soft.Pages.Providers
             try
             {
                 await _providerService.UpdateAsync(Provider);
-                TempData["Success"] = "Proveedor actualizado correctamente.";
+                TempData["SuccessMessage"] = "Proveedor actualizado correctamente.";
                 return RedirectToPage("Index");
             }
             catch (ArgumentException ex)
