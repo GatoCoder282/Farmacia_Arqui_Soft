@@ -1,57 +1,54 @@
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Farmacia_Arqui_Soft.Domain.Models;
 using Farmacia_Arqui_Soft.Domain.Ports;
-using Farmacia_Arqui_Soft.Validations.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Farmacia_Arqui_Soft.Infraestructure.Persistence;
+using Farmacia_Arqui_Soft.Validations.Providers;
 
-namespace Farmacia_Arqui_Soft.Pages.Providers
+namespace Farmacia_Arqui_Soft.Application.Services
 {
-    public class EditModel : PageModel
+    public class ProviderService
     {
-        private readonly IRepository<Provider> _repo;
-        private readonly IValidator<Provider> _validator;
 
-        public EditModel(IValidator<Provider> validator)
+        private readonly ProviderValidator _validator;
+
+        public ProviderService(IRepository<Provider> repository)
         {
-            _validator = validator;
-            var factory = new ProviderRepositoryFactory();
-            _repo = factory.CreateRepository<Provider>();
+            _repository = repository;
+            _validator = new ProviderValidator();
         }
 
-        [BindProperty]
-        public Provider Provider { get; set; } = new Provider();
-
-        public async Task<IActionResult> OnGetAsync(int id)
+        public async Task<IEnumerable<Provider>> GetAllAsync()
         {
-            var tempProvider = new Provider { id = id };
-            var existing = await _repo.GetById(tempProvider);
-            if (existing == null) return RedirectToPage("Index");
-
-            Provider = existing;
-            return Page();
+            return await _repository.GetAll();
         }
 
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<Provider?> GetByIdAsync(Provider entity)
         {
-            if (!ModelState.IsValid) return Page();
+            return await _repository.GetById(entity);
+        }
 
-            var result = _validator.Validate(Provider);
-            if (!result.IsValid)
-            {
-                foreach (var err in result.Errors)
-                {
-                    var key = err.Key.StartsWith("Provider.") ? err.Key : $"Provider.{err.Key}";
-                    ModelState.AddModelError(key, err.Value);
-                }
-                return Page();
-            }
+        public async Task CreateAsync(Provider provider)
+        {
+            var validation = _validator.Validate(provider);
+            if (!validation.IsValid)
+                throw new ArgumentException(string.Join(", ", validation.Errors.Values));
 
-            await _repo.Update(Provider);
-            TempData["Success"] = "Proveedor actualizado correctamente.";
-            return RedirectToPage("Index");
+            await _repository.Create(provider);
+        }
+
+        public async Task UpdateAsync(Provider provider)
+        {
+            var validation = _validator.Validate(provider);
+            if (!validation.IsValid)
+                throw new ArgumentException(string.Join(", ", validation.Errors.Values));
+
+            await _repository.Update(provider);
+        }
+
+        public async Task DeleteAsync(Provider provider)
+        {
+            await _repository.Delete(provider);
         }
     }
 }
