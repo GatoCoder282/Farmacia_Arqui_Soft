@@ -1,7 +1,9 @@
-﻿namespace Farmacia_Arqui_Soft.Validations.Interfaces
+﻿using FluentResults;
+
+namespace Farmacia_Arqui_Soft.Validations.Interfaces
 {
     public interface IValidator<T>
     {
-        ValidationResult Validate(T entity);
+        Result Validate(T entity);
     }
 }

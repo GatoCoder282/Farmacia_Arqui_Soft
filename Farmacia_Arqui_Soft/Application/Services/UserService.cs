@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Globalization;
+using Farmacia_Arqui_Soft.Validations.Core;
 
 namespace Farmacia_Arqui_Soft.Application.Services
 {
@@ -49,10 +50,11 @@ namespace Farmacia_Arqui_Soft.Application.Services
                 };
 
                 var pre = _validator.Validate(user);
-                if (!pre.IsValid)
-                    throw new ValidationException(pre.Errors);
+                if (!pre.IsSuccess)
+                    throw new ValidationException(pre.Errors.ToDictionary());
 
-                var existing = await _repo.GetAll();
+
+            var existing = await _repo.GetAll();
                 var baseUsername = GenerateUsernameFromNames(user.first_name, user.second_name, user.last_name);
                 user.username = EnsureUniqueUsername(baseUsername, existing.Select(x => x.username));
 
@@ -103,10 +105,11 @@ namespace Farmacia_Arqui_Soft.Application.Services
                 current.updated_at = DateTime.Now;
 
                 var result = _validator.Validate(current);
-                if (!result.IsValid)
-                    throw new ValidationException(result.Errors);
+                if (!result.IsSuccess)
+                    throw new ValidationException(result.Errors.ToDictionary());
 
-                await _repo.Update(current);
+
+            await _repo.Update(current);
             }
 
             public async Task SoftDeleteAsync(int id, int actorId)

@@ -85,12 +85,14 @@ namespace Farmacia_Arqui_Soft.Pages.Client
             if (!ModelState.IsValid) return Page();
 
             var result = _validator.Validate(Input);
-            if (!result.IsValid)
+            if (!result.IsSuccess)
             {
                 foreach (var error in result.Errors)
                 {
-                    var key = error.Key.StartsWith("Input.") ? error.Key : $"Input.{error.Key}";
-                    ModelState.AddModelError(key, error.Value);
+
+                    var field = error.Metadata.TryGetValue("field", out var f) ? f?.ToString() ?? string.Empty : string.Empty;
+                    var key = field.StartsWith("Input.") ? field : $"Input.{field}";
+                    ModelState.AddModelError(key, error.Message);
                 }
                 return Page();
             }
