@@ -4,36 +4,61 @@
     ViewData["Title"] = "Eliminar Lote";
 }
 
-<div class="container mt-5">
-    <div class="card shadow-lg border-0 rounded-4">
-        <div class="card-header bg-danger text-white text-center rounded-top-4 py-3">
-            <h3 class="mb-0">
-                <i class="bi bi-trash3 me-2"></i>Eliminar Lote
-            </h3>
-        </div>
+@section Styles {
+    <link rel="stylesheet" href="~/css/delete.css" />
+}
 
-        <div class="card-body text-center">
-            <p class="fs-5 mb-4">¿Estás seguro de que deseas eliminar este lote?</p>
-            <div class="table-responsive">
-                <table class="table table-bordered w-75 mx-auto">
+<div class="delete-modal">
+    <div class="delete-header">
+        <i class="bi bi-trash3 me-2"></i>Eliminar Lote
+    </div>
+
+    <div class="delete-body">
+        @if (Model.Lot is null)
+        {
+            <div class="alert alert-warning shadow-sm">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i> El lote no existe o ya fue eliminado.
+            </div>
+            <a asp-page="Index" class="btn btn-cancel mt-3">Volver</a>
+        }
+        else
+        {
+            <p class="mb-4">
+                ¿Estás seguro de que deseas eliminar este lote?
+            </p>
+
+            <div class="table-responsive mb-4">
+                <table class="table table-borderless mx-auto">
                     <tbody>
-                        <tr><th>Código de Lote</th><td>@Model.Lot.BatchNumber</td></tr>
-                        <tr><th>Fecha de Vencimiento</th><td>@Model.Lot.ExpirationDate.ToShortDateString()</td></tr>
-                        <tr><th>Cantidad Disponible</th><td>@Model.Lot.Quantity</td></tr>
-                        <tr><th>Costo Unitario (Bs.)</th><td>@Model.Lot.UnitCost.ToString("F2")</td></tr>
+                        <tr>
+                            <th>Código de Lote</th>
+                            <td>@Model.Lot.BatchNumber</td>
+                        </tr>
+                        <tr>
+                            <th>Fecha de Vencimiento</th>
+                            <td>@Model.Lot.ExpirationDate.ToShortDateString()</td>
+                        </tr>
+                        <tr>
+                            <th>Cantidad Disponible</th>
+                            <td>@Model.Lot.Quantity</td>
+                        </tr>
+                        <tr>
+                            <th>Costo Unitario (Bs.)</th>
+                            <td>@Model.Lot.UnitCost.ToString("F2")</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
 
-            <form method="post" class="mt-4">
+            <form method="post">
                 <input type="hidden" asp-for="Lot.Id" />
-                <button type="submit" class="btn btn-danger px-4 rounded-pill shadow-sm">
+                <button type="submit" class="btn btn-delete me-2">
                     <i class="bi bi-trash me-2"></i>Eliminar
                 </button>
-                <a asp-page="Index" class="btn btn-outline-secondary px-4 rounded-pill ms-2">
+                <a asp-page="Index" class="btn btn-cancel">
                     <i class="bi bi-x-circle me-2"></i>Cancelar
                 </a>
             </form>
-        </div>
+        }
     </div>
 </div>
