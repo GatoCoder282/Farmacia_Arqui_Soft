@@ -14,6 +14,7 @@
     </a>
 </div>
 
+@* Mantenemos las claves de TempData originales (SuccessMessage/ErrorMessage) *@
 @if (TempData["SuccessMessage"] is string ok && !string.IsNullOrWhiteSpace(ok))
 {
     <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
@@ -46,7 +47,8 @@
             <tbody>
                 @if (Model.Clients is not null && Model.Clients.Any())
                 {
-                    foreach (var c in Model.Clients)
+                    @* Ahora iteramos correctamente sobre la lista de ClientEntity *@
+                    @foreach (var c in Model.Clients)
                     {
                         <tr>
                             <td>@c.id</td>
@@ -56,18 +58,22 @@
                             <td>@c.email</td>
                             <td>
                                 <div class="d-flex justify-content-center gap-2">
+
+                                    @* Details y Delete USAN el ID original *@
                                     <a asp-page="/Client/Details" asp-route-id="@c.id"
                                        class="btn btn-sm btn-outline-info rounded-circle"
                                        title="Detalles">
                                         <i class="bi bi-eye"></i>
                                     </a>
 
-                                    <a asp-page="/Client/Edit" asp-route-id="@c.id"
+                                    @* ✅ SOLO EDIT USA el ID ENCRIPTADO (buscándolo en el diccionario) *@
+                                    <a asp-page="/Client/Edit" asp-route-id="@Model.EncryptedIds[c.id]"
                                        class="btn btn-sm btn-outline-warning rounded-circle"
                                        title="Editar">
                                         <i class="bi bi-pencil"></i>
                                     </a>
 
+                                    @* Delete Modal/Button USAN el ID original *@
                                     <button type="button"
                                             class="btn btn-sm btn-outline-danger rounded-circle"
                                             title="Eliminar"
