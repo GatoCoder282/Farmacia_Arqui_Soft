@@ -74,7 +74,7 @@ namespace Farmacia_Arqui_Soft.Infraestructure.Persistence
         public async Task<IEnumerable<Lot>> GetAll()
         {
             var list = new List<Lot>();
-            string query = "SELECT * FROM lots WHERE is_deleted = FALSE";
+            string query = "SELECT * FROM lots WHERE is_deleted = FALSE ORDER BY batch_number ASC;";
 
             using var connection = _db.GetConnection();
             await connection.OpenAsync();

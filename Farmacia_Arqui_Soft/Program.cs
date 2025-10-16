@@ -23,10 +23,12 @@ namespace Farmacia_Arqui_Soft
         {
             var builder = WebApplication.CreateBuilder(args);
 
+        Validations
             // -------------------- Conexión DB --------------------
             DatabaseConnection.Initialize(builder.Configuration);
 
             // -------------------- Repositorios --------------------
+
             builder.Services.AddSingleton<RepositoryFactory, UserRepositoryFactory>();
             builder.Services.AddSingleton<UserRepositoryFactory>();
             builder.Services.AddSingleton<ClientRepositoryFactory>();
@@ -45,10 +47,23 @@ namespace Farmacia_Arqui_Soft
             builder.Services.AddScoped<IEmailSender, DevEmailSender>();
 
             // -------------------- Validadores --------------------
+            builder.Services.AddScoped<IRepository<User>, UserRepository>();
+            builder.Services.AddScoped<IRepository<Lot>, LotRepository>();
+            builder.Services.AddScoped<IRepository<Provider>, ProviderRepository>();
+           
+            builder.Services.AddScoped<Farmacia_Arqui_Soft.Application.Services.ProviderService>();
+
+            builder.Services.AddScoped<IClientService, ClientService>();
+            builder.Services.AddScoped<IRepository<Client>, ClientRepository>();
+
             builder.Services.AddScoped<IValidator<User>, UserValidator>();
             builder.Services.AddScoped<IValidator<Client>, ClientValidator>();
             builder.Services.AddScoped<IValidator<Lot>, LotValidator>();
             builder.Services.AddScoped<IValidator<Provider>, ProviderValidator>();
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IClientService, ClientService>();
+            builder.Services.AddSingleton<Farmacia_Arqui_Soft.Domain.Ports.IEncryptionService, EncryptionService>();
+            builder.Services.AddScoped<IEmailSender, DevEmailSender>();
 
             // -------------------- Razor Pages --------------------
             builder.Services.AddRazorPages()
@@ -72,8 +87,7 @@ namespace Farmacia_Arqui_Soft
                 options.SupportedCultures = supportedCultures;
                 options.SupportedUICultures = supportedCultures;
             });
-
-            // -------------------- Autenticación --------------------
+          
             builder.Services
                 .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
@@ -106,13 +120,11 @@ namespace Farmacia_Arqui_Soft
 
             app.Run();
         }
-
-        // -------------------- Implementación DEV de IEmailSender --------------------
         internal sealed class DevEmailSender : IEmailSender
         {
             public Task SendAsync(string to, string subject, string body)
             {
-                Console.WriteLine("=== DEV EMAIL SENDER ===");
+                Console.WriteLine("Enviando al correo electrónico");
                 Console.WriteLine($"To: {to}");
                 Console.WriteLine($"Subject: {subject}");
                 Console.WriteLine(body);

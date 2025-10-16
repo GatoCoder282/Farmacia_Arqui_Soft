@@ -9,14 +9,12 @@
 
 @if (!isAuthenticated)
 {
-    <!-- 🔒 Si NO está autenticado, redirige al login automáticamente -->
     <script>
         window.location.href = '/Auth/Login';
     </script>
 }
 else
 {
-    <!-- ✅ Si está autenticado, muestra el home con menú por rol -->
     <section class="home-section text-center py-5">
         <div class="container">
             <img src="~/images/LogoOficial.png" alt="Logo FarmaPlus" class="logo-home mb-4" />

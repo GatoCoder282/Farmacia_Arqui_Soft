@@ -91,7 +91,7 @@ VALUES
         public async Task<IEnumerable<User>> GetAll()
         {
             var lista = new List<User>();
-            string query = "SELECT * FROM users WHERE is_deleted = FALSE";
+            string query = "SELECT * FROM users WHERE is_deleted = FALSE ORDER BY last_name ASC, first_name ASC;";
 
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
