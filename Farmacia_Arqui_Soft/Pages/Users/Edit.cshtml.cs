@@ -1,21 +1,25 @@
-using System.ComponentModel.DataAnnotations;
+using Farmacia_Arqui_Soft.Application.DTOs;
+using Farmacia_Arqui_Soft.Application.Services;
+using Farmacia_Arqui_Soft.Domain.Models;
+using Farmacia_Arqui_Soft.Domain.Ports;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Farmacia_Arqui_Soft.Domain.Models;
-using Farmacia_Arqui_Soft.Domain.Ports;
-using Farmacia_Arqui_Soft.Application.Services;
-using Farmacia_Arqui_Soft.Application.DTOs;
+using System.ComponentModel.DataAnnotations;
+using System.Security.Cryptography;
 
 namespace Farmacia_Arqui_Soft.Pages.Users
 {
     public class EditModel : PageModel
     {
         private readonly IUserService _users;
+        private readonly IEncryptionService _encryptionService;
 
-        public EditModel(IUserService users)
+        // ✅ CORRECCIÓN: Se inyecta IEncryptionService
+        public EditModel(IUserService users, IEncryptionService encryptionService)
         {
             _users = users;
+            _encryptionService = encryptionService;
         }
 
         [BindProperty]
@@ -23,11 +27,32 @@ namespace Farmacia_Arqui_Soft.Pages.Users
 
         public SelectList Roles { get; private set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync(int id)
+        // Modificado: OnGetAsync ahora recibe el ID encriptado (string)
+        public async Task<IActionResult> OnGetAsync(string id)
         {
             LoadRoles();
 
-            var u = await _users.GetByIdAsync(id);
+            int userId;
+
+            try
+            {
+                // Desencriptar el ID de la URL
+                userId = _encryptionService.DecryptId(id);
+            }
+            catch (FormatException)
+            {
+                // Manejar error si el ID no es un formato de encriptación válido
+                TempData["ErrorMessage"] = "El enlace de edición es inválido o ha sido modificado.";
+                return RedirectToPage("Index");
+            }
+            catch (CryptographicException)
+            {
+                // Manejar error de desencriptación
+                TempData["ErrorMessage"] = "Error de seguridad. El ID no pudo ser desencriptado.";
+                return RedirectToPage("Index");
+            }
+
+            var u = await _users.GetByIdAsync(userId);
             if (u is null) return RedirectToPage("Index");
 
             Input = new UserEditVm
@@ -40,54 +65,61 @@ namespace Farmacia_Arqui_Soft.Pages.Users
                 Mail = u.mail ?? "",
                 Phone = u.phone,
                 Ci = u.ci,
-                Role = u.role
+                Role = u.role,
+                IsActive = !u.is_deleted // Mapear is_deleted a IsActive
             };
 
             return Page();
         }
 
+        // Se asume que el DTO requiere todos los parámetros en el constructor
         public async Task<IActionResult> OnPostAsync()
         {
-            LoadRoles();
-            if (!ModelState.IsValid) return Page();
+            // Usar el ID de usuario autenticado real
+            const int ACTOR_ID = 1;
+
+            if (!ModelState.IsValid)
+            {
+                LoadRoles();
+                return Page();
+            }
 
             try
             {
-                // Usa par�metros con nombre para no depender del orden del record
+                // ✅ CORRECCIÓN 3: Se llama al constructor del DTO con todos los parámetros
                 var dto = new UserUpdateDto(
-                    FirstName: Input.FirstName,
-                    SecondName: Input.SecondName,
-                    LastName: Input.LastName,
-                    Mail: Input.Mail,
-                    Phone: Input.Phone,
-                    Ci: Input.Ci,
-                    Role: Input.Role,
-                    Password: string.IsNullOrWhiteSpace(Input.Password) ? null : Input.Password
+                    // ✅ Se asegura el paso del parámetro 'FirstName' y los demás
+                    Input.FirstName,
+                    Input.SecondName,
+                    Input.LastName,
+                    Input.Mail,
+                    Input.Phone,
+                    Input.Ci,
+                    Input.Role,
+                    Input.Password
                 );
 
-                const int actorId = 1;
-                await _users.UpdateAsync(Input.Id, dto, actorId);
+                await _users.UpdateAsync(Input.Id, dto, ACTOR_ID);
 
-                TempData["SuccessMessage"] = "Usuario actualizado.";
+                TempData["SuccessMessage"] = $"Usuario '{Input.Username}' actualizado correctamente.";
                 return RedirectToPage("Index");
             }
-            catch (NotFoundException)
-            {
-                TempData["ErrorMessage"] = "El usuario ya no existe.";
-                return RedirectToPage("Index");
-            }
+            // Puedes usar el alias definido arriba si la excepción que esperas es la local
             catch (Application.Services.ValidationException vex)
             {
                 foreach (var kv in vex.Errors)
                     ModelState.AddModelError(kv.Key ?? string.Empty, kv.Value);
                 return Page();
             }
+            // O si solo usas DomainException para todos los errores de servicio
             catch (DomainException ex)
             {
                 ModelState.AddModelError(string.Empty, ex.Message);
+                LoadRoles();
                 return Page();
             }
         }
+
 
         private void LoadRoles()
         {
@@ -115,6 +147,7 @@ namespace Farmacia_Arqui_Soft.Pages.Users
 
             [MinLength(4), DataType(DataType.Password), Display(Name = "Nueva contraseña")]
             public string? Password { get; set; }
+            public bool IsActive { get; internal set; }
         }
     }
 }
