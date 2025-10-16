@@ -86,11 +86,11 @@ namespace Farmacia_Arqui_Soft.Infraestructure.Persistence
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
 
-            const string query = "SELECT id, first_name, last_name, nit, email, is_deleted FROM clients WHERE is_deleted = FALSE;";
+            const string query = "SELECT id, first_name, last_name, nit, email, is_deleted FROM clients WHERE is_deleted = FALSE ORDER BY last_name ASC, first_name ASC;";
 
             using var cmd = new MySqlCommand(query, connection);
 
-            // ExecuteReaderAsync returns DbDataReader. No need to cast.
+           
             using var reader = await cmd.ExecuteReaderAsync();
 
             while (await reader.ReadAsync())
