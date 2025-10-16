@@ -2,13 +2,9 @@
 using System.Threading.Tasks;
 using Farmacia_Arqui_Soft.Domain.Models;
 using Farmacia_Arqui_Soft.Domain.Ports;
-<<<<<<< HEAD:Farmacia_Arqui_Soft/Application/Services/LotService.cs
 using Farmacia_Arqui_Soft.Infraestructure.Persistence;
 using Farmacia_Arqui_Soft.Validations.Interfaces;
-=======
-using Farmacia_Arqui_Soft.Validations.Interfaces;
-using Farmacia_Arqui_Soft.Infraestructure.Persistence;
->>>>>>> master:Farmacia_Arqui_Soft/Aplication/Services/LotService.cs
+
 
 namespace Farmacia_Arqui_Soft.Application.Services
 {
