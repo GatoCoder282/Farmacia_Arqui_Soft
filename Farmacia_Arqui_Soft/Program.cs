@@ -1,4 +1,3 @@
-using Farmacia_Arqui_Soft.Aplication.Services;
 using Farmacia_Arqui_Soft.Application.Services;
 using Farmacia_Arqui_Soft.Domain.Models;
 using Farmacia_Arqui_Soft.Domain.Ports;
@@ -23,10 +22,8 @@ namespace Farmacia_Arqui_Soft
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // -------------------- Conexión DB --------------------
             DatabaseConnection.Initialize(builder.Configuration);
 
-            // -------------------- Repositorios --------------------
             builder.Services.AddSingleton<RepositoryFactory, UserRepositoryFactory>();
             builder.Services.AddSingleton<UserRepositoryFactory>();
             builder.Services.AddSingleton<ClientRepositoryFactory>();
@@ -37,34 +34,25 @@ namespace Farmacia_Arqui_Soft
             builder.Services.AddScoped<IRepository<Provider>, ProviderRepository>();
             builder.Services.AddScoped<IRepository<Client>, ClientRepository>();
 
-            // -------------------- Servicios --------------------
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IClientService, ClientService>();
-            builder.Services.AddScoped<Farmacia_Arqui_Soft.Application.Services.ProviderService>();
-            builder.Services.AddSingleton<Farmacia_Arqui_Soft.Domain.Ports.IEncryptionService, EncryptionService>();
+            builder.Services.AddScoped<ProviderService>();
+            builder.Services.AddSingleton<IEncryptionService, EncryptionService>();
             builder.Services.AddScoped<IEmailSender, DevEmailSender>();
 
-            // -------------------- Validadores --------------------
             builder.Services.AddScoped<IValidator<User>, UserValidator>();
             builder.Services.AddScoped<IValidator<Client>, ClientValidator>();
             builder.Services.AddScoped<IValidator<Lot>, LotValidator>();
             builder.Services.AddScoped<IValidator<Provider>, ProviderValidator>();
 
-            // -------------------- Razor Pages --------------------
             builder.Services.AddRazorPages()
-                .AddViewOptions(o =>
-                {
-                    // Desactivar validación del lado del cliente (HTML5/jQuery)
-                    o.HtmlHelperOptions.ClientValidationEnabled = false;
-                })
+                .AddViewOptions(o => o.HtmlHelperOptions.ClientValidationEnabled = false)
                 .AddMvcOptions(options =>
                 {
-                    // Desactivar DataAnnotations: solo validaciones personalizadas
                     options.ModelMetadataDetailsProviders.Clear();
                     options.ModelValidatorProviders.Clear();
                 });
 
-            // -------------------- Localización (opcional) --------------------
             var supportedCultures = new[] { new CultureInfo("es-BO"), new CultureInfo("es") };
             builder.Services.Configure<RequestLocalizationOptions>(options =>
             {
@@ -73,9 +61,7 @@ namespace Farmacia_Arqui_Soft
                 options.SupportedUICultures = supportedCultures;
             });
 
-            // -------------------- Autenticación --------------------
-            builder.Services
-                .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
                     options.LoginPath = "/Auth/Login";
@@ -87,11 +73,8 @@ namespace Farmacia_Arqui_Soft
             var app = builder.Build();
 
             if (!app.Environment.IsDevelopment())
-            {
                 app.UseExceptionHandler("/Error");
-            }
 
-            // -------------------- Middleware --------------------
             var locOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>();
             app.UseRequestLocalization(locOptions.Value);
 
