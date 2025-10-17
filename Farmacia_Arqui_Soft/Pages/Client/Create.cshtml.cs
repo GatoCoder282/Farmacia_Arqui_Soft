@@ -27,7 +27,12 @@ namespace Farmacia_Arqui_Soft.Pages.Client
             _ClientRepository = factory.CreateRepository<ClientEntity>();
         }
 
-        public void OnGet() { }
+        public void OnGet()
+        {
+            // Este método se deja vacío intencionalmente, 
+            // ya que la página de creación solo carga el formulario sin lógica adicional.
+        }
+
 
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostAsync()

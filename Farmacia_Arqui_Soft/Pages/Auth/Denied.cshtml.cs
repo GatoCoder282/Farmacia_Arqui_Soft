@@ -7,6 +7,9 @@ namespace Farmacia_Arqui_Soft.Pages.Auth
     {
         public void OnGet()
         {
+            // Este método se deja vacío intencionalmente 
+            // porque solo se utiliza para renderizar la vista Denied.cshtml.
         }
+
     }
 }

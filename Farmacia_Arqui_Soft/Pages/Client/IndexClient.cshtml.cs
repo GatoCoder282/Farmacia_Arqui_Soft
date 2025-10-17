@@ -12,7 +12,7 @@ namespace Farmacia_Arqui_Soft.Pages.Client
     public class IndexClientModel : PageModel
     {
         private readonly IClientService _clientService;
-        private readonly IUserService _userService;
+    
         private readonly IEncryptionService _encryptionService; 
 
        
@@ -22,10 +22,9 @@ namespace Farmacia_Arqui_Soft.Pages.Client
         public Dictionary<int, string> EncryptedIds { get; set; } = new Dictionary<int, string>();
 
         
-        public IndexClientModel(IClientService clientService, IUserService userService, IEncryptionService encryptionService)
+        public IndexClientModel(IClientService clientService, IEncryptionService encryptionService)
         {
             _clientService = clientService;
-            _userService = userService;
             _encryptionService = encryptionService;
         }
 

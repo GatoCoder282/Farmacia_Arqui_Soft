@@ -14,7 +14,11 @@ namespace Farmacia_Arqui_Soft.Pages
 
         public void OnGet()
         {
+            // Este método muestra la política de privacidad
+            _logger.LogInformation("Se accedió a la página de privacidad a las {Time}", DateTime.Now);
         }
     }
+
+
 
 }
