@@ -27,7 +27,7 @@ namespace Farmacia_Arqui_Soft.Validations.Users
             return result;
         }
 
-        private Result ValidateFirstName(User u, Result result)
+        private static Result ValidateFirstName(User u, Result result)
         {
             if (string.IsNullOrWhiteSpace(u.first_name))
                 return result.WithFieldError("first_name", "El nombre es obligatorio.");
@@ -41,7 +41,7 @@ namespace Farmacia_Arqui_Soft.Validations.Users
             return result;
         }
 
-        private Result ValidateSecondName(User u, Result result)
+        private static Result ValidateSecondName(User u, Result result)
         {
             if (string.IsNullOrWhiteSpace(u.second_name))
                 return result;
@@ -55,7 +55,7 @@ namespace Farmacia_Arqui_Soft.Validations.Users
             return result;
         }
 
-        private Result ValidateLastName(User u, Result result)
+        private static Result ValidateLastName(User u, Result result)
         {
             if (string.IsNullOrWhiteSpace(u.last_name))
                 return result.WithFieldError("last_name", "El apellido es obligatorio.");
@@ -69,7 +69,7 @@ namespace Farmacia_Arqui_Soft.Validations.Users
             return result;
         }
 
-        private Result ValidateEmail(User u, Result result)
+        private static Result ValidateEmail(User u, Result result)
         {
             if (string.IsNullOrWhiteSpace(u.mail))
                 return result.WithFieldError("mail", "El correo es obligatorio.");
@@ -83,7 +83,7 @@ namespace Farmacia_Arqui_Soft.Validations.Users
             return result;
         }
 
-        private Result ValidateCi(User u, Result result)
+        private static Result ValidateCi(User u, Result result)
         {
             if (string.IsNullOrWhiteSpace(u.ci))
                 return result.WithFieldError("ci", "El CI es obligatorio.");
@@ -97,7 +97,7 @@ namespace Farmacia_Arqui_Soft.Validations.Users
             return result;
         }
 
-        private Result ValidatePhone(User u, Result result)
+        private static Result ValidatePhone(User u, Result result)
         {
             if (u.phone <= 0)
                 return result.WithFieldError("phone", "El teléfono debe ser un número positivo.");
