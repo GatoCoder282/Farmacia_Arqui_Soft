@@ -5,7 +5,7 @@ using System.Globalization;
 using System;
 using System.Linq; 
 
-namespace Farmacia_Arqui_Soft.Aplication.Services
+namespace Farmacia_Arqui_Soft.Application.Services
 {
    
     public class EncryptionService : IEncryptionService

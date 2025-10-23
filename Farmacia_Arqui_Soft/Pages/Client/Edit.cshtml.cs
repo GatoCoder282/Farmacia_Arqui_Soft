@@ -7,7 +7,7 @@ using Farmacia_Arqui_Soft.Infraestructure.Persistence;
 
 using ClientEntity = Farmacia_Arqui_Soft.Domain.Models.Client;
 using Farmacia_Arqui_Soft.Domain.Ports;
-using Farmacia_Arqui_Soft.Aplication.Services;
+using Farmacia_Arqui_Soft.Application.Services;
 using System;
 using System.Security.Cryptography;
 

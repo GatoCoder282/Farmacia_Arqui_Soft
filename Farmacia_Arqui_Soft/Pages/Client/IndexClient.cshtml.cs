@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ClientEntity = Farmacia_Arqui_Soft.Domain.Models.Client;
 using Farmacia_Arqui_Soft.Domain.Ports;
-using Farmacia_Arqui_Soft.Aplication.Services; 
+using Farmacia_Arqui_Soft.Application.Services; 
 using System;
 
 namespace Farmacia_Arqui_Soft.Pages.Client
