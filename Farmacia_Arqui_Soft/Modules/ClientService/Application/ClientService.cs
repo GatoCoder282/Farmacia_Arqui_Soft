@@ -1,26 +1,29 @@
-﻿using Farmacia_Arqui_Soft.Application.DTOs;
-using Farmacia_Arqui_Soft.Domain.Models;
-using Farmacia_Arqui_Soft.Domain.Ports;
+﻿using Farmacia_Arqui_Soft.Domain.Ports;
+using Farmacia_Arqui_Soft.Domain.Ports.UserPorts;
+using Farmacia_Arqui_Soft.Modules.ClientService.Application.Dtos;
+// NO USAR: using Farmacia_Arqui_Soft.Modules.ClientService.Domain; <-- Causa el error
+
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+// Alias para el tipo Client:
+using ClientEntity = Farmacia_Arqui_Soft.Modules.ClientService.Domain.Client;
 
 
-
-namespace Farmacia_Arqui_Soft.Application.Services
+namespace Farmacia_Arqui_Soft.Modules.ClientService.Application
 {
     public class ClientService : IClientService
     {
-        private readonly IRepository<Client> _clientRepository;
+        private readonly IRepository<ClientEntity> _clientRepository; // Usa ClientEntity
         private readonly IUserService _userService;
 
-        public ClientService(IRepository<Client> clientRepository, IUserService userService)
+        public ClientService(IRepository<ClientEntity> clientRepository, IUserService userService) // Usa ClientEntity
         {
             _clientRepository = clientRepository;
             _userService = userService;
         }
 
-        public async Task<Client> RegisterAsync(ClientCreateDto dto, int actorId)
+        public async Task<ClientEntity> RegisterAsync(ClientCreateDto dto, int actorId) // Usa ClientEntity
         {
             var actor = await _userService.GetByIdAsync(actorId);
             if (actor == null || !_userService.CanPerformAction(actor, "create_client"))
@@ -28,7 +31,7 @@ namespace Farmacia_Arqui_Soft.Application.Services
                 throw new InvalidOperationException("El usuario no tiene permisos para registrar clientes.");
             }
 
-            var newClient = new Client
+            var newClient = new ClientEntity // Usa ClientEntity
             {
                 first_name = dto.FirstName,
                 last_name = dto.LastName,
@@ -42,13 +45,13 @@ namespace Farmacia_Arqui_Soft.Application.Services
             return createdClient;
         }
 
-        public async Task<Client?> GetByIdAsync(int id)
+        public async Task<ClientEntity?> GetByIdAsync(int id) // Usa ClientEntity
         {
-            var clientReference = new Client { id = id };
+            var clientReference = new ClientEntity { id = id }; // Usa ClientEntity
             return await _clientRepository.GetById(clientReference);
         }
 
-        public async Task<IEnumerable<Client>> ListAsync()
+        public async Task<IEnumerable<ClientEntity>> ListAsync() // Usa ClientEntity
         {
             return await _clientRepository.GetAll();
         }
@@ -61,7 +64,7 @@ namespace Farmacia_Arqui_Soft.Application.Services
                 throw new InvalidOperationException("El usuario no tiene permisos para actualizar clientes.");
             }
 
-            var clientReference = new Client { id = id };
+            var clientReference = new ClientEntity { id = id }; // Usa ClientEntity
             var existingClient = await _clientRepository.GetById(clientReference);
 
             if (existingClient == null)
@@ -85,7 +88,7 @@ namespace Farmacia_Arqui_Soft.Application.Services
                 throw new InvalidOperationException("El usuario no tiene permisos para eliminar clientes.");
             }
 
-            var clientReference = new Client { id = id };
+            var clientReference = new ClientEntity { id = id }; // Usa ClientEntity
             var existingClient = await _clientRepository.GetById(clientReference);
 
             if (existingClient == null)

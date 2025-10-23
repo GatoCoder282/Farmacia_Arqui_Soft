@@ -1,9 +1,13 @@
+// using Farmacia_Arqui_Soft.Application.Services; // ELIMINADO: ClientService.cs ya no está aquí, ahora está en Modules.ClientService.Application
 using Farmacia_Arqui_Soft.Application.Services;
 using Farmacia_Arqui_Soft.Domain.Models;
 using Farmacia_Arqui_Soft.Domain.Ports;
 using Farmacia_Arqui_Soft.Domain.Ports.UserPorts;
 using Farmacia_Arqui_Soft.Infraestructure.Data;
 using Farmacia_Arqui_Soft.Infraestructure.Persistence;
+using Farmacia_Arqui_Soft.Modules.ClientService.Application; // NUEVO: Usando IClientService y ClientService de su módulo
+using Farmacia_Arqui_Soft.Modules.ClientService.Domain;      // NUEVO: Usando Client de su módulo
+using Farmacia_Arqui_Soft.Modules.ClientService.Infrastructure.Persistence; // NUEVO: Usando ClientRepository y ClientRepositoryFactory de su módulo
 using Farmacia_Arqui_Soft.Validations.Clients;
 using Farmacia_Arqui_Soft.Validations.Interfaces;
 using Farmacia_Arqui_Soft.Validations.Lots;
@@ -24,27 +28,34 @@ namespace Farmacia_Arqui_Soft
 
             DatabaseConnection.Initialize(builder.Configuration);
 
+            // 1. Registro de Factorías (ClientRepositoryFactory ahora usa el namespace modular)
             builder.Services.AddSingleton<RepositoryFactory, UserRepositoryFactory>();
             builder.Services.AddSingleton<UserRepositoryFactory>();
-            builder.Services.AddSingleton<ClientRepositoryFactory>();
+            builder.Services.AddSingleton<ClientRepositoryFactory>(); // Esta clase ahora está en Modules.ClientService.Infrastructure.Persistence
             builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
+            // 2. Registro de Repositorios (ClientRepository ahora usa el namespace modular)
             builder.Services.AddScoped<IRepository<User>, UserRepository>();
             builder.Services.AddScoped<IRepository<Lot>, LotRepository>();
             builder.Services.AddScoped<IRepository<Provider>, ProviderRepository>();
-            builder.Services.AddScoped<IRepository<Client>, ClientRepository>();
+            builder.Services.AddScoped<IRepository<Client>, ClientRepository>(); // Esta clase ahora está en Modules.ClientService.Infrastructure.Persistence
 
+            // 3. Registro de Servicios de Aplicación (IClientService/ClientService ahora usan el namespace modular)
+            // Se mantienen los antiguos para User, Provider, Encryption, Email, etc. (se modularizarán después)
             builder.Services.AddScoped<IUserService, UserService>();
-            builder.Services.AddScoped<IClientService, ClientService>();
+            builder.Services.AddScoped<IClientService, ClientService>(); // Esta clase ahora está en Modules.ClientService.Application
             builder.Services.AddScoped<ProviderService>();
             builder.Services.AddSingleton<IEncryptionService, EncryptionService>();
             builder.Services.AddScoped<IEmailSender, DevEmailSender>();
 
+            // 4. Registro de Validadores (ClientValidator ahora usa la entidad Client del namespace modular)
             builder.Services.AddScoped<IValidator<User>, UserValidator>();
             builder.Services.AddScoped<IValidator<Client>, ClientValidator>();
             builder.Services.AddScoped<IValidator<Lot>, LotValidator>();
             builder.Services.AddScoped<IValidator<Provider>, ProviderValidator>();
 
+            // 5. Configuración de Razor Pages (se mantiene el routing por defecto, asumiendo que las páginas Razor
+            // están usando la clase del PageModel con el namespace del módulo en sus directivas @model)
             builder.Services.AddRazorPages()
                 .AddViewOptions(o => o.HtmlHelperOptions.ClientValidationEnabled = false)
                 .AddMvcOptions(options =>

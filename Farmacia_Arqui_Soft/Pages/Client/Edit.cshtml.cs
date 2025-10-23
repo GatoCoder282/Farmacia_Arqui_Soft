@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
 using Farmacia_Arqui_Soft.Validations.Interfaces;
 using MySql.Data.MySqlClient;
-using Farmacia_Arqui_Soft.Infraestructure.Persistence;
+using Farmacia_Arqui_Soft.Modules.ClientService.Infrastructure.Persistence;
 
-using ClientEntity = Farmacia_Arqui_Soft.Domain.Models.Client;
+using ClientEntity = Farmacia_Arqui_Soft.Modules.ClientService.Domain.Client;
 using Farmacia_Arqui_Soft.Domain.Ports;
 using Farmacia_Arqui_Soft.Application.Services;
 using System;
