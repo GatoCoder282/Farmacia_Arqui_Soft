@@ -2,10 +2,11 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using ClientEntity = Farmacia_Arqui_Soft.Domain.Models.Client;
+using ClientEntity = Farmacia_Arqui_Soft.Modules.ClientService.Domain.Client;
 using Farmacia_Arqui_Soft.Domain.Ports;
-using Farmacia_Arqui_Soft.Application.Services; 
+using Farmacia_Arqui_Soft.Application.Services;
 using System;
+using Farmacia_Arqui_Soft.Modules.ClientService.Application;
 
 namespace Farmacia_Arqui_Soft.Pages.Client
 {

@@ -1,15 +1,18 @@
-using Farmacia_Arqui_Soft.Domain.Models;
 using Farmacia_Arqui_Soft.Domain.Ports;
 using Farmacia_Arqui_Soft.Infraestructure.Data;
+using Farmacia_Arqui_Soft.Domain.Ports;
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common; // Explicitly use DbDataReader for better compatibility
 using System.Threading.Tasks;
 
-namespace Farmacia_Arqui_Soft.Infraestructure.Persistence
+using ClientEntity = Farmacia_Arqui_Soft.Modules.ClientService.Domain.Client;
+
+
+namespace Farmacia_Arqui_Soft.Modules.ClientService.Infrastructure.Persistence
 {
-    public class ClientRepository : IRepository<Client>
+    public class ClientRepository : IRepository<ClientEntity>
     {
         private readonly DatabaseConnection _db;
 
@@ -24,11 +27,11 @@ namespace Farmacia_Arqui_Soft.Infraestructure.Persistence
         /// </summary>
         /// <param name="reader">The DbDataReader instance.</param>
         /// <returns>A new Client object.</returns>
-        private Client MapClient(DbDataReader reader)
+        private ClientEntity MapClient(DbDataReader reader)
         {
             // Use reader.GetOrdinal to get column index or just the name (if supported by provider)
             // and use the type-specific getter. This works for any DbDataReader implementation.
-            return new Client(
+            return new ClientEntity(
                 id: reader.GetInt32("id"),
                 first_name: reader.GetString("first_name"),
                 last_name: reader.GetString("last_name"),
@@ -39,7 +42,7 @@ namespace Farmacia_Arqui_Soft.Infraestructure.Persistence
             );
         }
 
-        public async Task<Client> Create(Client entity)
+        public async Task<ClientEntity> Create(ClientEntity entity)
         {
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
@@ -59,7 +62,7 @@ namespace Farmacia_Arqui_Soft.Infraestructure.Persistence
             return entity;
         }
 
-        public async Task<Client?> GetById(Client entity)
+        public async Task<ClientEntity?> GetById(ClientEntity entity)
         {
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
@@ -80,9 +83,9 @@ namespace Farmacia_Arqui_Soft.Infraestructure.Persistence
             return null;
         }
 
-        public async Task<IEnumerable<Client>> GetAll()
+        public async Task<IEnumerable<ClientEntity>> GetAll()
         {
-            var list = new List<Client>();
+            var list = new List<ClientEntity>();
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
 
@@ -101,7 +104,7 @@ namespace Farmacia_Arqui_Soft.Infraestructure.Persistence
             return list;
         }
 
-        public async Task Update(Client entity)
+        public async Task Update(ClientEntity entity)
         {
             using var connection = _db.GetConnection();
             await connection.OpenAsync();
@@ -125,7 +128,7 @@ namespace Farmacia_Arqui_Soft.Infraestructure.Persistence
             await cmd.ExecuteNonQueryAsync();
         }
 
-        public async Task Delete(Client entity)
+        public async Task Delete(ClientEntity entity)
         {
             // Note: This is a soft delete based on the column name `is_deleted`
             string query = "UPDATE clients SET is_deleted = TRUE WHERE id=@id";

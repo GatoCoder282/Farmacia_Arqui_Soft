@@ -4,7 +4,7 @@ using System.Data;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Farmacia_Arqui_Soft.Domain.Models
+namespace Farmacia_Arqui_Soft.Modules.ClientService.Domain
 {
     public class Client
     {

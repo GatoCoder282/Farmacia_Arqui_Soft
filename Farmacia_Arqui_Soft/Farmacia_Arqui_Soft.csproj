@@ -11,6 +11,7 @@
     <Folder Include="Application\Interfaces\" />
     <Folder Include="Domain\Services\" />
     <Folder Include="Infraestructure\Security\" />
+    <Folder Include="Modules\ClientService\Presentation\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 

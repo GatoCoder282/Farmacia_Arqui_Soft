@@ -1,4 +1,4 @@
-﻿namespace Farmacia_Arqui_Soft.Application.DTOs
+﻿namespace Farmacia_Arqui_Soft.Modules.ClientService.Application.Dtos
 {
     
     public record ClientCreateDto(

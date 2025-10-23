@@ -1,8 +1,8 @@
 ﻿using System.Text.RegularExpressions;
 using FluentResults;
-using Farmacia_Arqui_Soft.Domain.Models;
 using Farmacia_Arqui_Soft.Validations.Interfaces;
 using Farmacia_Arqui_Soft.Validations.Core;
+using Farmacia_Arqui_Soft.Modules.ClientService.Domain;
 
 namespace Farmacia_Arqui_Soft.Validations.Clients
 {

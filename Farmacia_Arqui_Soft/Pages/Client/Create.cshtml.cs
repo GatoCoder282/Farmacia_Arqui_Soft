@@ -3,21 +3,21 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
 using Farmacia_Arqui_Soft.Validations.Interfaces;
 using MySql.Data.MySqlClient;
-using Farmacia_Arqui_Soft.Infraestructure.Persistence;
+using Farmacia_Arqui_Soft.Modules.ClientService.Infrastructure.Persistence;
 
 
-using ClientEntity = Farmacia_Arqui_Soft.Domain.Models.Client;
+using ClientEntity = Farmacia_Arqui_Soft.Modules.ClientService.Domain.Client;
 using Farmacia_Arqui_Soft.Domain.Ports;
 
 namespace Farmacia_Arqui_Soft.Pages.Client
 {
     public class CreateModel : PageModel
     {
-        private readonly IRepository<ClientEntity> _ClientRepository;
-        private readonly IValidator<ClientEntity> _validator;
+        private readonly IRepository<ClientEntity> _ClientRepository; // Usa ClientEntity
+        private readonly IValidator<ClientEntity> _validator; // Usa ClientEntity
 
         [BindProperty]
-        public ClientEntity Input { get; set; } = new ClientEntity { };
+        public ClientEntity Input { get; set; } = new ClientEntity { }; // Usa ClientEntity
 
         public CreateModel(IValidator<ClientEntity> validator)
         {
